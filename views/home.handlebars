@@ -1,0 +1,10 @@
+<h1>Home page!</h1>
+
+{{#each pets}}
+    <div class="card">
+        <h3>{{name}}</h3>
+        <h4>Owner: {{User.username}}</h4>
+        <h5>Species: {{species}}</h5>
+        <p>age: {{age}}</p>
+    </div>
+{{/each}}
