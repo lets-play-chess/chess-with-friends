@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // const express = require('express');
 // const router = express.Router();
 // const {User,Pet,Group} = require('../../models');
@@ -17,6 +18,27 @@
 //         res.status(500).json({message:"an error occured",err:err})
 //     })
 // })
+=======
+const express = require('express');
+const router = express.Router();
+const {User,UserFriend/*,Group*/} = require('../../models');
+const bcrypt = require("bcrypt");
+
+router.get("/",(req,res)=>{
+    User.findAll({
+        include:[UserFriend,Group]
+    }).then(dbUsers=>{
+        if(dbUsers.length){
+            res.json(dbUsers)
+        } else {
+            res.status(404).json({message:"No users found!"})
+        }
+    }).catch(err=>{
+        console.log(err);
+        res.status(500).json({message:"an error occured",err:err})
+    })
+})
+>>>>>>> 17affa6ecb9a42bfde18daced2c77fb293509819
 
 // router.post("/",(req,res)=>{
 //     // const encryptedPassword = bcrypt.hashSync(req.body.password,3);

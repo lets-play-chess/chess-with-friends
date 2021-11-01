@@ -16,17 +16,17 @@
 //     })
 // })
 
-// router.get("/profile",(req,res)=>{
-//     if(!req.session.user){
-//         return res.redirect("/login")
-//     }
-//     User.findByPk(req.session.user.id,{
-//         include:[Pet]
-//     }).then(userData=>{
-//         const hbsUser = userData.get({plain:true});
-//         res.render("profile",hbsUser)
-//     })
-// })
+router.get("/profile",(req,res)=>{
+    if(!req.session.user){
+        return res.redirect("/login")
+    }
+    User.findByPk(req.session.user.id,{
+        include:[UserFriend]
+    }).then(userData=>{
+        const hbsUser = userData.get({plain:true});
+        res.render("profile",hbsUser)
+    })
+})
 
 // router.get("/login",(req,res)=>{
 //     res.render("login")

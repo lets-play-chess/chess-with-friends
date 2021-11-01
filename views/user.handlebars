@@ -1,0 +1,25 @@
+<div class ="container">
+    <div class = "row">
+        <div class="col-8">
+                <div class="card">
+                    <h1>{{username}}</h1>
+                    <h3>Total Games Played: {{games}}</h3>
+                    <h5>Wins: {{wins}}</h5>
+                    <p>Loses: {{loses}}</p>
+                    <p>Ties: {{ties}}</p>
+                    <p>Win/loss: {{losses}}/ {{losses}}</p>
+                    <button>PLAY GAME</button>
+                    <button>Notification icon</button>
+                </div>
+        </div>
+
+        <div class="col-4">
+            <ul>
+            {{#each friend}}
+            <li>{{friend_name}}</li>
+            <button>Add Friend</button>
+            {{/each}}
+            </ul>
+        </div>
+    </div>
+</div>

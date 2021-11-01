@@ -1,25 +1,27 @@
-// const express = require('express');
-// const router = express.Router();
+// Routes for whether or not the user is logged in
 
-// router.get('/',(req,res)=>{
-//     res.json(req.session);
-// })
+const express = require('express');
+const router = express.Router();
 
-// router.get("/addcounter",(req,res)=>{
-//     if(req.session.count){
-//         req.session.count++
-//     } else {
-//         req.session.count = 1;
-//     }
-//     res.send("count updated!")
-// })
+router.get('/',(req,res)=>{
+    res.json(req.session);
+})
 
-// router.get("/secretclub",(req,res)=>{
-//     if(req.session.user){
-//         res.send(`welcome to the secret club, ${req.session.user.username}!`)
-//     } else{
-//         res.status(401).send("login first to see the secret club")
-//     }
-// })
+router.get("/addcounter",(req,res)=>{
+    if(req.session.count){
+        req.session.count++
+    } else {
+        req.session.count = 1;
+    }
+    res.send("count updated!")
+})
 
-// module.exports = router;
+router.get("/chessclub",(req,res)=>{
+    if(req.session.user){
+        res.send(`welcome to the chess club, ${req.session.user.username}!`)
+    } else{
+        res.status(401).send("You need to log in")
+    }
+})
+
+module.exports = router;
