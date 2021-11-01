@@ -1,20 +1,27 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-class Pet extends Model {}
+class UserFriends extends Model { }
 
-Pet.init({
-  name:{
-      type:DataTypes.STRING
-  },
-  species:{
-      type:DataTypes.STRING
-  },
-  age:{
-      type:DataTypes.INTEGER
-  },
-},{
-    sequelize, 
+UserFriends.init({
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        allowNull: false,
+    },
+    user1_id: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: 'user',
+            key: 'id'
+        },
+    },
+    user2_id: {
+        type: DataTypes.STRING,
+        onDelete: 'cascade'
+    },
+}, {
+    sequelize,
 });
 
-module.exports=Pet
+module.exports = UserFriends
