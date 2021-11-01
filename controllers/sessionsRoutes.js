@@ -14,11 +14,11 @@ router.get("/addcounter",(req,res)=>{
     res.send("count updated!")
 })
 
-router.get("/chessclub",(req,res)=>{
+router.get("/secretclub",(req,res)=>{
     if(req.session.user){
-        res.send(`welcome to the chess club, ${req.session.user.username}!`)
+        res.send(`welcome to the secret club, ${req.session.user.username}!`)
     } else{
-        res.status(401).send("You need to log in")
+        res.status(401).send("login first to see the secret club")
     }
 })
 

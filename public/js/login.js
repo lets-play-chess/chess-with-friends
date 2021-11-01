@@ -1,15 +1,13 @@
 const loginForm = document.querySelector("#login-form");
 
-//TODO: collect data from login form, make post request to log in user.  
-//TODO: once you get an ok response, redirect to the profile page
-
 loginForm.addEventListener("submit",(e)=>{
     e.preventDefault();
     const userObj={
-        email:document.querySelector("#email").value,
-        password:document.querySelector("#password").value,
-    }
-    fetch("/api/users/login",{
+        email:document.querySelector("#email-login").value,
+        password:document.querySelector("#password-login").value,
+    };
+    //TODO: figure out the correct login route
+    fetch('loginRoute',{
         method:"POST",
         body:JSON.stringify(userObj),
         headers:{
@@ -17,9 +15,10 @@ loginForm.addEventListener("submit",(e)=>{
         }
     }).then(res=>{
         if(res.ok){
-           location.href = "/profile"
+            //TODO: figure out the correct user profile route
+            location.href = "userprofileRoute"
         } else {
-            alert("trumpet sound")
+            alert("trumpet sound");
         }
-    })
-})
+    });
+});
