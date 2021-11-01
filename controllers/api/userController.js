@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const {User,UserFriend/*,Group*/} = require('../../models');
+const {User,UserFriends} = require('../../models');
 const bcrypt = require("bcrypt");
 
 router.get("/",(req,res)=>{
     User.findAll({
-        include:[UserFriend,Group]
+        include:[UserFriend]
     }).then(dbUsers=>{
         if(dbUsers.length){
             res.json(dbUsers)
@@ -19,21 +19,21 @@ router.get("/",(req,res)=>{
 })
 
 router.post("/",(req,res)=>{
-    // const encryptedPassword = bcrypt.hashSync(req.body.password,3);
+    // Create user Form Route
     User.create({
         username:req.body.username,
-        // password:encryptedPassword,
         password:req.body.password,
         email:req.body.email
     }).then(newUser=>{
         res.json(newUser);
     }).catch(err=>{
         console.log(err);
-        res.status(500).json({message:"an error occured",err:err})
+        res.status(500).json({message:"User creation failed:",err:err})
     })
 })
 
 router.post("/login",(req,res)=>{
+    // Login Form Route
     User.findOne({
         where:{
             email:req.body.email
@@ -41,7 +41,7 @@ router.post("/login",(req,res)=>{
     }).then(foundUser=>{
         if(!foundUser){
             req.session.destroy()
-            res.status(401).json({message:"incorrect email or password"})
+            res.status(401).json({message:"Incorrect email or password"})
         } else {
             if(bcrypt.compareSync(req.body.password,foundUser.password)){
                 req.session.user = {
@@ -52,7 +52,7 @@ router.post("/login",(req,res)=>{
                 res.json(foundUser)
             } else {
                 req.session.destroy()
-                res.status(401).json({message:"incorrect email or password"})
+                res.status(401).json({message:"Incorrect email or password"})
             }
         }
     }).catch(err=>{
@@ -62,18 +62,20 @@ router.post("/login",(req,res)=>{
 })
 
 router.get("/logout",(req,res)=>{
+    // User logout
     req.session.destroy();
     res.redirect("/login")
 })
 
-router.delete("/:id",(req,res)=>{
-    User.destroy({
-        where:{
-            id:req.params.id
-        }
-    }).then(delUser=>{
-        res.json(delUser)
-    })
-})
+// router.delete("/:id",(req,res)=>{
+    // We don't have a use case for deleting users now but I'm keeping it in case.
+//     User.destroy({
+//         where:{
+//             id:req.params.id
+//         }
+//     }).then(delUser=>{
+//         res.json(delUser)
+//     })
+// })
 
 module.exports = router;
