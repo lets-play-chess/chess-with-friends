@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const {User,Pet,Group} = require('../../models');
+const {User,UserFriend/*,Group*/} = require('../../models');
 const bcrypt = require("bcrypt");
 
 router.get("/",(req,res)=>{
     User.findAll({
-        include:[Pet,Group]
+        include:[UserFriend,Group]
     }).then(dbUsers=>{
         if(dbUsers.length){
             res.json(dbUsers)

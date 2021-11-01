@@ -4,10 +4,10 @@ const router = express.Router();
 const userRoutes = require("./userController");
 router.use("/users",userRoutes);
 
-const petRoutes = require("./petsController");
-router.use("/pets",petRoutes);
+// const petRoutes = require("./petsController");
+// router.use("/pets",petRoutes);
 
 const sessionRoutes = require("../sessionsRoutes");
-router.use("/sesssions",sessionRoutes)
+router.use("/sessions",sessionRoutes)
 
 module.exports = router;
