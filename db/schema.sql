@@ -4,14 +4,15 @@ CREATE DATABASE chess_db;
 USE chess_db;
 
 CREATE TABLE users (
-  id INT PRIMARY KEY,
-  username VARCHAR(50),
-  email VARCHAR(50) NOT NULL UNIQUE,
-  ngames INT,
-  wins INT,
-  ties INT,
-  user_rank INT,
-);
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50),
+    email VARCHAR(50),
+    password VARCHAR(50),
+    ngames INT,
+    wins INT,
+    ties INT,
+    user_rank INT);
+
 
 CREATE TABLE user_friends (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
