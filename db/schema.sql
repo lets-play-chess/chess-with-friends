@@ -11,7 +11,8 @@ CREATE TABLE users (
     ngames INT,
     wins INT,
     ties INT,
-    user_rank INT);
+    user_rank INT
+    );
 
 
 CREATE TABLE user_friends (

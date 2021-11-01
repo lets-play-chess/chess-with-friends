@@ -6,6 +6,11 @@ class User extends Model {}
 
 User.init({
     // add properites here, ex:
+    id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true
+    },
     username: {
          type: DataTypes.STRING,
          unique:true,
@@ -25,7 +30,52 @@ User.init({
         validate:{
             isEmail:true
         }
-    }
+    },
+    ngames: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        validate: {
+            customerValidator(value) {
+                if (value === null) {
+                    return value = 0
+                }
+            }
+        },
+    },
+    wins: {
+        types: DataTypes.INTEGER,
+        allowNull: true,
+        validate: {
+            customerValidator(value) {
+                if (value === null) {
+                    return value = 0
+                }
+            }
+        },
+    },
+    ties: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        validate: {
+            customerValidator(value) {
+                if (value === null) {
+                    return value = 0
+                }
+            }
+        },
+    },
+    user_rank: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        validate: {
+            customerValidator(value) {
+                if (value === null) {
+                    return value = 0
+                }
+            }
+        },
+    },
+
 },{
     hooks:{
         beforeCreate(newUser){
