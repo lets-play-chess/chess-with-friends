@@ -1,69 +1,38 @@
 const sequelize = require("../config/connection");
-const {User,Pet,Group} = require("../models")
+const {User,UserFriends,Group} = require("../models")
 
 const seed = async ()=>{
     const userData = await User.bulkCreate([
         {
-            username:"joe",
+            username:"Whitney",
             password:"password",
-            email:"joe@joe.joe"
+            email:"whit@play.chess"
         },
         {
-            username:"louis",
+            username:"Evelyn",
             password:"password",
-            email:"louis@joe.joe"
+            email:"eve@play.chess"
         },
         {
-            username:"brett",
+            username:"Kyle",
             password:"password",
-            email:"brett@joe.joe"
+            email:"kyle@play.chess"
         },
         {
-            username:"michael",
+            username:"Carsdan",
             password:"password",
-            email:"michael@joe.joe"
+            email:"cars@play.chess"
         },
     ],{
         individualHooks:true
     })
-    const petsData = await Pet.bulkCreate([
+    const friendsData = await UserFriends.bulkCreate([
         {
-            name:"Shiva",
-            species:"cat",
-            age:1,
-            UserId:1
+            user1_id:1,
+            user2_id:2,
         },
-        {
-            name:"Bahamut",
-            species:"cat",
-            age:1,
-            UserId:1
-        },
-        {
-            name:"Bandit",
-            species:"cat",
-            age:4,
-            UserId:2
-        },
+
     ])
-    const groupsData = await Group.bulkCreate([
-        {
-            name:"Multi-cat households",
-            description:"How to take care of more than 1 cat!",
-        },
-        {
-            name:"Pugs are the best!",
-            description:"I love their squishy faces!",
-        },
-        {
-            name:"Only Exotics!",
-            description:"no normal pets here, monkeys or weirder",
-        },
-        
-    ])
-    groupsData[0].addUser(1)
-    groupsData[0].addUser(2)
-    userData[2].addGroups([2,3])
 }
 
 sequelize.sync({force:true}).then(()=>{

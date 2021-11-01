@@ -1,34 +1,32 @@
+// Front End Routes - WSK Checked
 const express = require('express');
 const router = express.Router();
-const {Pet,User} = require('../models');
+const {UserFriends,User} = require('../models');
 
 router.get("/",(req,res)=>{
-    Pet.findAll({
-        order:["UserId"],
-        include:[User]
-    }).then(petData=>{
-
-        const hbsPets = petData.map(pet=>pet.get({plain:true}))
-        // res.json(hbsPets)
-        res.render("home",{
-            pets:hbsPets
-        })
-    })
+    // Home Page
+    // ASSUMES CREATEUSER VIEW IN MVC PARADIGM, 
+    // expects createUser.handlebars to exist
+    res.render("createUser")
 })
 
+// Profile Page Get Request
 router.get("/profile",(req,res)=>{
+    // IF not logged in, return to login page
     if(!req.session.user){
         return res.redirect("/login")
     }
+    // IF logged in, 
     User.findByPk(req.session.user.id,{
         include:[UserFriend]
     }).then(userData=>{
         const hbsUser = userData.get({plain:true});
-        res.render("profile",hbsUser)
+        res.render("profile", hbsUser)
     })
 })
 
 router.get("/login",(req,res)=>{
+    // Serve login form here
     res.render("login")
 })
 

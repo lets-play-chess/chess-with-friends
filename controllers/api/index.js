@@ -1,11 +1,13 @@
+// WSK Built Routes
+
 const express = require('express');
 const router = express.Router();
 
 const userRoutes = require("./userController");
 router.use("/users",userRoutes);
 
-// const petRoutes = require("./petsController");
-// router.use("/pets",petRoutes);
+const gameRoutes = require("./gamesController");
+router.use("/game",gameRoutes);
 
 const sessionRoutes = require("../sessionsRoutes");
 router.use("/sessions",sessionRoutes)
