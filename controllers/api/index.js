@@ -1,13 +1,15 @@
+// WSK Built Routes
+
 const express = require('express');
 const router = express.Router();
 
 const userRoutes = require("./userController");
 router.use("/users",userRoutes);
 
-const petRoutes = require("./gameController");
-router.use("/game",petRoutes);
+const gameRoutes = require("./gamesController");
+router.use("/game",gameRoutes);
 
 const sessionRoutes = require("../sessionsRoutes");
-router.use("/sesssions",sessionRoutes)
+router.use("/sessions",sessionRoutes)
 
 module.exports = router;
