@@ -1,11 +1,14 @@
 const User = require("./User");
-const Pet = require("./Pet");
+const UserFriends = require("./UserFriends");
 // const Group = require("./Group");
 
-User.hasMany(Pet,{
+User.hasMany(UserFriends,{
+    foreignKey: "user1_id",
     onDelete:"CASCADE"
 });
-Pet.belongsTo(User);
+UserFriends.belongsTo(User, {
+    foreignKey: "user1_id"
+});
 
 // User.belongsToMany(Group,{
 //     through:"UserGroup"
@@ -17,6 +20,6 @@ Pet.belongsTo(User);
 
 module.exports={
     User,
-    Pet,
+    UserFriends,
     // Group
 };
