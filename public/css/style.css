@@ -1,13 +1,85 @@
+:root {
+    --white:  #fff;
+    --orange:  #ee9c04;
+    --yellow:  #F3CD05;
+    --darkorange: #c27004;
+    --green:  #20e00fde;
+    --blue:  rgba(22, 78, 230, 0.829);
+    --red:  rgba(255, 0, 0, 0.623);
+    --black:  black;
+    --brown:  #774000d8;
+}
 
+body {
+    background-color: var(--orange);
+}
+
+h1 {
+    font-size: 100px;
+    letter-spacing: 1px;
+    margin-top: 30px;
+    margin-bottom: 70px;
+    text-align: center;
+    color: var(--brown);
+    padding: 50px;
+    border-radius: 50px;
+}
+h2 {
+    text-align: center;
+}
+
+.container {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+img {
+    margin-top: 100px;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    animation-name: circle;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+}
+#login-form {
+    background-color: lightgrey;
+    box-shadow: gray 2px 2px 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+#signup-form {
+    background-color: lightgrey;
+    margin-top: 30px;
+    box-shadow: gray 2px 2px 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+@keyframes circle {
+    0% {
+        background-color: var(--orange);
+    }
+}
 
 /* Small devices (landscape phones, 576px and up) */
-@media (min-width: 576px) { ... }
+@media (min-width: 576px) {
+
+}
 
 /* Medium devices (tablets, 768px and up) */
-@media (min-width: 768px) { ... }
+@media (min-width: 768px) {
+
+}
 
 /* Large devices (desktops, 992px and up) */
-@media (min-width: 992px) { ... }
+@media (min-width: 992px) {
+
+}
 
 /* Extra large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) { ... }
+@media (min-width: 1200px) {
+    
+}
