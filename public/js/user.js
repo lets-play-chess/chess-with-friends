@@ -66,7 +66,7 @@ accFriendReqBtn.addEventListener('click', (event) => {
     });
 });
 
-const accGameInvBtn = document.getElementsByClassName('');
+const accGameInvBtn = document.getElementsByClassName('acc-game-inv-btn');
 accGameInvBtn.addEventListener('click', (event) => {
     event.preventDefault();
     const accGameObj = { something };
