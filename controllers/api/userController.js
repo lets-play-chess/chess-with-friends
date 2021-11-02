@@ -70,6 +70,14 @@ router.post('/', (req, res) => {
         user2_id: req.session.user.id,
       });
   });
+
+
+  router.post('/', (req, res) => {
+    // Play Game button
+    // Takes the user to the lobby page
+
+  });
+  
   
 // router.delete("/:id",(req,res)=>{
     // We don't have a use case for deleting users now but I'm keeping it in case.
