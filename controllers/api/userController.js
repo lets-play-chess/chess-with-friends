@@ -116,6 +116,33 @@ module.exports = router;
 // router.post("/login",(req,res)=>{
 //     // Login Form Route
 //     User.findOne({
+
+// router.post('/', (req, res) => {
+//     // Add a Friend
+//     // Takes in session id and puts as user 1
+//     // Takes in input user id and puts as user 2
+//    const newFriend = UserFriends.create({
+//         user1_id: req.session.user.id,
+//         user2_id: req.body.user_id
+//       });
+//     // Invert it below to have easier queries
+//     const inverseFriend = UserFriends.create({
+//         user1_id: req.body.user_id,
+//         user2_id: req.session.user.id,
+//       });
+//   });
+
+
+//   router.post('/', (req, res) => {
+//     // Play Game button
+//     // Takes the user to the lobby page
+
+//   });
+  
+  
+// router.delete("/:id",(req,res)=>{
+    // We don't have a use case for deleting users now but I'm keeping it in case.
+//     User.destroy({
 //         where:{
 //             email:req.body.email
 //         }

@@ -1,5 +1,6 @@
 const User = require("./User");
 const UserFriends = require("./UserFriends");
+const Lobby = require("./Lobby")
 // const Group = require("./Group");
 
 User.hasMany(UserFriends,{
@@ -10,7 +11,7 @@ UserFriends.belongsTo(User, {
     foreignKey: "user1_id"
 });
 
-Lobby.hasMany(Users, {
+Lobby.hasMany(User, {
     foreignKey: "host_id"
 });
 User.belongsTo(Lobby,{
