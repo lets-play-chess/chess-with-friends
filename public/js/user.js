@@ -1,3 +1,45 @@
+const socket = io();
+
+const gameInvList = document.getElementById('game-invite-list');
+socket.on('game invite sent', (gameInv) => {
+    const newGameInv = document.createElement('li');
+    newGameInv.textContent = gameInv.username;
+    newGameInv.setAttribute('data-lobbyId', gameInv.lobbyId)
+
+    const acceptGameInvBtn = document.createElement('button');
+    // TODO: add a checkmark or something to the 'textConent' of the acceptGameInvBtn
+    acceptGameInvBtn.textContent = 'Accept';
+
+    const declineGameInvBtn = document.createElement('button');
+    // TODO: add an 'X' or something to the 'textConent' of the acceptGameInvBtn
+    declineGameInvBtn.textContent = 'Decline';
+
+    newGameInv.append(acceptGameInvBtn);
+    newGameInv.append(declineGameInvBtn);
+
+    gameInvList.append(newGameInv);
+});
+
+const friendReqList = document.getElementById('friend-request-list');
+socket.on('friend request sent', (friendReq) => {
+    const newFriendReq = document.createElement('li');
+    newFriendReq.textContent = friendReq.username;
+    newFriendReq.setAttribute('data-userId', friendReq.userId)
+
+    const acceptFriendReqBtn = document.createElement('button');
+    // TODO: add a checkmark or something to the 'textConent' of the acceptGameInvBtn
+    acceptFriendReqBtn.textContent = 'Accept';
+
+    const declineFriendReqBtn = document.createElement('button');
+    // TODO: add an 'X' or something to the 'textConent' of the acceptGameInvBtn
+    declineFriendReqBtn.textContent = 'Decline';
+
+    newFriendReq.append(acceptFriendReqBtn);
+    newFriendReq.append(declineFriendReqBtn);
+
+    friendReqList.append(newFriendReq);
+});
+
 const frs = document.getElementById('frs');
 const notfrs = document.getElementsByClassName('not-frs');
 const openMondalBtn = document.getElementById('open-modal');
@@ -73,7 +115,7 @@ accGameInvBtn.addEventListener('click', (event) => {
     // TODO: add the correct route to accepting a game invite and set correct method
     fetch('correct route to accepting a game invite', {
         method: "POST?",
-        body:JSON.stringify(something),
+        body:JSON.stringify(accGameObj),
         headers:{
             "Content-Type":"application/json"
         }
