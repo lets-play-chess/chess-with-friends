@@ -136,7 +136,6 @@ router.post('/', (req, res) => {
         where: {
             email: req.body.email
         }
-
     });
 })
     // router.post('/', (req, res) => {
