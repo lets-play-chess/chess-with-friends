@@ -1,5 +1,4 @@
-// TODO: finish the next line of code... it currently isnt grabbing anything on the page
-const invFriendBtn = document.getElementById('');
+const invFriendBtn = document.getElementById('invite-friend-btn');
 // TODO: somehow figure out how to get the id of the friend you are inviting
 invFriendBtn.addEventListener('click', (event) => {
     event.preventDefault();
