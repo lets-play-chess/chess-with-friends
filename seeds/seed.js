@@ -3,7 +3,8 @@ const {User,UserFriends,Lobby} = require("../models")
 // const UserData = require(./User.json);
 
 const seed = async ()=>{
-    await sequelize.sun({force:true});
+    try {
+    //await sequelize.sync({force:true});
     const userData = await User.bulkCreate([
         {
             username:"Whitney",
@@ -38,7 +39,10 @@ const seed = async ()=>{
         },
 
     ])
-}
+} catch (err) {
+    console.log(err)
+    throw err
+}}
 
 sequelize.sync({force:true}).then(()=>{
     seed();

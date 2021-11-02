@@ -9,6 +9,7 @@ User.init({
     id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true
     },
     username: {
@@ -43,7 +44,7 @@ User.init({
         },
     },
     wins: {
-        types: DataTypes.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: true,
         validate: {
             customerValidator(value) {

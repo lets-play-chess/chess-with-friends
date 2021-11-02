@@ -8,16 +8,21 @@ UserFriends.init({
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
+        autoIncrement: true,
     },
     user1_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'user',
+            model: 'User',
             key: 'id'
         },
     },
     user2_id: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
+        references: {
+            model: 'User',
+            key: 'id'
+        },
         onDelete: 'cascade'
     },
 }, {
