@@ -33,11 +33,20 @@ socket.on('friend request sent', (friendReq) => {
     const declineFriendReqBtn = document.createElement('button');
     // TODO: add an 'X' or something to the 'textConent' of the acceptGameInvBtn
     declineFriendReqBtn.textContent = 'Decline';
-
+    
     newFriendReq.append(acceptFriendReqBtn);
     newFriendReq.append(declineFriendReqBtn);
-
+    
     friendReqList.append(newFriendReq);
+});
+
+const friendsList = document.getElementById('friends-list');
+socket.on('friend request accepted', (newFriend) => {
+    const newFriendSocket = document.createElement('li');
+    newFriendSocket.textContent = newFriend.username;
+    newFriendSocket.setAttribute('data-userId',newFriend.userId);
+
+    friendsList.append(newFriendSocket);
 });
 
 const frs = document.getElementById('frs');
@@ -84,7 +93,6 @@ addFriendBtn.addEventListener('click', (event) => {
 
 // TODO: add a socket that will accept the requesterEmail
 const accFriendReqBtn = document.getElementsByClassName('acc-friend-req-btn');
-const friendsList = document.getElementById('friends-list');
 accFriendReqBtn.addEventListener('click', (event) => {
     event.preventDefault();
     const requesterObj = { requesterEmail };
@@ -99,7 +107,8 @@ accFriendReqBtn.addEventListener('click', (event) => {
         if(res.ok){
             const newFriend = document.createElement('li');
             // TODO: Pull the username of the friend that was just added from the response
-            newFriend.textContent = res.something;
+            newFriend.textContent = res.username;
+            newFriend.setAttribute('data-userId',res.userId);
             friendsList.append(newFriend);
             // TODO: Send through a socket that the friend request was accepted so that the person who sent the request gets updated in real time
         } else {
