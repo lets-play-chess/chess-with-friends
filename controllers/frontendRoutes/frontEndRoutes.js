@@ -1,7 +1,7 @@
 // Front End Routes - WSK Checked
 const express = require('express');
 const router = express.Router();
-const {UserFriends,User} = require('../models');
+const {UserFriends,User,Lobby} = require('../../models');
 
 // Home Page get request
 router.get("/",(req,res)=>{
@@ -23,6 +23,26 @@ router.get("/profile",(req,res)=>{
         res.render("user", hbsUser)
     })
 })
+
+// Lobby Page Get Request
+router.get("/lobby", (req,res)=>{
+    res.render("lobby")
+});
+
+// Game Board Get Request
+router.get("/gameboard", (req,res)=> {
+    res.render("game-board")
+})
+
+// Test example
+router.get("/test", (req,res)=>{
+    UserFriends.findAll().then(UFData=>{
+        const hbdata = UFData.map(item=>item.get({plain:true}))
+        res.render("test",{friends:hbdata})
+    })
+
+})
+
 
 // router.get("/login",(req,res)=>{
 //     // Serve login form here

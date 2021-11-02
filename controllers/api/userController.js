@@ -1,3 +1,4 @@
+// This deals with the Users Table
 const express = require('express');
 const router = express.Router();
 const socket = io.connect();
@@ -30,6 +31,13 @@ router.get("/", (req, res) => {
         console.log(err)
         res.status(500).json(err);
     })
+});
+
+router.get("/logout", (req,res)=>{
+    // Logout request
+    req.session.destroy(()=>{
+        res.json({msg:"Session destroyed"})
+    })
 })
 
 router.get("/:id", (req, res) => {
@@ -38,11 +46,11 @@ router.get("/:id", (req, res) => {
         if (UserData) {
             res.json(UserData)
         } else {
-            res.status(404).json(err);
+            res.status(404).json({err:"No such user."});
         }
     }).catch(err => {
         console.log(err)
-        res.status(500).json(err);
+        res.status(500).json({err});
     })
 });
 
@@ -106,7 +114,17 @@ router.put("/:id", (req, res) => {
         where: {
             id: req.params.id
         }
-    })
+    }).then(updatedData => {
+        if (updatedData[0]) {
+          res.json(updatedData);
+        } else {
+          res.status(404).json({ err: "no such user found!" });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ err });
+      });
 })
 
 router.delete("/:id", (req, res) => {
@@ -131,7 +149,6 @@ router.post('/', (req, res) => {
     // Add a Friend
     // Takes in session id and puts as user 1
     // Takes in input user id and puts as user 2
-
     User.findOne({
         where: {
             email: req.body.email
@@ -139,9 +156,6 @@ router.post('/', (req, res) => {
 
     });
 })
-    // router.post('/', (req, res) => {
-    //     })
-    // })
 
-    module.exports = router;
+module.exports = router;
 
