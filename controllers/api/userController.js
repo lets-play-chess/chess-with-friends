@@ -11,6 +11,13 @@ router.get("/",(req,res)=>{
         console.log(err)
         res.status(500).json(err);
     })
+});
+
+router.get("/logout", (req,res)=>{
+    // Logout request
+    req.session.destroy(()=>{
+        res.json({msg:"Session destroyed"})
+    })
 })
 
 router.get("/:id",(req,res)=>{
@@ -19,11 +26,11 @@ router.get("/:id",(req,res)=>{
         if(UserData){
             res.json(UserData)
         } else {
-            res.status(404).json(err);
+            res.status(404).json({err:"No such user."});
         }
     }).catch(err=>{
         console.log(err)
-        res.status(500).json(err);
+        res.status(500).json({err});
     })
 });
 
@@ -34,11 +41,52 @@ router.post("/",(req,res)=>{
         password:req.body.password,
         email:req.body.email
     }).then(newUser=>{
+        req.session.user = {
+            id: foundUser.id,
+            email: foundUser.email,
+            username: foundUser.username
+          };
         res.json(newUser);
     }).catch(err=>{
         console.log(err);
         res.status(500).json({message:"User creation failed:",err:err})
     })
+});
+
+router.post("/login",(req,res)=>{
+    // Login User Route 
+    User.findOne({
+        where:{
+            email:req.body.email,
+        }
+    }).then(foundUser => {
+        if (!foundUser) {
+          return req.session.destroy(() => {
+            return res.status(401).json({ err: "invalid email/password" });
+          });
+        }
+        if (!req.body.password) {
+          return req.session.destroy(() => {
+            return res.status(401).json({ err: "invalid email/password" });
+          });
+        }
+        if (bcrypt.compareSync(req.body.password, foundUser.password)) {
+          req.session.user = {
+            id: foundUser.id,
+            email: foundUser.email,
+            username: foundUser.username
+          };
+          return res.json(foundUser);
+        } else {
+          return req.session.destroy(() => {
+            return res.status(401).json({ err: "invalid email/password" });
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ err });
+      });
 });
 
 router.put("/:id", (req,res)=>{
@@ -54,20 +102,37 @@ router.put("/:id", (req,res)=>{
         where:{
             id:req.params.id
         }
-    })
+    }).then(updatedData => {
+        if (updatedData[0]) {
+          res.json(updatedData);
+        } else {
+          res.status(404).json({ err: "no such user found!" });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ err });
+      });
 })
   
 router.delete("/:id",(req,res)=>{
     // We don't have a use case for deleting users now but I'm keeping it in case.
     User.destroy({
-        where:{
-            id:req.params.id
+        where: {
+          id: req.params.id
         }
-    }).then(delUser=>{
-        if(delUser){        res.json(delUser)}
-        else {res.status(404)}
-
-    })
+      })
+        .then(deletedUser => {
+          if (deletedUser) {
+            res.json(deletedUser);
+          } else {
+            res.status(404).json({ err: "no such user found!" });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).json({ err });
+        });
 })
 
 module.exports = router;

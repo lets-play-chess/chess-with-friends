@@ -22,7 +22,7 @@ const { UserFriend, User, Lobby, Game } = require("../../models");
 // });
 
 router.get("/",(req,res)=>{
-  // Basic get Requests - get all
+  // Get all
   Game.findAll().then(GameData=>{
       res.json(GameData)
   }).catch(err=>{
@@ -32,7 +32,7 @@ router.get("/",(req,res)=>{
 })
 
 router.get("/:id",(req,res)=>{
-  // Basic get Requests - get one
+  // Get one
   Game.findByPk(req.params.id).then(GameData=>{
       if(UserData){
           res.json(GameData)
