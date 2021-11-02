@@ -1,7 +1,7 @@
 // Front End Routes - WSK Checked
 const express = require('express');
 const router = express.Router();
-const {UserFriends,User} = require('../../models');
+const {UserFriends,User,Lobby} = require('../../models');
 
 // Home Page get request
 router.get("/",(req,res)=>{

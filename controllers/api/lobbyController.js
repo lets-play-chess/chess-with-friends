@@ -1,4 +1,4 @@
-// Lobby API Routes
+// This deals with the Lobby Table
 const express = require("express");
 const router = express.Router();
 const { UserFriend, User, Lobby } = require("../../models");

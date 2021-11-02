@@ -1,3 +1,4 @@
+// This deals with the Users Table
 const express = require('express');
 const router = express.Router();
 const {User,UserFriends, Lobby} = require('../../models');
