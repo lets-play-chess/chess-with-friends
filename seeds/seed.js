@@ -1,7 +1,9 @@
 const sequelize = require("../config/connection");
-const {User,UserFriends/*,Group*/} = require("../models")
+const {User,UserFriends,Lobby} = require("../models")
+// const UserData = require(./User.json);
 
 const seed = async ()=>{
+    await sequelize.sun({force:true});
     const userData = await User.bulkCreate([
         {
             username:"Whitney",
@@ -30,6 +32,9 @@ const seed = async ()=>{
         {
             user1_id:1,
             user2_id:2,
+        },        {
+            user1_id:2,
+            user2_id:1,
         },
 
     ])

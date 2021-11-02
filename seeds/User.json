@@ -1,0 +1,20 @@
+[{        
+    "username":"Whitney",
+    "password":"password",
+    "email":"whit@play.chess"
+},
+{
+    "username":"Evelyn",
+    "password":"password",
+    "email":"eve@play.chess"
+},
+{
+    "username":"Kyle",
+    "password":"password",
+    "email":"kyle@play.chess"
+},
+{
+    "username":"Carsdan",
+    "password":"password",
+    "email":"cars@play.chess"
+}]

@@ -7,11 +7,12 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 // =============================================================
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 const hbs = exphbs.create({});
 
 // Requiring our models for syncing
-const {User,UserFriends} = require('./models');
+const {User,UserFriends, Lobby, Group} = require('./models');
 const routes = require("./controllers");
 
 app.engine('handlebars', hbs.engine);
@@ -33,11 +34,9 @@ app.use(session({
      })
   }))
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
 
-app.use(routes)
+app.use("/", routes);
 
 sequelize.sync({ force: false }).then(function() {
     app.listen(PORT, function() {

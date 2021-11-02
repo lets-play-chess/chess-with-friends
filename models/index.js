@@ -29,5 +29,5 @@ User.belongsTo(Lobby,{
 module.exports={
     User,
     UserFriends,
-    // Group
+    Lobby,
 };
