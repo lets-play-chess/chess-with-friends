@@ -2,14 +2,20 @@
 const express = require('express');
 const router = express.Router();
 
-const frontEndRoutes = require("./frontEndRoutes.js");
-router.use(frontEndRoutes);
+// Front End Handlebars Work
+const frontEndRoutes = require("./frontEndRoutes");
+router.use("/", frontEndRoutes);
+
+// Back End SQL Work
 const apiRoutes = require("./api");
-router.use("/api",apiRoutes);
-router.get("/",(req,res)=>{
-    res.send("test api route")
-})
-const sessionRoutes = require("./sessionsRoutes")
-router.use("/sessions",sessionRoutes)
+router.use("/api", apiRoutes);
+
+// Log sessions
+// TO-DO Check this vs
+// router.get("/sessions",(req,res)=>{
+//     res.json(req.session)
+// })
+const sessionRoutes = require("./sessionsRoutes/sessionsRoutes")
+router.use("/sessions", sessionRoutes)
 
 module.exports = router;

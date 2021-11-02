@@ -1,4 +1,4 @@
-// Lobby API Routes
+// This deals with the Lobby Table
 const express = require("express");
 const router = express.Router();
 const { UserFriend, User, Lobby } = require("../../models");
@@ -27,7 +27,7 @@ router.get("/:id",(req,res)=>{
   })
 });
 
-router.post("/:id",(req,res)=>{
+router.post("/",(req,res)=>{
   // Create new Lobby API route 
   // that includes the logged in user
   Lobby.create({
