@@ -55,11 +55,11 @@ accFriendReqBtn.addEventListener('click', (event) => {
         }
     }).then(res=>{
         if(res.ok){
-            // TODO: Add that friend to the friends list
             const newFriend = document.createElement('li');
             // TODO: Pull the username of the friend that was just added from the response
             newFriend.textContent = res.something;
             friendsList.append(newFriend);
+            // TODO: Send through a socket that the friend request was accepted so that the person who sent the request gets updated in real time
         } else {
             // TODO: Show that there was an error and that the friendship wasnt formed
         }
