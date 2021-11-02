@@ -39,6 +39,8 @@ tile.addEventListener('click', (event) => {
         break;
 
         case 'Knight':
+            const knightPossMoves = checkKnightPossibleMoves(AN0,AN1);
+            renderPossibleMoves(knightPossMoves);
         break;
 
         case 'Bishop':
@@ -47,6 +49,10 @@ tile.addEventListener('click', (event) => {
         break;
         
         case 'Queen':
+            const firstHalfMoves = checkRookPossibleMoves(AN0,AN1);
+            const secondHalfMoves = checkBishopPossibleMoves(AN0,AN1);
+            const queenPossMoves = firstHalfMoves.concat(secondHalfMoves);
+            renderPossibleMoves(queenPossMoves);
         break;
 
         case 'King':
@@ -203,10 +209,108 @@ const checkBishopPossibleMoves = (zero,one) => {
     }
     return bishopPossibleMoves;
 }
+
+const checkKnightPossibleMoves = (zero,one) => {
+    const knightPossibleMoves = [];
+    const num0 = Number(zero);
+    const num1 = Number(one);
+    // checking upper moves for knight
+    if (num0 !== 0) {
+        if (num1 > 1) {
+            // left upper move is up one and left two
+            const tile1 = toString(num0 - 1);
+            const tile2 = toString(num1 - 2);
+            tile1.push(tile2);
+            if (seeCurrentPiece(tile1) === 'empty') {
+                knightPossibleMoves.push(tile1);
+            }
+        }
+        if (num1 < 6) {
+            // right upper move is up one and right two
+            const tile1 = toString(num0 - 1);
+            const tile2 = toString(num1 + 2);
+            tile1.push(tile2);
+            if (seeCurrentPiece(tile1) === 'empty') {
+                knightPossibleMoves.push(tile1);
+            }
+        }
+    }
+
+    // checking left moves for knight
+    if (num1 !== 0) {
+        if (num0 > 1) {
+            // upper left move is left one and up two
+            const tile1 = toString(num0 - 2);
+            const tile2 = toString(num1 - 1);
+            tile1.push(tile2);
+            if (seeCurrentPiece(tile1) === 'empty') {
+                knightPossibleMoves.push(tile1);
+            }
+        }
+        if (num0 < 6) {
+            // lower left move is left one and down two
+            const tile1 = toString(num0 + 2);
+            const tile2 = toString(num1 - 1);
+            tile1.push(tile2);
+            if (seeCurrentPiece(tile1) === 'empty') {
+                knightPossibleMoves.push(tile1);
+            }
+        }
+    }
+    // checking lower moves for knight
+    if (num0 !== 7) {
+        if (num1 > 1) {
+            // left lower move is down one and left two
+            const tile1 = toString(num0 + 1);
+            const tile2 = toString(num1 - 2);
+            tile1.push(tile2);
+            if (seeCurrentPiece(tile1) === 'empty') {
+                knightPossibleMoves.push(tile1);
+            }
+        }
+        if (num1 < 6) {
+            // right lower move is down one and right two
+            const tile1 = toString(num0 + 1);
+            const tile2 = toString(num1 + 2);
+            tile1.push(tile2);
+            if (seeCurrentPiece(tile1) === 'empty') {
+                knightPossibleMoves.push(tile1);
+            }
+        }
+    }
+    //checking right moves for knight
+    if (num1 !== 7) {
+        if (num0 > 1) {
+            // upper right move is right one and up two
+            const tile1 = toString(num0 - 2);
+            const tile2 = toString(num1 + 1);
+            tile1.push(tile2);
+            if (seeCurrentPiece(tile1) === 'empty') {
+                knightPossibleMoves.push(tile1);
+            }
+        }
+        if (num0 < 6) {
+            // lower right move is right one and down two
+            const tile1 = toString(num0 + 2);
+            const tile2 = toString(num1 + 1);
+            tile1.push(tile2);
+            if (seeCurrentPiece(tile1) === 'empty') {
+                knightPossibleMoves.push(tile1);
+            }
+        }
+    }
+    return knightPossibleMoves;
+}
+
+const checkKingPossibleMoves = (zero,one) => {
+
+}
+
 // takes in a number of moves and sets the piece equal to "possibleMove"
 const renderPossibleMoves = (movesArr) => {
 
 }
+
 // function that accepts moving a piece 'from' a tile 'to' another tile.
 const movePiece = (from,to) => {
     const nfrom = from.split('');
