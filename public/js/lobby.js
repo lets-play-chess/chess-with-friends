@@ -14,8 +14,7 @@ invFriendBtn.addEventListener('click', (event) => {
     });
 });
 
-// TODO: finish the next line of code
-const startGameBtn = document.getElementById('');
+const startGameBtn = document.getElementById('start-btn');
 // TODO: somehow figure out how to get the lobby id
 startGameBtn.addEventListener('click', (event) => {
     event.preventDefault();
@@ -31,8 +30,7 @@ startGameBtn.addEventListener('click', (event) => {
     });
 });
 
-// TODO: finish the next line of code
-const backFromLobbyBtn = document.getElementById('');
+const backFromLobbyBtn = document.getElementById('back-btn');
 // TODO: somehow figure out how to get the lobby id
 backFromLobbyBtn.addEventListener('click', (event) => {
     event.preventDefault();
