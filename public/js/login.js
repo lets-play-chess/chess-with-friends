@@ -1,5 +1,4 @@
 const loginForm = document.querySelector("#login-form");
-
 loginForm.addEventListener("submit",(e)=>{
     e.preventDefault();
     const loginObj={
@@ -15,18 +14,13 @@ loginForm.addEventListener("submit",(e)=>{
             "Content-Type":"application/json"
         }
     }).then(res=>{
-        if(res.ok){
-            // TODO: add the correct route to the user profile page
-            location.href = "correct user profile route"
-        } else {
-            alert("trumpet sound")
+        if(!res.ok){
+            // TODO: show that the login was unsuccessful
         }
     });
 });
 
 const signupForm = document.querySelector("#signup-form");
-
-
 signupForm.addEventListener("submit",(e)=>{
     e.preventDefault();
     const signupObj={
@@ -43,11 +37,8 @@ signupForm.addEventListener("submit",(e)=>{
             "Content-Type":"application/json"
         }
     }).then(res=>{
-        if(res.ok){
-            // TODO: add the correct route to the user profile page
-            location.href = "correct user profile route"
-        } else {
-            alert("trumpet sound")
+        if(!res.ok){
+            // TODO: show that signup was unsuccessful
         }
     });
 });
