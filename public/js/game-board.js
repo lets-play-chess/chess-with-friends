@@ -78,6 +78,7 @@ tile.addEventListener('click', (event) => {
                     break;
                 }            
             }
+            
         break;
 
         case 'Knight':
