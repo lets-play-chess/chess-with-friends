@@ -1,7 +1,7 @@
 // Empty because this one is the most complex and will be built last.
 const express = require("express");
 const router = express.Router();
-const { UserFriend, User, Lobby, Game } = require("../../models");
+const { UserFriends, User, Lobby } = require("../../models");
 
 // router.get("/", (req, res) => {
 //     // Game Board Page
