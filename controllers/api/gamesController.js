@@ -1,13 +1,13 @@
 // Empty because this one is the most complex and will be built last.
 const express = require("express");
 const router = express.Router();
-const { UserFriends, User } = require("../../models");
+const { UserFriend, User } = require("../../models");
 
 router.get("/", (req, res) => {
     // Game Board Page
     // ASSUMES gameBoard VIEW IN MVC PARADIGM, 
     // expects gameBoard.handlebars to exist?
-  res.render("gameBoard")
+  res.render("game-board")
 });
 
 router.post("/", (req, res) => {
