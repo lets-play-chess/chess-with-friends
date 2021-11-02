@@ -14,6 +14,11 @@ router.post("/", (req, res) => {
   if(!req.session.user){
     return res.status(401).send("Log in first!")
   }
+  // Play Game Route
+
+  res.render("lobby");
+  Lobby
+
 });
 
 module.exports = router;

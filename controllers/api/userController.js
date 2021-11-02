@@ -4,18 +4,7 @@ const {User,UserFriends} = require('../../models');
 const bcrypt = require("bcrypt");
 
 router.get("/",(req,res)=>{
-    User.findAll({
-        include:[UserFriend]
-    }).then(dbUsers=>{
-        if(dbUsers.length){
-            res.json(dbUsers)
-        } else {
-            res.status(404).json({message:"No users found!"})
-        }
-    }).catch(err=>{
-        console.log(err);
-        res.status(500).json({message:"an error occured",err:err})
-    })
+
 })
 
 router.post("/",(req,res)=>{
@@ -67,6 +56,21 @@ router.get("/logout",(req,res)=>{
     res.redirect("/login")
 })
 
+router.post('/', (req, res) => {
+    // Add a Friend
+    // Takes in session id and puts as user 1
+    // Takes in input user id and puts as user 2
+   const newFriend = UserFriends.create({
+        user1_id: req.session.user.id,
+        user2_id: req.body.user_id
+      });
+    // Invert it below to have easier queries
+    const inverseFriend = UserFriends.create({
+        user1_id: req.body.user_id,
+        user2_id: req.session.user.id,
+      });
+  });
+  
 // router.delete("/:id",(req,res)=>{
     // We don't have a use case for deleting users now but I'm keeping it in case.
 //     User.destroy({
