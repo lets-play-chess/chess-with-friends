@@ -10,6 +10,13 @@ UserFriends.belongsTo(User, {
     foreignKey: "user1_id"
 });
 
+Lobby.hasMany(Users, {
+    foreignKey: "host_id"
+});
+User.belongsTo(Lobby,{
+    foreignKey: "host_id"
+});
+
 // User.belongsToMany(Group,{
 //     through:"UserGroup"
 // })

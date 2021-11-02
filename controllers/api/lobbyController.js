@@ -4,10 +4,9 @@ const router = express.Router();
 const { UserFriend, User } = require("../../models");
 
 router.get("/", (req, res) => {
-    // Game Board Page
-    // ASSUMES gameBoard VIEW IN MVC PARADIGM, 
-    // expects gameBoard.handlebars to exist?
-  res.render("game-board")
+    // Lobby Board
+    // render lobyy on "start game" button and accept request button
+  res.render("lobby")
 });
 
 router.post("/", (req, res) => {
@@ -17,8 +16,14 @@ router.post("/", (req, res) => {
   // Play Game Route
 
   res.render("lobby");
-  Lobby
+  
 
 });
 
 module.exports = router;
+
+// Extra routes
+
+// when you're the host of a lobby
+//     hit start GamepadButton
+//     request Lobby

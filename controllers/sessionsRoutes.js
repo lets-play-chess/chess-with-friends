@@ -1,5 +1,4 @@
 // Routes for whether or not the user is logged in - WSK Checked
-
 const express = require('express');
 const router = express.Router();
 
