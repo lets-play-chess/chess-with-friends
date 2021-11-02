@@ -4,7 +4,7 @@ const sequelize = require('../config/connection');
 class Lobby extends Model { }
 
 Lobby.init({
-    lobby_id: {
+    id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
@@ -27,4 +27,4 @@ Lobby.init({
     sequelize,
 });
 
-module.exports = UserFriends
+module.exports = Lobby

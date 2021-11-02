@@ -1,5 +1,5 @@
 const sequelize = require("../config/connection");
-const {User,UserFriends,Group} = require("../models")
+const {User,UserFriends/*,Group*/} = require("../models")
 
 const seed = async ()=>{
     const userData = await User.bulkCreate([

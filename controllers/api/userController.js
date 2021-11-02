@@ -70,6 +70,10 @@ router.post('/', (req, res) => {
         user2_id: req.session.user.id,
       });
   });
+
+// router.post('/', (req, res) => {
+
+// })
   
 // router.delete("/:id",(req,res)=>{
     // We don't have a use case for deleting users now but I'm keeping it in case.
