@@ -102,6 +102,10 @@ img {
     border-radius: 5px;
 }
 
+#friend-request-list{
+    border: red 1px solid;
+}
+
 .friends-list{
     background-color: greenyellow;
     font-weight: bolder;
