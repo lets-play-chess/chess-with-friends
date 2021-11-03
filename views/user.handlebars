@@ -4,7 +4,7 @@
             <div class = "col-7" id="form">
                 <form id="login-form">
                     <div class="card">
-                        <h2 id="username">{{username}}/h2>
+                        <h2 id="username">{{username}}</h2>
                         <!-- <h2></h2> -->
                         <h3>Total Games Played:</h3>
                         <h2>{{ngames}}</h2>
@@ -66,7 +66,6 @@
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
         </div>
@@ -100,13 +99,12 @@
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
         </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     {{!-- TODO: make sure the src below is correct --}}
-    <script src="/public/js/user.js"></script>
+    <script src="/js/user.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
