@@ -7,7 +7,7 @@ loginForm.addEventListener("submit",(e)=>{
     }
 
     // TODO: add the correct route to login
-    fetch("correct route to login",{
+    fetch("/api/users/login",{
         method:"POST",
         body:JSON.stringify(loginObj),
         headers:{
