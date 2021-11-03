@@ -35,46 +35,22 @@ User.init({
     ngames: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        validate: {
-            customerValidator(value) {
-                if (value === null) {
-                    return value = 0
-                }
-            }
-        },
+        defaultValue:0,
     },
     wins: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        validate: {
-            customerValidator(value) {
-                if (value === null) {
-                    return value = 0
-                }
-            }
-        },
+        defaultValue:0,
     },
     ties: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        validate: {
-            customerValidator(value) {
-                if (value === null) {
-                    return value = 0
-                }
-            }
-        },
+        defaultValue:0,
     },
     user_rank: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        validate: {
-            customerValidator(value) {
-                if (value === null) {
-                    return value = 0
-                }
-            }
-        },
+        defaultValue: 0,
     },
     friends_list: {
         type: DataTypes.TEXT,

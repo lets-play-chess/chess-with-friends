@@ -34,7 +34,7 @@ signupForm.addEventListener("submit",(e)=>{
     }
 
     // TODO: add the correct route to signup
-    fetch("correct route to signup",{
+    fetch("/api/users",{
         method:"POST",
         body:JSON.stringify(signupObj),
         headers:{
@@ -46,7 +46,7 @@ signupForm.addEventListener("submit",(e)=>{
             return alert("trumpet sound")
         } else {
             res.json().then(data=>{
-                location.href = `/profile`
+                document.location.replace(`/profile`);
             })
         }
     });
