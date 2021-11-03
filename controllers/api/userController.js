@@ -69,12 +69,12 @@ router.post("/", (req, res) => {
             id: newUser.id,
             email: newUser.email,
             username: newUser.username,
-            ngames: newUser.ngames,
-            wins:newUser.wins,
-            ties:newUser.ties,
-            user_rank: newUser.user_rank
+            // ngames: newUser.ngames,
+            // wins:newUser.wins,
+            // ties:newUser.ties,
+            // user_rank: newUser.user_rank
           };
-        res.json(newUser);
+          return res.json({newUser});
 
     }).catch(err => {
         console.log(err);
@@ -137,7 +137,7 @@ router.put("/profile/:id", (req, res) => {
         }
     }).then(updatedData => {
         if (updatedData[0]) {
-          res.json(updatedData);
+        return res.json({updatedData});
         } else {
           res.status(404).json({ err: "no such user found!" });
         }
@@ -150,6 +150,7 @@ router.put("/profile/:id", (req, res) => {
 
 router.delete("/:id", (req, res) => {
     // Delete User by ID
+    // This one works perfectly!
     User.destroy({
         where: {
             id: req.params.id
