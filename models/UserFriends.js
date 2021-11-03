@@ -13,14 +13,14 @@ UserFriends.init({
     user1_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'User',
+            model: 'Users',
             key: 'id'
         },
     },
     user2_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'User',
+            model: 'Users',
             key: 'id'
         },
         onDelete: 'cascade'

@@ -1,30 +1,29 @@
 const User = require("./User");
 const UserFriends = require("./UserFriends");
 const Lobby = require("./Lobby")
-// const Group = require("./Group");
 
-User.hasMany(UserFriends,{
-    foreignKey: "user1_id",
-    onDelete:"CASCADE"
-});
-UserFriends.belongsTo(User, {
-    foreignKey: "user1_id"
-});
 
-Lobby.hasMany(User, {
-    foreignKey: "host_id"
-});
-User.belongsTo(Lobby,{
-    foreignKey: "host_id"
-});
+// User.hasMany(UserFriends,{
+//     foreignKey: "user1_id",
+//     onDelete:"CASCADE"
+// });
+// UserFriends.belongsTo(User, {
+//     foreignKey: "user1_id"
+// });
 
-// User.belongsToMany(Group,{
-//     through:"UserGroup"
-// })
+User.belongsToMany(User, {
+    through: "UserFriends",
+    as: "Friend"
+})
 
-// Group.belongsToMany(User,{
-//     through:"UserGroup"
-// })
+// Lobby.hasMany(User, {
+//     foreignKey: "host_id"
+// });
+
+// User.belongsTo(Lobby,{
+//     foreignKey: "host_id"
+// });
+
 
 module.exports={
     User,
