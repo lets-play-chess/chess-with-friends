@@ -66,14 +66,14 @@ socket.on('friend request accepted', (newFriend) => {
     friendsList.append(newFriendSocket);
 });
 
-const frs = document.getElementById('frs');
-const notfrs = document.getElementsByClassName('not-frs');
-const openMondalBtn = document.getElementById('open-modal');
-openMondalBtn.addEventListener('click', (event) => {
-    frs.style.display = 'hidden';
-    notfrs.style.display = 'inline';
+// const frs = document.getElementById('frs');
+// const notfrs = document.getElementsByClassName('not-frs');
+// const openMondalBtn = document.getElementById('open-modal');
+// openMondalBtn.addEventListener('click', (event) => {
+//     frs.style.display = 'hidden';
+//     notfrs.style.display = 'inline';
 
-});
+// });
 
 const playBtn = document.getElementById('play-btn');
 playBtn.addEventListener('click', (event) => {
@@ -89,7 +89,7 @@ const addFriendBtn = document.getElementById('add-friend-btn');
 addFriendBtn.addEventListener('click', (event) => {
     event.preventDefault();
 
-    const friendEmail = document.getElementById('friend-email').value;
+    const friendEmail = document.getElementById('email-login').value;
     fetch('/sessions').then(res => {
         if (res.ok) {
             res.json().then(res => {
@@ -107,6 +107,26 @@ addFriendBtn.addEventListener('click', (event) => {
         }
     });
 });
+
+socket.on("friend request sent", friendReqSent)
+function friendReqSent(id){
+    const friendReqList = document.getElementById("friend-request-list")
+    fetch('/api/users/' + id).then(res => {
+        console.log(res)
+        const username = res.username
+        const newFriendReq = document.createElement("li")
+        const friendName = document.createElement("p")
+        friendName.textContent = username
+        newFriendReq.append(friendName)
+        const acceptBtn = document.createElement("button")
+        const declineBtn = document.createElement("button")
+        acceptBtn.textContent = "Accept"
+        declineBtn.textContent = "Decline"
+        newFriendReq.append(acceptBtn)
+        newFriendReq.append(declineBtn)
+        friendReqList.append(newFriendReq)
+    })
+}
 
 // TODO: add a socket that will accept the requesterEmail
 // const accFriendReqBtn = document.getElementsByClassName('acc-friend-req-btn');

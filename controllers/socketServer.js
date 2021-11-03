@@ -1,3 +1,5 @@
+const { User } = require("../models");
+
 // sockets to listen to connection
 exports = module.exports = function (io) {
     io.on('connection', function (socket) {
@@ -6,7 +8,7 @@ exports = module.exports = function (io) {
 
         socket.on("join game room", joinGameRoom)
         socket.on("join notification room", joinNotiRoom)
-
+        socket.on("send friend request", sendFriendReq)
 
         function joinGameRoom(gameRoom) {
             socket.broadcast.to(gameRoom).emit("sendMessage", "SERVER : a user just joined");
@@ -25,6 +27,15 @@ exports = module.exports = function (io) {
                 console.log("joined room" + notiRoom);
                 //users.filter(foundUser => foundUser.id == socket.id)[0].notiRoom = notiRoom;
             }
+        }
+        function sendFriendReq(socketObj) {
+            const newFriendEmail = socketObj.email
+            User.findOne({
+                where: { email: newFriendEmail }
+            }).then(res => {
+                const friendID = res.id
+                socket.broadcast.to(friendID + "noti").emit("friend request sent", socketObj.id)
+            })
         }
     })
 }
