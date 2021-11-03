@@ -34,60 +34,25 @@ tile.addEventListener('click', (event) => {
         break;
 
         case 'Rook':
-            const rookPossibleMoves = [];
-
-            // checking possible moves above rook
-            const upper = AN0;
-            const numAN0 = Number(AN0);
-            for (let i = 1; i <= Number(upper); i++) { 
-                const checking = numAN0 - i;
-                const strChecking = checking.toString();
-                strChecking.push(AN1);
-                if (seeCurrentPiece(strChecking) === 'empty') {
-                    rookPossibleMoves.push(strChecking);
-                } else {
-                    break;
-                }
-            }
-
-            // checking possible moves left of rook
-            const left = AN1;
-            const numAN1 = Number(AN1);
-            for (let i = 1; i <= Number(left); i++) {
-                const checking = numAN1 - i;
-                checking = checking.toString();
-                const strChecking = AN0;
-                strChecking.push(checking);
-                if (seeCurrentPiece(strChecking) === 'empty') {
-                    rookPossibleMoves.push(strChecking);
-                } else {
-                    break;
-                }
-            }
-
-            // checking possible moves below rook
-            const below = 8 - (AN0 + 1);
-            const numBelow = Number(below);
-            for (let i = 0; i < numBelow; i++) { 
-                const checking = numBelow - i;
-                const strChecking = checking.toString();
-                strChecking.push(AN1);
-                if (seeCurrentPiece(strChecking) === 'empty') {
-                    rookPossibleMoves.push(strChecking);
-                } else {
-                    break;
-                }            
-            }
-            
+            const rookPossMoves = checkRookPossibleMoves(AN0,AN1);
+            renderPossibleMoves(rookPossMoves);
         break;
 
         case 'Knight':
+            const knightPossMoves = checkKnightPossibleMoves(AN0,AN1);
+            renderPossibleMoves(knightPossMoves);
         break;
 
         case 'Bishop':
+            const bishopPossMoves = checkBishopPossibleMoves(AN0,AN1);
+            renderPossibleMoves(bishopPossMoves);
         break;
         
         case 'Queen':
+            const firstHalfMoves = checkRookPossibleMoves(AN0,AN1);
+            const secondHalfMoves = checkBishopPossibleMoves(AN0,AN1);
+            const queenPossMoves = firstHalfMoves.concat(secondHalfMoves);
+            renderPossibleMoves(queenPossMoves);
         break;
 
         case 'King':
@@ -97,6 +62,254 @@ tile.addEventListener('click', (event) => {
         break;
     }
 });
+const checkRookPossibleMoves = (zero,one) => {
+    const rookPossibleMoves = [];
+    const numAN0 = Number(zero);
+    const numAN1 = Number(one);
+
+    // checking possible moves above rook
+    const upper = numAN0;
+    for (let i = 1; i <= upper; i++) { 
+        const checking = numAN0 - i;
+        const strChecking = checking.toString();
+        strChecking.push(AN1);
+        if (seeCurrentPiece(strChecking) === 'empty') {
+            rookPossibleMoves.push(strChecking);
+        } else {
+            break;
+        }
+    }
+
+    // checking possible moves left of rook
+    const left = numAN1;
+    for (let i = 1; i <= left; i++) {
+        const checking = numAN1 - i;
+        checking = checking.toString();
+        const strChecking = AN0;
+        strChecking.push(checking);
+        if (seeCurrentPiece(strChecking) === 'empty') {
+            rookPossibleMoves.push(strChecking);
+        } else {
+            break;
+        }
+    }
+
+    // checking possible moves below rook
+    const below = 8 - (numAN0 + 1);
+    for (let i = 1; i <= below; i++) { 
+        const checking = numAN0 + i;
+        const strChecking = checking.toString();
+        strChecking.push(AN1);
+        if (seeCurrentPiece(strChecking) === 'empty') {
+            rookPossibleMoves.push(strChecking);
+        } else {
+            break;
+        }            
+    }
+
+    // checking possible moves right of rook
+    const right = 8 - (numAN1 + 1);
+    for (let i = 1; i <= right; i++) { 
+        const checking = numAN1 + i;
+        checking = checking.toString();
+        const strChecking = AN0;
+        strChecking.push(checking);
+        if (seeCurrentPiece(strChecking) === 'empty') {
+            rookPossibleMoves.push(strChecking);
+        } else {
+            break;
+        }          
+    }
+    return rookPossibleMoves;
+}
+
+const checkBishopPossibleMoves = (zero,one) => {
+    const bishopPossibleMoves = [];
+    const numAN0 = Number(zero);
+    const numAN1 = Number(one);
+
+    // checking upper right possible moves of bishop
+    const upperUR = numAN0;
+    const rightUR = 8 - (numAN1 + 1);
+    let rightUpper = upperUR;
+    if (upperUR > rightUR) {
+        rightUpper = rightUR;
+    }
+
+    for (let i = 1; i <= rightUpper; i++) {
+        const AN0check = numAN0 - i;
+        const AN1check = numAN1 + i;
+        const strChecking = AN0check.toString();
+        strChecking.push(AN1check);
+        if (seeCurrentPiece(strChecking) === 'empty') {
+            bishopPossibleMoves.push(strChecking);
+        } else {
+            break;
+        }            
+    }
+
+    // checking upper left possible moves of bishop
+    const upperUL = numAN0;
+    const leftUL = numAN1;
+    let leftUpper = upperUL;
+    if (upperUL > leftUL) {
+        leftUpper = leftUL;
+    }
+
+    for (let i = 1; i <= leftUpper; i++) {
+        const AN0check = numAN0 - i;
+        const AN1check = numAN1 - i;
+        const strChecking = AN0check.toString();
+        strChecking.push(AN1check);
+        if (seeCurrentPiece(strChecking) === 'empty') {
+            bishopPossibleMoves.push(strChecking);
+        } else {
+            break;
+        }            
+    }
+
+    // checking lower left possible moves of bishop
+    const lowerLL = 8 - (numAN0 + 1);
+    const leftLL = numAN1;
+    let leftLower = lowerLL;
+    if (lowerLL > leftLL) {
+        leftLower = leftLL;
+    }
+
+    for (let i = 1; i <= leftLower; i++) {
+        const AN0check = numAN0 + i;
+        const AN1check = numAN1 - i;
+        const strChecking = AN0check.toString();
+        strChecking.push(AN1check);
+        if (seeCurrentPiece(strChecking) === 'empty') {
+            bishopPossibleMoves.push(strChecking);
+        } else {
+            break;
+        }            
+    }
+
+    // checking lower right possible moves of bishop
+    const lowerLR = 8 - (numAN0 + 1);
+    const rightLR = 8 - (numAN1 + 1);
+    let rightLower = lowerLR;
+    if (lowerLR > rightLR) {
+        rightLower = rightLR;
+    }
+
+    for (let i = 1; i <= rightLower; i++) {
+        const AN0check = numAN0 + i;
+        const AN1check = numAN1 + i;
+        const strChecking = AN0check.toString();
+        strChecking.push(AN1check);
+        if (seeCurrentPiece(strChecking) === 'empty') {
+            bishopPossibleMoves.push(strChecking);
+        } else {
+            break;
+        }            
+    }
+    return bishopPossibleMoves;
+}
+
+const checkKnightPossibleMoves = (zero,one) => {
+    const knightPossibleMoves = [];
+    const num0 = Number(zero);
+    const num1 = Number(one);
+    // checking upper moves for knight
+    if (num0 !== 0) {
+        if (num1 > 1) {
+            // left upper move is up one and left two
+            const tile1 = toString(num0 - 1);
+            const tile2 = toString(num1 - 2);
+            tile1.push(tile2);
+            if (seeCurrentPiece(tile1) === 'empty') {
+                knightPossibleMoves.push(tile1);
+            }
+        }
+        if (num1 < 6) {
+            // right upper move is up one and right two
+            const tile1 = toString(num0 - 1);
+            const tile2 = toString(num1 + 2);
+            tile1.push(tile2);
+            if (seeCurrentPiece(tile1) === 'empty') {
+                knightPossibleMoves.push(tile1);
+            }
+        }
+    }
+
+    // checking left moves for knight
+    if (num1 !== 0) {
+        if (num0 > 1) {
+            // upper left move is left one and up two
+            const tile1 = toString(num0 - 2);
+            const tile2 = toString(num1 - 1);
+            tile1.push(tile2);
+            if (seeCurrentPiece(tile1) === 'empty') {
+                knightPossibleMoves.push(tile1);
+            }
+        }
+        if (num0 < 6) {
+            // lower left move is left one and down two
+            const tile1 = toString(num0 + 2);
+            const tile2 = toString(num1 - 1);
+            tile1.push(tile2);
+            if (seeCurrentPiece(tile1) === 'empty') {
+                knightPossibleMoves.push(tile1);
+            }
+        }
+    }
+    // checking lower moves for knight
+    if (num0 !== 7) {
+        if (num1 > 1) {
+            // left lower move is down one and left two
+            const tile1 = toString(num0 + 1);
+            const tile2 = toString(num1 - 2);
+            tile1.push(tile2);
+            if (seeCurrentPiece(tile1) === 'empty') {
+                knightPossibleMoves.push(tile1);
+            }
+        }
+        if (num1 < 6) {
+            // right lower move is down one and right two
+            const tile1 = toString(num0 + 1);
+            const tile2 = toString(num1 + 2);
+            tile1.push(tile2);
+            if (seeCurrentPiece(tile1) === 'empty') {
+                knightPossibleMoves.push(tile1);
+            }
+        }
+    }
+    //checking right moves for knight
+    if (num1 !== 7) {
+        if (num0 > 1) {
+            // upper right move is right one and up two
+            const tile1 = toString(num0 - 2);
+            const tile2 = toString(num1 + 1);
+            tile1.push(tile2);
+            if (seeCurrentPiece(tile1) === 'empty') {
+                knightPossibleMoves.push(tile1);
+            }
+        }
+        if (num0 < 6) {
+            // lower right move is right one and down two
+            const tile1 = toString(num0 + 2);
+            const tile2 = toString(num1 + 1);
+            tile1.push(tile2);
+            if (seeCurrentPiece(tile1) === 'empty') {
+                knightPossibleMoves.push(tile1);
+            }
+        }
+    }
+    return knightPossibleMoves;
+}
+
+const checkKingPossibleMoves = (zero,one) => {
+
+}
+
+// takes in a number of moves and sets the piece equal to "possibleMove"
+const renderPossibleMoves = (movesArr) => {
+
+}
 
 // function that accepts moving a piece 'from' a tile 'to' another tile.
 const movePiece = (from,to) => {
