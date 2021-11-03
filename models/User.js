@@ -76,6 +76,10 @@ User.init({
             }
         },
     },
+    friends_list: {
+        type: DataTypes.ENUM([]),
+        allowNull: true,
+    },
 
 },{
     hooks:{
