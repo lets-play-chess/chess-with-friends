@@ -85,28 +85,28 @@ playBtn.addEventListener('click', (event) => {
     });
 });
 
-// const addFriendBtn = document.getElementById('add-friend-btn');
-// addFriendBtn.addEventListener('click', (event) => {
-//     event.preventDefault();
+const addFriendBtn = document.getElementById('add-friend-btn');
+addFriendBtn.addEventListener('click', (event) => {
+    event.preventDefault();
 
-//     const friendEmail = document.getElementById('friend-email').value;
-//     const addFriendObj = { friendEmail };
-//     // TODO: add the correct route to adding a friend and set correct method
-//     fetch('correct route to adding a friend', {
-//         method: "POST?",
-//         body: JSON.stringify(addFriendObj),
-//         headers: {
-//             "Content-Type": "application/json"
-//         }
-//     }).then(res => {
-//         if (res.ok) {
-//             frs.style.display = 'inline';
-//             notfrs.style.display = 'hidden';
-//         } else {
-//             // TODO: Show that there was an error and that the friend request wasn't sent
-//         }
-//     });
-// // });
+    const friendEmail = document.getElementById('friend-email').value;
+    fetch('/sessions').then(res => {
+        if (res.ok) {
+            res.json().then(res => {
+            console.log(res)
+            const socketObj = {
+                email: friendEmail,
+                id: res.user.id
+            }
+            socket.emit('send friend request', socketObj);
+            console.log(socketObj);
+        })
+        } else {
+            // TODO: Show that there was an error and that the friend request wasn't sent
+            throw (err)
+        }
+    });
+});
 
 // TODO: add a socket that will accept the requesterEmail
 // const accFriendReqBtn = document.getElementsByClassName('acc-friend-req-btn');
