@@ -117,6 +117,8 @@ accFriendReqBtn.addEventListener('click', (event) => {
     });
 });
 
+//fetch (PUT) to replace friendslist with the new list
+
 const accGameInvBtn = document.getElementsByClassName('acc-game-inv-btn');
 accGameInvBtn.addEventListener('click', (event) => {
     event.preventDefault();
