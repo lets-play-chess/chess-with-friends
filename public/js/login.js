@@ -1,4 +1,4 @@
-console.log('bananannananananannan');
+const socket = io.connect()
 const loginForm = document.querySelector("#login-form");
 loginForm.addEventListener("submit",(e)=>{
     e.preventDefault();
@@ -16,13 +16,10 @@ loginForm.addEventListener("submit",(e)=>{
             "Content-Type":"application/json"
         }
     }).then(res=>{
-        console.log('banan');
         if(!res.ok){
             // TODO: show that the login was unsuccessful
-            console.log('banana ======================');
         } else {
             document.location.replace('/profile');
-            console.log('banananPLES');
         }
     });
 });
@@ -53,4 +50,8 @@ signupForm.addEventListener("submit",(e)=>{
             })
         }
     });
+});
+
+socket.on('greeting', (greeting) => {
+    console.log(greeting);
 });

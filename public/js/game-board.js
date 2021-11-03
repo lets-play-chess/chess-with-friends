@@ -50,6 +50,7 @@ tile.addEventListener('click', (event) => {
                         case 'possible':
                             clearPossibleMoves();
                             movePiece(selected,AN);
+                            socket.emit('move submitted',gameboard);
                         break;
                     }
                 break;
@@ -481,12 +482,6 @@ const seeCurrentPiece = (tile) => {
 }
 
 // socket that listens for when the opponent moves
-socket.on('opponent moved piece', (move) => {
-    const nfrom = move.from.split('');
-    const piece = gameboard[nfrom[0]][nfrom[1]].piece;
-    gameboard[nfrom[0]][nfrom[1]].piece = 'empty';
-
-    const nto = move.to.split('');
-    gameboard[nto[0]][nto[1]].piece = piece;
-    playerTurn = MATH.abs(playerTurn - 1);
+socket.on('opponent moved piece', (gameBoard) => {
+    gameboard = gameBoard;
 });
