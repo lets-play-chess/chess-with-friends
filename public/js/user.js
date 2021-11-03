@@ -1,3 +1,4 @@
+console.log('hello');
 const socket = io();
 
 const gameInvList = document.getElementById('game-invite-list');
