@@ -26,7 +26,7 @@ function joinNotiRoom(notiRoom) {
 router.get("/", (req, res) => {
     // Basic get Requests - get all
     User.findAll().then(UserData => {
-        res.json(UserData)
+        res.json({UserData})
     }).catch(err => {
         console.log(err)
         res.status(500).json(err);
@@ -44,7 +44,7 @@ router.get("/:id", (req, res) => {
     // Basic get Requests - get one
     User.findByPk(req.params.id).then(UserData => {
         if (UserData) {
-            res.json(UserData)
+            res.json({UserData})
         } else {
             res.status(404).json({err:"No such user."});
         }
@@ -59,23 +59,9 @@ router.post("/", (req, res) => {
     User.create({
         username: req.body.username,
         password: req.body.password,
-        email: req.body.email,
-        ngames:0,
-        wins:0,
-        ties:0,
-        user_rank:0,
+        email: req.body.email
     }).then(newUser => {
-            req.session.user = {
-            id: newUser.id,
-            email: newUser.email,
-            username: newUser.username,
-            // ngames: newUser.ngames,
-            // wins:newUser.wins,
-            // ties:newUser.ties,
-            // user_rank: newUser.user_rank
-          };
-          return res.json({newUser});
-
+        res.json({newUser});
     }).catch(err => {
         console.log(err);
         res.status(500).json({ message: "User creation failed:", err: err })
@@ -83,46 +69,39 @@ router.post("/", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  User.findOne({
-    where: {
-      email: req.body.email
-    }
-  })
-    .then(foundUser => {
-      if (!foundUser) {
-        return req.session.destroy(() => {
-          return res.status(401).json({ err: "invalid email/password" });
-        });
-      }
-      if (!req.body.password) {
-        return req.session.destroy(() => {
-          return res.status(401).json({ err: "invalid email/password" });
-        });
-      }
-      if (bcrypt.compareSync(req.body.password, foundUser.password)) {
-        req.session.user = {
-          id: foundUser.id,
-          email: foundUser.email,
-          username: foundUser.username
-        };
-        return res.json({
-          id:foundUser.id,
-          username:foundUser.username,
-          email:foundUser.email
-        });
-      } else {
-        return req.session.destroy(() => {
-          return res.status(401).json({ err: "invalid email/password" });
-        });
-      }
+    // Login Form Route
+    User.findOne({
+        where: {
+            email: req.body.email
+        }
+    }).then(foundUser => {
+        if (!foundUser) {
+            req.session.destroy()
+            res.status(401).json({ message: "Incorrect email or password" })
+        } else {
+            if (bcrypt.compareSync(req.body.password, foundUser.password)) {
+                req.session.user = {
+                    username: foundUser.username,
+                    email: foundUser.email,
+                    id: foundUser.id
+                }
+                res.json({foundUser})
+                const gameRoom = foundUser.id + "game"
+                const notiRoom = foundUser.id + "noti"
+                joinGameRoom(gameRoom);
+                joinNotiRoom(notiRoom);
+            } else {
+                req.session.destroy()
+                res.status(401).json({ message: "Incorrect email or password" })
+            }
+        }
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json(err);
     })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({ err });
-    });
-});
+})
 
-router.put("/profile/:id", (req, res) => {
+router.put("/:id", (req, res) => {
     // Update User API Route
     // 
     User.update({
@@ -137,7 +116,7 @@ router.put("/profile/:id", (req, res) => {
         }
     }).then(updatedData => {
         if (updatedData[0]) {
-        return res.json({updatedData});
+          res.json({updatedData});
         } else {
           res.status(404).json({ err: "no such user found!" });
         }
@@ -149,8 +128,7 @@ router.put("/profile/:id", (req, res) => {
 })
 
 router.delete("/:id", (req, res) => {
-    // Delete User by ID
-    // This one works perfectly!
+    // We don't have a use case for deleting users now but I'm keeping it in case.
     User.destroy({
         where: {
             id: req.params.id
@@ -161,17 +139,22 @@ router.delete("/:id", (req, res) => {
     })
 })
 
+router.get("/logout", (req, res) => {
+    // User logout
+    req.session.destroy();
+    res.redirect("/login")
+})
 
-// router.post('/', (req, res) => {
-//     // Add a Friend
-//     // Takes in session id and puts as user 1
-//     // Takes in input user id and puts as user 2
-//     User.findOne({
-//         where: {
-//             email: req.body.email
-//         }
-//     });
-// })
+router.post('/', (req, res) => {
+    // Add a Friend
+    // Takes in session id and puts as user 1
+    // Takes in input user id and puts as user 2
+    User.findOne({
+        where: {
+            email: req.body.email
+        }
+    });
+})
 
 module.exports = router;
 
