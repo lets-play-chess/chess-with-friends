@@ -61,6 +61,11 @@ router.post("/", (req, res) => {
         password: req.body.password,
         email: req.body.email
     }).then(newUser => {
+        req.session.user = {
+            username: newUser.username,
+            email: newUser.email,
+            id: newUser.id
+        }
         res.json({newUser});
     }).catch(err => {
         console.log(err);

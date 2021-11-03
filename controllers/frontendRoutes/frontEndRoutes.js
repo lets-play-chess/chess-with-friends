@@ -16,12 +16,16 @@ router.get("/profile",(req,res)=>{
         // return res.redirect("/")
     }
     // IF logged in, find user and render handblebars user page
-    User.findByPk(req.session.user.id,{
-        include:[{
-            model:User,
-        }]
-    }).then(userData=>{
+    User.findByPk(req.session.user.id
+    ).then(userData=>{
         const hbsUser = userData.get({plain:true});
+        console.log(hbsUser);
+        hbsUser.losses = hbsUser.ngames - hbsUser.wins - hbsUser.ties;
+        if(hbsUser.losses === 0){
+            hbsUser.winloss = 'N/A';
+        } else {
+            hbsUser.winloss = hbsUser.wins / hbsUser.losses;
+        }
         res.render("user", hbsUser)
     })
 })
