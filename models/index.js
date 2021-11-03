@@ -2,13 +2,12 @@ const User = require("./User");
 const UserFriends = require("./UserFriends");
 const Lobby = require("./Lobby")
 
-
 // User.hasMany(UserFriends,{
-//     foreignKey: "user1_id",
+//     // foreignKey: "user1_id",
 //     onDelete:"CASCADE"
 // });
 // UserFriends.belongsTo(User, {
-//     foreignKey: "user1_id"
+//     // foreignKey: "user1_id"
 // });
 
 User.belongsToMany(User, {
@@ -17,11 +16,11 @@ User.belongsToMany(User, {
 })
 
 // Lobby.hasMany(User, {
-//     foreignKey: "host_id"
+//     // foreignKey: "host_id"
 // });
 
 // User.belongsTo(Lobby,{
-//     foreignKey: "host_id"
+//     // foreignKey: "host_id"
 // });
 
 

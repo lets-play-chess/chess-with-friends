@@ -59,14 +59,23 @@ router.post("/", (req, res) => {
     User.create({
         username: req.body.username,
         password: req.body.password,
-        email: req.body.email
+        email: req.body.email,
+        ngames:0,
+        wins:0,
+        ties:0,
+        user_rank:0,
     }).then(newUser => {
-                // req.session.user = {
-        //     id: newUser.id,
-        //     email: newUser.email,
-        //     username: newUser.username
-        //   };
+            req.session.user = {
+            id: newUser.id,
+            email: newUser.email,
+            username: newUser.username,
+            ngames: newUser.ngames,
+            wins:newUser.wins,
+            ties:newUser.ties,
+            user_rank: newUser.user_rank
+          };
         res.json(newUser);
+
     }).catch(err => {
         console.log(err);
         res.status(500).json({ message: "User creation failed:", err: err })
@@ -74,39 +83,46 @@ router.post("/", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-    // Login Form Route
-    User.findOne({
-        where: {
-            email: req.body.email
-        }
-    }).then(foundUser => {
-        if (!foundUser) {
-            req.session.destroy()
-            res.status(401).json({ message: "Incorrect email or password" })
-        } else {
-            if (bcrypt.compareSync(req.body.password, foundUser.password)) {
-                req.session.user = {
-                    username: foundUser.username,
-                    email: foundUser.email,
-                    id: foundUser.id
-                }
-                res.json(foundUser)
-                const gameRoom = foundUser.id + "game"
-                const notiRoom = foundUser.id + "noti"
-                joinGameRoom(gameRoom);
-                joinNotiRoom(notiRoom);
-            } else {
-                req.session.destroy()
-                res.status(401).json({ message: "Incorrect email or password" })
-            }
-        }
-    }).catch(err => {
-        console.log(err);
-        res.status(500).json(err);
+  User.findOne({
+    where: {
+      email: req.body.email
+    }
+  })
+    .then(foundUser => {
+      if (!foundUser) {
+        return req.session.destroy(() => {
+          return res.status(401).json({ err: "invalid email/password" });
+        });
+      }
+      if (!req.body.password) {
+        return req.session.destroy(() => {
+          return res.status(401).json({ err: "invalid email/password" });
+        });
+      }
+      if (bcrypt.compareSync(req.body.password, foundUser.password)) {
+        req.session.user = {
+          id: foundUser.id,
+          email: foundUser.email,
+          username: foundUser.username
+        };
+        return res.json({
+          id:foundUser.id,
+          username:foundUser.username,
+          email:foundUser.email
+        });
+      } else {
+        return req.session.destroy(() => {
+          return res.status(401).json({ err: "invalid email/password" });
+        });
+      }
     })
-})
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ err });
+    });
+});
 
-router.put("/:id", (req, res) => {
+router.put("/profile/:id", (req, res) => {
     // Update User API Route
     // 
     User.update({
@@ -133,7 +149,7 @@ router.put("/:id", (req, res) => {
 })
 
 router.delete("/:id", (req, res) => {
-    // We don't have a use case for deleting users now but I'm keeping it in case.
+    // Delete User by ID
     User.destroy({
         where: {
             id: req.params.id
@@ -144,22 +160,17 @@ router.delete("/:id", (req, res) => {
     })
 })
 
-router.get("/logout", (req, res) => {
-    // User logout
-    req.session.destroy();
-    res.redirect("/login")
-})
 
-router.post('/', (req, res) => {
-    // Add a Friend
-    // Takes in session id and puts as user 1
-    // Takes in input user id and puts as user 2
-    User.findOne({
-        where: {
-            email: req.body.email
-        }
-    });
-})
+// router.post('/', (req, res) => {
+//     // Add a Friend
+//     // Takes in session id and puts as user 1
+//     // Takes in input user id and puts as user 2
+//     User.findOne({
+//         where: {
+//             email: req.body.email
+//         }
+//     });
+// })
 
 module.exports = router;
 

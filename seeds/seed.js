@@ -9,22 +9,38 @@ const seed = async ()=>{
         {
             username:"Whitney",
             password:"password",
-            email:"whit@play.chess"
+            email:"whit@play.chess",
+            ngames:0,
+            wins:0,
+            ties:0,
+            user_rank:0
         },
         {
             username:"Evelyn",
             password:"password",
-            email:"eve@play.chess"
+            email:"eve@play.chess",
+            ngames:0,
+            wins:0,
+            ties:0,
+            user_rank:0
         },
         {
             username:"Kyle",
             password:"password",
-            email:"kyle@play.chess"
+            email:"kyle@play.chess",
+            ngames:0,
+            wins:0,
+            ties:0,
+            user_rank:0
         },
         {
             username:"Carsdan",
             password:"password",
-            email:"cars@play.chess"
+            email:"cars@play.chess",
+            ngames:0,
+            wins:0,
+            ties:0,
+            user_rank:0
         },
     ],{
         individualHooks:true

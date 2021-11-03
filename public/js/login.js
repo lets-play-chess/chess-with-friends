@@ -16,6 +16,11 @@ loginForm.addEventListener("submit",(e)=>{
     }).then(res=>{
         if(!res.ok){
             // TODO: show that the login was unsuccessful
+            return alert("trumpet sound")
+        } else {
+            res.json().then(data=>{
+                location.href = `/profile/${data.id}`
+            })
         }
     });
 });
@@ -39,6 +44,11 @@ signupForm.addEventListener("submit",(e)=>{
     }).then(res=>{
         if(!res.ok){
             // TODO: show that signup was unsuccessful
+            return alert("trumpet sound")
+        } else {
+            res.json().then(data=>{
+                location.href = `/profile/${data.id}`
+            })
         }
     });
 });

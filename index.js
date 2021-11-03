@@ -19,18 +19,19 @@ const PORT = process.env.PORT || 3000;
 // Requiring our models for syncing
 const {User, UserFriends, Lobby} = require('./models');
 
-app.use(session({
+const sess = {
     secret: process.env.SESSION_SECRET,
+    cookie: {
+        maxAge:1000*60*60*2
+    },
     resave: false,
     saveUninitialized: true,
-    cookie: { 
-        maxAge: 1000 * 60 * 60 * 2
-     },
-     store: new SequelizeStore({
-        db:sequelize
-     })
-  }));
+    store: new SequelizeStore({
+        db: sequelize
+    })
+};
 
+app.use(session(sess));
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -52,4 +53,3 @@ sequelize.sync({ force: false }).then(function() {
 });
 
 module.exports = io;
-// WSK

@@ -8,14 +8,17 @@ const router = express.Router();
 const userRoutes = require("./userController");
 router.use("/users",userRoutes);
 
+const userFriendRoutes = require("./userFriendController");
+router.use("/userfriends", userFriendRoutes);
+
 const lobbyRoutes = require("./lobbyController");
 router.use("/lobby",lobbyRoutes);
 
 const gameRoutes = require("./gamesController");
 router.use("/game",gameRoutes);
 
-const sessionRoutes = require("../sessionsRoutes/sessionsRoutes");
-router.use("/sessions",sessionRoutes)
+// const sessionRoutes = require("../sessionsRoutes/sessionsRoutes");
+// router.use("/sessions",sessionRoutes)
 
 router.get("/",(req,res)=>{
     // Catchall

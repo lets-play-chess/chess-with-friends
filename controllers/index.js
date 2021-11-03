@@ -12,10 +12,10 @@ router.use("/api", apiRoutes);
 
 // Log sessions
 // TO-DO Check this vs
-// router.get("/sessions",(req,res)=>{
-//     res.json(req.session)
-// })
-const sessionRoutes = require("./sessionsRoutes/sessionsRoutes")
-router.use("/sessions", sessionRoutes)
+router.get("/sessions",(req,res)=>{
+    res.json(req.session)
+})
+// const sessionRoutes = require("./sessionsRoutes/sessionsRoutes")
+// router.use("/sessions", sessionRoutes)
 
 module.exports = router;

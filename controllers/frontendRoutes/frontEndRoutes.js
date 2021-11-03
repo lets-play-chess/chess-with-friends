@@ -1,4 +1,4 @@
-// Front End Routes - WSK Checked
+// Front End Routes
 const express = require('express');
 const router = express.Router();
 const {UserFriends,User,Lobby} = require('../../models');
@@ -6,7 +6,7 @@ const {UserFriends,User,Lobby} = require('../../models');
 // Home Page get request
 router.get("/",(req,res)=>{
     // Home Page
-    res.render("home")
+    return res.render("home")
 })
 
 // Profile Page Get Request
@@ -17,7 +17,10 @@ router.get("/profile",(req,res)=>{
     }
     // IF logged in, find user and render handblebars user page
     User.findByPk(req.session.user.id,{
-        include:[UserFriend]
+        include:[{
+            model:User,
+            include:[UserFriends]
+        }]
     }).then(userData=>{
         const hbsUser = userData.get({plain:true});
         res.render("user", hbsUser)
@@ -25,8 +28,18 @@ router.get("/profile",(req,res)=>{
 })
 
 // Lobby Page Get Request
-router.get("/lobby", (req,res)=>{
-    res.render("lobby")
+router.get("/lobby/", (req,res)=>{
+    // if(!req.session.user){
+    //     return res.redirect("/")
+    // }
+    // IF logged in, find user and lobby page
+    User.findByPk(req.session.user.id,{
+        include:[UserFriends]
+    }).then(userData=>{
+        const hbsUser = userData.get({plain:true});
+        res.render("lobby", hbsUser)
+    })
+    //res.render("lobby")
 });
 
 // Game Board Get Request
