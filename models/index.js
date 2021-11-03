@@ -1,5 +1,4 @@
 const User = require("./User");
-const UserFriends = require("./UserFriends");
 const Lobby = require("./Lobby")
 
 // User.hasMany(UserFriends,{
@@ -9,11 +8,6 @@ const Lobby = require("./Lobby")
 // UserFriends.belongsTo(User, {
 //     // foreignKey: "user1_id"
 // });
-
-User.belongsToMany(User, {
-    through: "UserFriends",
-    as: "Friend"
-})
 
 // Lobby.hasMany(User, {
 //     // foreignKey: "host_id"
@@ -26,6 +20,5 @@ User.belongsToMany(User, {
 
 module.exports={
     User,
-    UserFriends,
     Lobby,
 };

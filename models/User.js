@@ -77,8 +77,9 @@ User.init({
         },
     },
     friends_list: {
-        type: DataTypes.ENUM([]),
+        type: DataTypes.TEXT,
         allowNull: true,
+        defaultValue: "",
     },
 
 },{
