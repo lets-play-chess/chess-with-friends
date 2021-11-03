@@ -8,20 +8,21 @@ Lobby.init({
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
+        autoIncrement: true
     },
     host_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'user',
+            model: 'Users',
             key: 'id'
         },
     },
     guest_id: {
         type: DataTypes.INTEGER,
-        // references: {
-        //     model: 'user',
-        //     key: 'id'
-        // },
+        references: {
+            model: 'Users',
+            key: 'id'
+        },
     },
 }, {
     sequelize,

@@ -1,7 +1,7 @@
 // This deals with the Users Table
 const express = require('express');
 const router = express.Router();
-const socket = io.connect();
+const io = require('../../index')
 const { User, UserFriends, Lobby } = require('../../models');
 const bcrypt = require("bcrypt");
 
@@ -105,7 +105,7 @@ router.put("/:id", (req, res) => {
     // Update User API Route
     // 
     User.update({
-        username = req.body.username,
+        username: req.body.username,
         email: req.body.email,
         // TODO
         // THIS IS WHERE LOGIC TO ADD PLAYED GAMES HAPPENS

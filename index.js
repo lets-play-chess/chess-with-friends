@@ -2,13 +2,18 @@ const express = require('express');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
 const sequelize = require("./config/connection.js");
-const SequelizeStore = require('connect-session-sequelize')
-(session.Store);
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const routes = require("./controllers");
+
 
 // Sets up the Express App
 // =============================================================
 const app = express();
+const http = require('http');
+const server = http.createServer(app);
+const {Server} = require('socket.io');
+const io = new Server(server);
+
 const PORT = process.env.PORT || 3000;
 
 // Requiring our models for syncing
@@ -46,4 +51,5 @@ sequelize.sync({ force: false }).then(function() {
     });
 });
 
+module.exports = io;
 // WSK
