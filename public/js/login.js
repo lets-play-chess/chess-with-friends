@@ -3,7 +3,7 @@ const loginForm = document.querySelector("#login-form");
 loginForm.addEventListener("submit",(e)=>{
     e.preventDefault();
     const email = document.querySelector("#email-login").value;
-    const password = document.querySelector("password-login").value;
+    const password = document.querySelector("#password-login").value;
 
     // TODO: add the correct route to login
     fetch("/api/users/login",{
