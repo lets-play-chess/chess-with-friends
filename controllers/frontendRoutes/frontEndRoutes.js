@@ -1,7 +1,7 @@
 // Front End Routes
 const express = require('express');
 const router = express.Router();
-const {UserFriends,User,Lobby} = require('../../models');
+const {User,Lobby} = require('../../models');
 
 // Home Page get request
 router.get("/",(req,res)=>{
@@ -19,7 +19,6 @@ router.get("/profile",(req,res)=>{
     User.findByPk(req.session.user.id,{
         include:[{
             model:User,
-            include:[UserFriends]
         }]
     }).then(userData=>{
         const hbsUser = userData.get({plain:true});
@@ -34,7 +33,6 @@ router.get("/lobby/", (req,res)=>{
     // }
     // IF logged in, find user and lobby page
     User.findByPk(req.session.user.id,{
-        include:[UserFriends]
     }).then(userData=>{
         const hbsUser = userData.get({plain:true});
         res.render("lobby", hbsUser)
@@ -45,15 +43,6 @@ router.get("/lobby/", (req,res)=>{
 // Game Board Get Request
 router.get("/gameboard", (req,res)=> {
     res.render("game-board")
-})
-
-// Test example
-router.get("/test", (req,res)=>{
-    UserFriends.findAll().then(UFData=>{
-        const hbdata = UFData.map(item=>item.get({plain:true}))
-        res.render("test",{friends:hbdata})
-    })
-
 })
 
 

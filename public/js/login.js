@@ -46,7 +46,7 @@ signupForm.addEventListener("submit",(e)=>{
             return alert("trumpet sound")
         } else {
             res.json().then(data=>{
-                location.href = `/profile/${data.id}`
+                location.href = `/profile`
             })
         }
     });

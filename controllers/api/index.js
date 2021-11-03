@@ -8,9 +8,6 @@ const router = express.Router();
 const userRoutes = require("./userController");
 router.use("/users",userRoutes);
 
-const userFriendRoutes = require("./userFriendController");
-router.use("/userfriends", userFriendRoutes);
-
 const lobbyRoutes = require("./lobbyController");
 router.use("/lobby",lobbyRoutes);
 

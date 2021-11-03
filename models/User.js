@@ -76,6 +76,11 @@ User.init({
             }
         },
     },
+    friends_list: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+        defaultValue: "",
+    },
 
 },{
     hooks:{
