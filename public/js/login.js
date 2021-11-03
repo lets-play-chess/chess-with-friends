@@ -1,3 +1,4 @@
+const socket = io.connect()
 const loginForm = document.querySelector("#login-form");
 loginForm.addEventListener("submit",(e)=>{
     e.preventDefault();
@@ -49,4 +50,8 @@ signupForm.addEventListener("submit",(e)=>{
             })
         }
     });
+});
+
+socket.on('greeting', (greeting) => {
+    console.log(greeting);
 });
