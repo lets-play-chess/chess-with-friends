@@ -4,6 +4,9 @@ const socket = io();
 // White starts the game (white = 0, black = 1)
 let playerTurn = 0;
 
+// Declaring global variables
+let selected;
+
 // Hard Coding the gameboard
 const gameboard = 
 [
@@ -29,39 +32,77 @@ tile.addEventListener('click', (event) => {
     const curPiece = seeCurrentPiece(AN);
     const justPiece = curPiece.split(' ');
 
-    switch (justPiece[1]) {
-        case '':
-        break;
-
-        case 'Rook':
-            const rookPossMoves = checkRookPossibleMoves(AN0,AN1);
-            renderPossibleMoves(rookPossMoves);
-        break;
-
-        case 'Knight':
-            const knightPossMoves = checkKnightPossibleMoves(AN0,AN1);
-            renderPossibleMoves(knightPossMoves);
-        break;
-
-        case 'Bishop':
-            const bishopPossMoves = checkBishopPossibleMoves(AN0,AN1);
-            renderPossibleMoves(bishopPossMoves);
-        break;
+    if (user.color === 'w' && 
+        justPiece[0] === ('w' || 'empty') ||
+        user.color === 'b' &&
+        justPiece[0] === ('b' || 'empty'));
+    {
+        if (user.color === 'w' && playerTurn === 0 ||
+            user.color === 'b' && playerTurn === 1)
+        {
+            switch (justPiece[1]) {
+                case '':
+                    switch (justPiece[0]) {
+                        case 'empty':
+                            clearPossibleMoves();
+                        break;
         
-        case 'Queen':
-            const firstHalfMoves = checkRookPossibleMoves(AN0,AN1);
-            const secondHalfMoves = checkBishopPossibleMoves(AN0,AN1);
-            const queenPossMoves = firstHalfMoves.concat(secondHalfMoves);
-            renderPossibleMoves(queenPossMoves);
-        break;
-
-        case 'King':
-        break;
-
-        case 'Pawn':
-        break;
+                        case 'possible':
+                            clearPossibleMoves();
+                            movePiece(selected,AN);
+                        break;
+                    }
+                break;
+        
+                case 'Rook':
+                    clearPossibleMoves();
+                    const rookPossMoves = checkRookPossibleMoves(AN0,AN1);
+                    updatePossibleMoves(rookPossMoves);
+                    selected = AN;
+                break;
+        
+                case 'Knight':
+                    clearPossibleMoves();
+                    const knightPossMoves = checkKnightPossibleMoves(AN0,AN1);
+                    updatePossibleMoves(knightPossMoves);
+                    selected = AN;
+                break;
+        
+                case 'Bishop':
+                    clearPossibleMoves();
+                    const bishopPossMoves = checkBishopPossibleMoves(AN0,AN1);
+                    updatePossibleMoves(bishopPossMoves);
+                    selected = AN;
+                break;
+                
+                case 'Queen':
+                    clearPossibleMoves();
+                    const firstHalfMoves = checkRookPossibleMoves(AN0,AN1);
+                    const secondHalfMoves = checkBishopPossibleMoves(AN0,AN1);
+                    const queenPossMoves = firstHalfMoves.concat(secondHalfMoves);
+                    updatePossibleMoves(queenPossMoves);
+                    selected = AN;
+                break;
+        
+                case 'King':
+                    clearPossibleMoves();
+                    const kingPossMoves = checkKingPossibleMoves(AN0,AN1);
+                    updatePossibleMoves(kingPossMoves);
+                    selected = AN;
+                break;
+        
+                case 'Pawn':
+                    clearPossibleMoves();
+                    const pawnPossMoves = checkPawnPossibleMoves(AN0,AN1);
+                    updatePossibleMoves(pawnPossMoves);
+                    selected = AN;
+                break;
+            }
+        }
     }
+
 });
+
 const checkRookPossibleMoves = (zero,one) => {
     const rookPossibleMoves = [];
     const numAN0 = Number(zero);
@@ -303,12 +344,121 @@ const checkKnightPossibleMoves = (zero,one) => {
 }
 
 const checkKingPossibleMoves = (zero,one) => {
+    const kingPossibleMoves = [];
+    const num0 = Number(zero);
+    const num1 = Number(one);
 
+    // checking up
+    if (num0 !== 0) {
+        const check0 = toString(num0 - 1);
+        const check1 = toString(num1);
+        check0.push(check1);
+        if (seeCurrentPiece(check0) === 'empty') {
+            kingPossibleMoves.push(check0);
+        }
+    }
+
+    // checking up left
+    if (num0 !== 0 && num1 !== 0) {
+        const check0 = toString(num0 - 1);
+        const check1 = toString(num1 - 1);
+        check0.push(check1);
+        if (seeCurrentPiece(check0) === 'empty') {
+            kingPossibleMoves.push(check0);
+        }
+    }
+
+    // checking left
+    if (num1 !== 0) {
+        const check0 = toString(num0);
+        const check1 = toString(num1 - 1);
+        check0.push(check1);
+        if (seeCurrentPiece(check0) === 'empty') {
+            kingPossibleMoves.push(check0);
+        }
+    }
+
+    // checking down left
+    if (num0 !== 7 && num1 !== 0) {
+        const check0 = toString(num0 + 1);
+        const check1 = toString(num1 - 1);
+        check0.push(check1);
+        if (seeCurrentPiece(check0) === 'empty') {
+            kingPossibleMoves.push(check0);
+        }
+    }
+
+    // checking down
+    if (num0 !== 7) {
+        const check0 = toString(num0 + 1);
+        const check1 = toString(num1);
+        check0.push(check1);
+        if (seeCurrentPiece(check0) === 'empty') {
+            kingPossibleMoves.push(check0);
+        }
+    }
+
+    // checking down right
+    if (num0 !== 7 && num1 !== 7) {
+        const check0 = toString(num0 + 1);
+        const check1 = toString(num1 + 1);
+        check0.push(check1);
+        if (seeCurrentPiece(check0) === 'empty') {
+            kingPossibleMoves.push(check0);
+        }
+    }
+
+    // checking right
+    if (num1 !== 7) {
+        const check0 = toString(num0);
+        const check1 = toString(num1 + 1);
+        check0.push(check1);
+        if (seeCurrentPiece(check0) === 'empty') {
+            kingPossibleMoves.push(check0);
+        }
+    }
+
+    // checking up right
+    if (num0 !== 0 && num1 !== 7) {
+        const check0 = toString(num0 - 1);
+        const check1 = toString(num1 + 1);
+        check0.push(check1);
+        if (seeCurrentPiece(check0) === 'empty') {
+            kingPossibleMoves.push(check0);
+        }
+    }
+    return kingPossibleMoves;
+}
+
+const checkPawnPossibleMoves = (zero,one) => {
+    const kingPossibleMoves = [];
+    const num0 = Number(zero);
+    const num1 = Number(one);
+
+    const check0 = toString(num0 - 1);
+    const check1 = toString(num1);
+    check0.push(check1);
+    if (seeCurrentPiece(check0) === 'empty') {
+        kingPossibleMoves.push(check0);
+    }
 }
 
 // takes in a number of moves and sets the piece equal to "possibleMove"
-const renderPossibleMoves = (movesArr) => {
+const updatePossibleMoves = (movesArr) => {
+    for (let i = 0; i < movesArr.length; i++) {
+        const newPossMove = movesArr[i].split('');
+        gameboard[newPossMove[0]][newPossMove[1]].piece = 'possible';
+    }
+}
 
+const clearPossibleMoves = () => {
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+            if(seeCurrentPiece(`${i}${j}`) === 'possible') {
+                gameboard[i][j].piece = 'empty';
+            }
+        }
+    }
 }
 
 // function that accepts moving a piece 'from' a tile 'to' another tile.
