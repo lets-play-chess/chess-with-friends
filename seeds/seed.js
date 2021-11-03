@@ -3,7 +3,7 @@ const {User,UserFriends,Lobby} = require("../models")
 // const UserData = require(./User.json);
 
 const seed = async ()=>{
-    await sequelize.sun({force:true});
+    await sequelize.sync({force:true});
     const userData = await User.bulkCreate([
         {
             username:"Whitney",
