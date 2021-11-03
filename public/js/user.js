@@ -1,5 +1,21 @@
 console.log('hello');
-const socket = io();
+const socket = io.connect();
+
+fetch('/sessions').then(res => {
+    if (res.ok) {
+        res.json().then(res => {
+        console.log(res)
+        const gameRoom = res.user.id + "game"
+        const notiRoom = res.user.id + "noti"
+        socket.emit('join game room', gameRoom)
+        socket.emit('join notification room', notiRoom)
+        console.log(gameRoom,notiRoom)
+    })
+    } else {
+        // TODO: Show that there was an error and that the friend request wasn't sent
+        throw (err)
+    }
+});
 
 const gameInvList = document.getElementById('game-invite-list');
 socket.on('game invite sent', (gameInv) => {
@@ -34,10 +50,10 @@ socket.on('friend request sent', (friendReq) => {
     const declineFriendReqBtn = document.createElement('button');
     // TODO: add an 'X' or something to the 'textConent' of the acceptGameInvBtn
     declineFriendReqBtn.textContent = 'Decline';
-    
+
     newFriendReq.append(acceptFriendReqBtn);
     newFriendReq.append(declineFriendReqBtn);
-    
+
     friendReqList.append(newFriendReq);
 });
 
@@ -45,7 +61,7 @@ const friendsList = document.getElementById('friends-list');
 socket.on('friend request accepted', (newFriend) => {
     const newFriendSocket = document.createElement('li');
     newFriendSocket.textContent = newFriend.username;
-    newFriendSocket.setAttribute('data-userId',newFriend.userId);
+    newFriendSocket.setAttribute('data-userId', newFriend.userId);
 
     friendsList.append(newFriendSocket);
 });
@@ -62,74 +78,74 @@ openMondalBtn.addEventListener('click', (event) => {
 const playBtn = document.getElementById('play-btn');
 playBtn.addEventListener('click', (event) => {
     event.preventDefault();
-    
+
     // TODO: add the correct route to the lobby page
-    fetch('correct route to lobby page',{
-        method:"GET"
+    fetch('correct route to lobby page', {
+        method: "GET"
     });
 });
 
-const addFriendBtn = document.getElementById('add-friend-btn');
-addFriendBtn.addEventListener('click', (event) => {
-    event.preventDefault();
+// const addFriendBtn = document.getElementById('add-friend-btn');
+// addFriendBtn.addEventListener('click', (event) => {
+//     event.preventDefault();
 
-    const friendEmail = document.getElementById('friend-email').value;
-    const addFriendObj = { friendEmail };
-    // TODO: add the correct route to adding a friend and set correct method
-    fetch('correct route to adding a friend', {
-        method: "POST?",
-        body:JSON.stringify(addFriendObj),
-        headers:{
-            "Content-Type":"application/json"
-        }
-    }).then(res=>{
-        if(res.ok){
-            frs.style.display = 'inline';
-            notfrs.style.display = 'hidden';
-        } else {
-            // TODO: Show that there was an error and that the friend request wasn't sent
-        }
-    });
-});
+//     const friendEmail = document.getElementById('friend-email').value;
+//     const addFriendObj = { friendEmail };
+//     // TODO: add the correct route to adding a friend and set correct method
+//     fetch('correct route to adding a friend', {
+//         method: "POST?",
+//         body: JSON.stringify(addFriendObj),
+//         headers: {
+//             "Content-Type": "application/json"
+//         }
+//     }).then(res => {
+//         if (res.ok) {
+//             frs.style.display = 'inline';
+//             notfrs.style.display = 'hidden';
+//         } else {
+//             // TODO: Show that there was an error and that the friend request wasn't sent
+//         }
+//     });
+// // });
 
 // TODO: add a socket that will accept the requesterEmail
-const accFriendReqBtn = document.getElementsByClassName('acc-friend-req-btn');
-accFriendReqBtn.addEventListener('click', (event) => {
-    event.preventDefault();
-    const requesterObj = { requesterEmail };
-    // TODO: add the correct route to accepting a friend request and set correct method
-    fetch('correct route to accepting a friend request', {
-        method: "POST?",
-        body:JSON.stringify(requesterObj),
-        headers:{
-            "Content-Type":"application/json"
-        }
-    }).then(res=>{
-        if(res.ok){
-            const newFriend = document.createElement('li');
-            // TODO: Pull the username of the friend that was just added from the response
-            newFriend.textContent = res.username;
-            newFriend.setAttribute('data-userId',res.userId);
-            friendsList.append(newFriend);
-            // TODO: Send through a socket that the friend request was accepted so that the person who sent the request gets updated in real time
-        } else {
-            // TODO: Show that there was an error and that the friendship wasnt formed
-        }
-    });
-});
+// const accFriendReqBtn = document.getElementsByClassName('acc-friend-req-btn');
+// accFriendReqBtn.addEventListener('click', (event) => {
+//     event.preventDefault();
+//     const requesterObj = { requesterEmail };
+//     // TODO: add the correct route to accepting a friend request and set correct method
+//     fetch('correct route to accepting a friend request', {
+//         method: "POST?",
+//         body: JSON.stringify(requesterObj),
+//         headers: {
+//             "Content-Type": "application/json"
+//         }
+//     }).then(res => {
+//         if (res.ok) {
+//             const newFriend = document.createElement('li');
+//             // TODO: Pull the username of the friend that was just added from the response
+//             newFriend.textContent = res.username;
+//             newFriend.setAttribute('data-userId', res.userId);
+//             friendsList.append(newFriend);
+//             // TODO: Send through a socket that the friend request was accepted so that the person who sent the request gets updated in real time
+//         } else {
+//             // TODO: Show that there was an error and that the friendship wasnt formed
+//         }
+//     });
+// });
 
-//fetch (PUT) to replace friendslist with the new list
+// //fetch (PUT) to replace friendslist with the new list
 
-const accGameInvBtn = document.getElementsByClassName('acc-game-inv-btn');
-accGameInvBtn.addEventListener('click', (event) => {
-    event.preventDefault();
-    const accGameObj = { something };
-    // TODO: add the correct route to accepting a game invite and set correct method
-    fetch('correct route to accepting a game invite', {
-        method: "POST?",
-        body:JSON.stringify(accGameObj),
-        headers:{
-            "Content-Type":"application/json"
-        }
-    });
-});
+// const accGameInvBtn = document.getElementsByClassName('acc-game-inv-btn');
+// accGameInvBtn.addEventListener('click', (event) => {
+//     event.preventDefault();
+//     const accGameObj = { something };
+//     // TODO: add the correct route to accepting a game invite and set correct method
+//     fetch('correct route to accepting a game invite', {
+//         method: "POST?",
+//         body: JSON.stringify(accGameObj),
+//         headers: {
+//             "Content-Type": "application/json"
+//         }
+//     });
+// });

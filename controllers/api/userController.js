@@ -5,24 +5,6 @@ const io = require('../../index')
 const { User, UserFriends, Lobby } = require('../../models');
 const bcrypt = require("bcrypt");
 
-function joinGameRoom(gameRoom) {
-    console.log("joined room" + gameRoom);
-    socket.broadcast.to(gameRoom).emit("sendMessage", "SERVER : a user just joined");
-    if (gameRoom) {
-        socket.join(gameRoom);
-        //users.filter(foundUser => foundUser.id == socket.id)[0].gameRoom = gameRoom;
-    }
-}
-
-function joinNotiRoom(notiRoom) {
-    console.log("joined room" + notiRoom);
-    socket.broadcast.to(notiRoom).emit("sendMessage", "SERVER : a user just joined");
-    if (notiRoom) {
-        socket.join(notiRoom);
-        //users.filter(foundUser => foundUser.id == socket.id)[0].notiRoom = notiRoom;
-    }
-}
-
 router.get("/", (req, res) => {
     // Basic get Requests - get all
     User.findAll().then(UserData => {
