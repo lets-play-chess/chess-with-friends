@@ -136,22 +136,26 @@ function friendReqSent(id){
         newFriendReq.append(acceptBtn)
         newFriendReq.append(declineBtn)
         friendReqList.append(newFriendReq)
+        const accFriendReqBtn = document.querySelectorAll('.acc-friend-req-btn');
+        console.log(accFriendReqBtn);
+        accFriendReqBtn.forEach(function(btn) {
+            btn.addEventListener("click", (event) => {
+                event.preventDefault();
+                const friendID = event.target.getAttribute('data-id');
+                console.log(event.target.getAttribute('data-id'));
+                fetch('/sessions').then(res => {res.json().then(res => {
+                    const userId = res.user.id;
+                    const socketObj = {
+                        userId,
+                        friendID,
+                    }
+                    socket.emit('friend request accepted', socketObj);
+                })})
+            });
+        });
     })
 }
 
-const accFriendReqBtn = document.getElementsByClassName('acc-friend-req-btn');
-accFriendReqBtn.addEventListener('click', (event) => {
-    event.preventDefault();
-    const friendID = event.target.getAttribute('data-id');
-    fetch('/sessions').then(res => {res.json().then(res => {
-        const userId = res.user.id;
-        const socketObj = {
-            userId,
-            friendID,
-        }
-        socket.emit('friend request accepted', socketObj);
-    })})
-});
 
 // //fetch (PUT) to replace friendslist with the new list
 
