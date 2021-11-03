@@ -1,21 +1,28 @@
+console.log('bananannananananannan');
 const loginForm = document.querySelector("#login-form");
 loginForm.addEventListener("submit",(e)=>{
     e.preventDefault();
-    const loginObj={
-        email:document.querySelector("#email-login").value,
-        password:document.querySelector("#password-login").value,
-    }
+    const email = document.querySelector("#email-login").value;
+    const password = document.querySelector("password-login").value;
 
     // TODO: add the correct route to login
     fetch("/api/users/login",{
         method:"POST",
-        body:JSON.stringify(loginObj),
+        body:JSON.stringify({
+            email,
+            password,
+        }),
         headers:{
             "Content-Type":"application/json"
         }
     }).then(res=>{
+        console.log('banan');
         if(!res.ok){
             // TODO: show that the login was unsuccessful
+            console.log('banana ======================');
+        } else {
+            document.location.replace('/profile');
+            console.log('banananPLES');
         }
     });
 });
