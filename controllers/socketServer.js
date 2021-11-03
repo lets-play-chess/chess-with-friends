@@ -12,15 +12,18 @@ exports = module.exports = function (io) {
         socket.on("friend request accepted", friendReqAcc)
 
         function friendReqAcc(socketObj) {
+            console.log('this socket is working!!!!!');
+            console.log('()())()(())())()())(())()()()()');
             const userId = socketObj.userId
             const friendId = socketObj.friendID
             User.findOne({
                 where: { id: userId }
             }).then(userData => {
                 const friendsList = userData.friends_list;
-                friendsList = friendsList.split(' ');
-                friendsList.push(' ' + friendId);
-                User.update({friend_list: friendsList},{
+                const friendsListArr = friendsList.split(' ');
+                friendsListArr.push(friendId);
+                console.log(friendsListArr.join(' '));
+                User.update({friends_list: friendsListArr.join(' ')},{
                     where: { id: userId }
                 })
             })
@@ -28,9 +31,10 @@ exports = module.exports = function (io) {
                 where: { id: friendId }
             }).then(userData => {
                 const friendsList = userData.friends_list;
-                friendsList = friendsList.split(' ');
-                friendsList.push(' ' + userId);
-                User.update({friend_list: friendsList},{
+                const friendsListArr = friendsList.split(' ');
+                friendsListArr.push(userId);
+                console.log(friendsListArr.join(' '));
+                User.update({friends_list: friendsListArr.join(' ')},{
                     where: { id: friendId }
                 })
             })
