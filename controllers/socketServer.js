@@ -12,10 +12,9 @@ exports = module.exports = function (io) {
         socket.on("friend request accepted", friendReqAcc)
         socket.on('send game invite', sendGameInv)
         socket.on('game invite accepted', gameInvAcc)
+        socket.on('starting game', startGame)
 
         function friendReqAcc(socketObj) {
-            console.log('this socket is working!!!!!');
-            console.log('()())()(())())()())(())()()()()');
             const userId = socketObj.userId
             const friendId = socketObj.friendID
             User.findOne({
@@ -76,9 +75,22 @@ exports = module.exports = function (io) {
         function gameInvAcc(socketObj) {
             const friendID = socketObj.friendID;
             const userID = socketObj.userId;
-            console.log("THE GAME INVITE WAS ACCEPTED!!!!!!!!");
+            console.log(friendID);
+            console.log(userID);
             socket.broadcast.to(friendID + 'game').emit('player joining lobby',userID);
-            socket.broadcast.to(userID + 'game').emit('i am joining lobby',friendID);
+            const stopper = 0;
+            const interval = setInterval(() => {
+                socket.broadcast.to(userID + 'game').emit('i am joining lobby',friendID);
+                if(stopper==0){
+                    clearInterval(interval);
+                }
+            },500)
+        }
+        function startGame(socketObj) {
+            const userID = socketObj.userID;
+            const opponentID = socketObj.opponentID;
+            socket.broadcast.to(userID + 'game').emit('start the game',socketObj);
+            socket.broadcast.to(opponentID + 'game').emit('start the game',socketObj);
         }
     })
 }

@@ -53,7 +53,7 @@ router.get("/lobby-guest", (req,res)=>{
     }).then(userData=>{
         const hbsUser = userData.get({plain:true});
         console.log(hbsUser);
-        res.render("lobby", hbsUser)
+        res.render("lobby-guest", hbsUser)
     })
 });
 

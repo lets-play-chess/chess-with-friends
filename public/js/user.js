@@ -169,7 +169,8 @@ function gameInvSent(id){
                         userId,
                         friendID,
                     }
-                    socket.emit('game request accepted', socketObj);
+                    socket.emit('game invite accepted', socketObj);
+                    console.log('something happened');
                     document.location.replace('/lobby-guest')
                 })})
             });
