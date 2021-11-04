@@ -49,6 +49,7 @@ h6 {
     font-weight: bolder;
 
 }
+
 img {
     margin-top: 100px;
     align-content: center;
@@ -60,8 +61,30 @@ img {
     animation-iteration-count: infinite;
     animation-fill-mode: both;
 }
+/* Modal Content */
+
+.modal-header {
+    background-color:var(--yellow);
+
+    border:0px;
+}
+
+.modal-footer {
+    background-color:var(--yellow);
+
+    border:0px;
+}
 #modal-cont {
-    background-color: rgb(10, 108, 116);;
+    background-color:var(--yellow);
+
+    border:0px;
+
+}
+#modal-body {
+    background-color:var(--yellow);
+
+    border:0px;
+
 }
 .container {
     margin-top: 50px;
@@ -142,12 +165,37 @@ img {
     padding: 5px;
     border-radius: 5px;
 }
+
+#add-friend-form {
+    /* background-color: lightgrey;
+    box-shadow: gray 2px 2px 5px;
+    padding: 5px;
+    border-radius: 5px; */
+}
 #signup-form {
     background-color: lightgrey;
     margin-top: 30px;
     box-shadow: gray 2px 2px 5px;
     padding: 5px;
     border-radius: 5px;
+}
+#notif-form {
+    border:0px;
+    /* background-color: lightgrey; */
+    margin: 10px;
+    /* box-shadow: gray 2px 2px 5px; */
+    padding: 5px;
+    /* border-radius: 5px; */
+}
+#notif-form h3 {
+    width:100%;
+    justify-content: space-between;
+    border:0px;
+    /* background-color: lightgrey; */
+    margin: 10px;
+    /* box-shadow: gray 2px 2px 5px; */
+    padding: 5px;
+    /* border-radius: 5px; */
 }
 
 #username-form {
@@ -225,9 +273,6 @@ img {
 }
 
 
-/* .list-group-item:hover{
-    background-color: ivory;
-} */
 #invite-friend-btn {
     margin-left: 300px;
     margin-right: 300px;
@@ -246,7 +291,22 @@ img {
     background-color: var(--red);
 }
 #friend-request-list{
-    border: red 1px solid;
+    color:black;
+    list-style: none;
+}
+#friend-request-list li{
+        justify-content: space-between;
+
+
+}
+#game-invite-list{    color:black;
+    list-style: none;}
+
+#game-invite-list li{        justify-content: space-between;
+}
+
+.ulEl{
+
 }
 
 .tile {
@@ -376,6 +436,7 @@ img {
     text-shadow: -1px 0 orange, 0 1px orange, 1px 0 orange, 0 -1px orange;
 }
 
+
 /* .notification {
     background-color: #555;
     color: white;
@@ -399,6 +460,27 @@ border-radius: 50%;
 background: red;
 color: white;
 } */
+
+
+/* #notifContent {
+    background-color:var(--blueish);
+    text-align: center;
+    justify-content: center;
+} */
+
+
+.list-group{
+    padding:3px;
+    justify-content: space-between;
+}
+/* Clean up the modals for friend request */
+
+#giBadge{
+    /* Number of game invites */
+}
+#frBadge{
+    /* Number of friend requests */
+}
 
 @keyframes circle {
     0% {

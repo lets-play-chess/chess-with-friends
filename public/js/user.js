@@ -81,27 +81,36 @@ function friendReqSent(id){
         console.log(res)
         console.log('================')
         const username = res.UserData.username
-        const newFriendReq = document.createElement("li")
-        newFriendReq.setAttribute('class', 'count')
-        const friendName = document.createElement("p")
-        friendName.textContent = username
-        newFriendReq.append(friendName)
-        const acceptBtn = document.createElement("button")
-        const declineBtn = document.createElement("button")
-        acceptBtn.textContent = "Accept"
+        const newFriendReq = document.createElement("li");
+        newFriendReq.setAttribute('class', 'row frcount');
+        const friendName = document.createElement("h4");
+        friendName.setAttribute("class", "col6 ulEL");
+        friendName.textContent = username;
+        newFriendReq.append(friendName);
+        const acceptBtn = document.createElement("button");
+        const declineBtn = document.createElement("button");
+        acceptBtn.textContent = "Accept";
         acceptBtn.setAttribute('data-id',id)
-        acceptBtn.setAttribute('class','acc-friend-req-btn');
+        acceptBtn.setAttribute('class','btn btn-success col3 acc-friend-req-btn');
         declineBtn.textContent = "Decline"
+        declineBtn.setAttribute('decline',id)
+        declineBtn.setAttribute('class','btn btn-secondary col3 acc-game-decline-btn');
         newFriendReq.append(acceptBtn)
         newFriendReq.append(declineBtn)
         friendReqList.append(newFriendReq)
+
+        var numfrcount = 0;
         var numfriends = 0;
-        var count = document.querySelectorAll('.count')
-        count.forEach(element => numfriends++)
-        
+        var numgicount = 0;
+        var count1 = document.querySelectorAll('.gicount')
+        count1.forEach(element => numgicount++)
+        var count2 = document.querySelectorAll('.frcount')
+        count2.forEach(element => numfrcount++)
+        const frBadgeEl = document.getElementById("frBadge");
+        frBadgeEl.textContent = numfrcount;
+        numfriends = numfrcount + numgicount;
         const numBadgeEl = document.getElementById("numBadge");
         numBadgeEl.textContent = numfriends;
-
         const accFriendReqBtn = document.querySelectorAll('.acc-friend-req-btn');
         console.log(accFriendReqBtn);
         accFriendReqBtn.forEach(function(btn) {
@@ -143,24 +152,33 @@ function gameInvSent(id){
         console.log('================')
         const username = res.UserData.username
         const newGameInv = document.createElement("li")
-        newGameInv.setAttribute('class', 'count')
-        const friendName = document.createElement("p")
+        newGameInv.setAttribute('class', 'row gicount')
+        const friendName = document.createElement("h4")
+        friendName.setAttribute("class","col6 ulEl")
         friendName.textContent = username
         newGameInv.append(friendName)
         const acceptBtn = document.createElement("button")
         const declineBtn = document.createElement("button")
         acceptBtn.textContent = "Accept"
         acceptBtn.setAttribute('data-id',id)
-        acceptBtn.setAttribute('class','acc-game-invite-btn');
+        acceptBtn.setAttribute('class','btn btn-success col3 acc-game-invite-btn');
+        declineBtn.setAttribute('class','btn btn-secondary col3 acc3-game-decline-btn');
+
         declineBtn.textContent = "Decline"
         newGameInv.append(acceptBtn)
         newGameInv.append(declineBtn)
         gameInvList.append(newGameInv)
         
         var numfriends = 0;
-        var count = document.querySelectorAll('.count')
-        count.forEach(element => numfriends++)
-        
+        var numgicount = 0;
+        var numfrcount = 0;
+        var count1 = document.querySelectorAll('.gicount')
+        count1.forEach(element => numgicount++)
+        const giBadgeEl = document.getElementById("giBadge");
+        var count2 = document.querySelectorAll('.frcount')
+        count2.forEach(element => numfrcount++)
+        giBadgeEl.textContent = numgicount;
+        numfriends = numgicount + numfrcount;
         const numBadgeEl = document.getElementById("numBadge");
         numBadgeEl.textContent = numfriends;
         const accGameInvBtn = document.querySelectorAll('.acc-game-invite-btn');
