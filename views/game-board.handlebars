@@ -1,14 +1,54 @@
-<div id="player-cards">
-    <div id="opponent-card">
-        <h2>{{opponent_username}}</h2>
-        <h3>{{opponent_rank}}</h3>
+    <div class="container mt-3" id="background-gamepage">
+        <div class="row justify-content-between" id="player-cards">
+            <div class="col-md-3 mt-4 ml-2" id="opponent-card">
+                <div class="card mb-3" id="rcorners3" style="max-width: 540px;">
+                    <div class="row no-gutters">
+                        <div class="col-4">
+                            <img src="./assets/king2.png" class="card-img" id="king" alt="Responsive image">
+                        </div>
+                        <div class="col-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Opponent username</h5>
+                                <!-- <h2>{{opponent_username}}</h2> -->
+                                <h6>Rank:</h6>
+                                <!-- <h3>{{opponent_rank}}</h3> -->
+                                <p class="card-text"> 10 </p>                        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 ml-auto mt-4 mr-2" id="player-card">
+                <div class="card mb-3" id="rcorners3" style="max-width: 540px;">
+                    <div class="row no-gutters">
+                        <div class="col-4">
+                            <img src="./assets/king1.png" class="card-img" id="king" alt="Responsive image">
+                        </div>
+                            <div class="col-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Host username</h5>
+                                    <!-- <h2>{{opponent_username}}</h2> -->
+                                    <h6>Rank:</h6>
+                                    <!-- <h3>{{opponent_rank}}</h3> -->
+                                    <p class="card-text"> 7 </p>                        
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="container mt-5 mb-5" id="game-cont">
+            <div class="row mb-5" id="game-board">
+                <div class="col-10">
+                    gameboard
+
+                </div>
+            </div>
+        </div>
     </div>
-    <div id="player-card">
-        <h2>{{your_username}}</h2>
-        <h3>{{your_rank}}</h3>
-    </div>
-</div>
 <div id="game-board"></div>
 <script src="/socket.io/socket.io.js"></script>
 {{!-- TODO: make sure the src below is correct --}}
 <script src="../public/js/game-board.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

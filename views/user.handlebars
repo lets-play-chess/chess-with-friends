@@ -1,17 +1,17 @@
 <div class="container">
         <h1 class="font-effect-shadow-multiple"> Let's play Chess!</h1>
         <div class = "row">
-            <div class = "col-7" id="form">
-                <form id="login-form">
+            <div class = "col-7 mt-5" id="form">
+                <form id="username-form">
                     <div class="card">
                         <h2 id="username">{{username}}</h2>
                         <!-- <h2></h2> -->
-                        <h3>Total Games Played:</h3>
-                        <h2>{{ngames}}</h2>
+                        <h2 id ="totgam">Total Games Played:</h2>
+                        <h3 id="ngames-played"></h3>>{{ngames}}</h3>
                         <!--  -->
-                        <table class="table table-sm table-dark text-center mb-5">
+                        <table class="table text-center mb-5">
                             <thead>
-                            <tr>
+                            <tr class="top">
                                 <th scope="col"><h5>Wins: </h5></th>
                                 <th scope="col"><h5>Loses: </h5></th>
                                 <th scope="col"><h5>Ties: </h5></th>
@@ -19,11 +19,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>{{wins}} </td>
-                                <td> {{losses}}</td>
-                                <td>{{ties}}</td>
-                                <td>{{winloss}}</td>
+                            <tr class="bottom">
+                                <td><!-- {{wins}} --> 7</td>
+                                <td><!-- {{loses}} --> 3</td>
+                                <td><!-- {{ties}} --> 0</td>
+                                <td><!-- {{winloss}} --> 7/3</td>
                             </tr>
                             </tbody>
                         </table>
@@ -33,7 +33,7 @@
                 <button type="submit" class="btn btn-primary btn-lg btn-block mt-3" id="play-btn"> PLAY GAME</button>
             </div>
             <div class="col-1"></div>
-            <div class="col-4 rounded" id="friends-box">
+            <div class="col-4 rounded mt-5" id="friends-box">
                 <ul class="list-group mt-3 mr-2 ml-2 rounded">
                     {{#each friend}} 
                             <li class="list-group-item mb-3 list-group-item-action" class="friends-list">{{this}}</li>
@@ -45,10 +45,10 @@
         
     </div>
 
-     <!-- Modal -->
+    <!-- Modal -->
     <div class="modal fade" id="addFriendModal" tabindex="-1" role="dialog" aria-labelledby="addFriendModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content" id="modal-cont">
             <div class="modal-header">
             <h5 class="modal-title" id="addFriendModalLabel"> Add a Friend </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -60,7 +60,7 @@
                     
                     <label for="emaillogin" class="form-label">Enter your friend's email</label>
                     <input type="text" class="form-control" id="email-login" placeholder = "Email">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block" id="add-friend-btn">Add Friend</button>
+                    <button type="submit" class="btn btn-primary btn-block" id="add-friend-btn">Add Friend</button>
                     <p id="frs">Friend Request Sent!</p>
                 </form>
             </div>
