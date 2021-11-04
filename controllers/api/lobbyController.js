@@ -6,7 +6,7 @@ const { UserFriend, User, Lobby } = require("../../models");
 router.get("/",(req,res)=>{
   // Basic get Requests - get all Lobbies
   Lobby.findAll().then(LobbyData=>{
-      res.json(LobbyData)
+      res.json({LobbyData})
   }).catch(err=>{
       console.log(err)
       res.status(500).json(err);
@@ -17,7 +17,7 @@ router.get("/:id",(req,res)=>{
   // Basic get Requests - get one Lobby
   Lobby.findByPk(req.params.id).then(LobbyData=>{
       if(LobbyData){
-          res.json(LobbyData)
+          res.json({LobbyData})
       } else {
           res.status(404).json(err);
       }
@@ -35,7 +35,7 @@ router.post("/",(req,res)=>{
       user1_id: req.session.User.id,
       // user2_id: req.body.username,
   }).then(newUser=>{
-      res.json(newUser);
+      res.json({newUser});
   }).catch(err=>{
       console.log(err);
       res.status(500).json({message:"Lobby creation failed:",err:err})
@@ -61,7 +61,7 @@ router.delete("/:id",(req,res)=>{
           id:req.params.id
       }
   }).then(delLobby=>{
-      if(delLobby){        res.json(delLobby)}
+      if(delLobby){res.json({delLobby})}
       else {res.status(404)}
 
   })

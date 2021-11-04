@@ -78,11 +78,8 @@ socket.on('friend request accepted', (newFriend) => {
 const playBtn = document.getElementById('play-btn');
 playBtn.addEventListener('click', (event) => {
     event.preventDefault();
-
-    // TODO: add the correct route to the lobby page
-    fetch('correct route to lobby page', {
-        method: "GET"
-    });
+    console.log('something is happening');
+    document.location.replace('/lobby')
 });
 
 const addFriendBtn = document.getElementById('add-friend-btn');
@@ -100,6 +97,7 @@ addFriendBtn.addEventListener('click', (event) => {
             }
             socket.emit('send friend request', socketObj);
             console.log(socketObj);
+            location.reload();
         })
         } else {
             // TODO: Show that there was an error and that the friend request wasn't sent
@@ -150,6 +148,7 @@ function friendReqSent(id){
                         friendID,
                     }
                     socket.emit('friend request accepted', socketObj);
+                    location.reload();
                 })})
             });
         });
