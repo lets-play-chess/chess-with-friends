@@ -13,6 +13,7 @@ exports = module.exports = function (io) {
         socket.on('send game invite', sendGameInv)
         socket.on('game invite accepted', gameInvAcc)
         socket.on('starting game', startGame)
+        socket.on('moving to gameboard', moveToGame)
 
         function friendReqAcc(socketObj) {
             const userId = socketObj.userId
@@ -84,13 +85,23 @@ exports = module.exports = function (io) {
                 if(stopper==0){
                     clearInterval(interval);
                 }
-            },500)
+            },400)
         }
         function startGame(socketObj) {
-            const userID = socketObj.userID;
             const opponentID = socketObj.opponentID;
-            socket.broadcast.to(userID + 'game').emit('start the game',socketObj);
             socket.broadcast.to(opponentID + 'game').emit('start the game',socketObj);
+        }
+        function moveToGame(socketObj) {
+            const hostID = socketObj.userID;
+            const opponentID = socketObj.opponentID;
+            const stopper = 0;
+            const interval = setInterval(() => {
+                socket.broadcast.to(hostID + 'game').emit('the game is starting',socketObj);
+                socket.broadcast.to(opponentID + 'game').emit('the game is starting',socketObj);
+                if(stopper==0){
+                    clearInterval(interval);
+                }
+            },400)
         }
     })
 }

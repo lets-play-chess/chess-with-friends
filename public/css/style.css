@@ -11,7 +11,8 @@
     --purple: rgb(52, 7, 90);
     --green1: rgba(47, 194, 47, 0.753);
     --blueish: rgb(9, 139, 133);
-}
+    /* background: linear-gradient(to bottom, #ff6600 28%, #993300 100%); */
+} 
 
 body {
     background-color: var(--orange);
@@ -38,17 +39,16 @@ h3{
     margin-top: 25px;
     margin-bottom: 10px;
 }
-.container {
-    margin-top: 50px;
-    margin-bottom: 50px;
-}
+h5 {
+    text-align: center;
+    font-weight: bolder;
 
-#userpage-container {
-    position: absolute;
-    left: 17%;
-    top: 20%;
 }
+h6 {
+    text-align: center;
+    font-weight: bolder;
 
+}
 img {
     margin-top: 100px;
     align-content: center;
@@ -60,6 +60,82 @@ img {
     animation-iteration-count: infinite;
     animation-fill-mode: both;
 }
+#modal-cont {
+    background-color: rgb(10, 108, 116);;
+}
+.container {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.top {
+    background-color:var(--yellow);
+    color:var(--darkorange);
+    font-weight: bold;
+}
+
+.bottom {
+    background-color: lightgray;
+    color:var(--brown);
+    font-weight: bolder;
+
+}
+
+.card-text {
+    text-align: center;
+}
+.card-img {
+    text-align: center;
+}
+
+.friends-list{
+
+}
+#totgam {
+    color: var(--orange);
+}
+#ngames-played {
+    margin-top: 0px;
+    margin-bottom: 20px;
+    font-weight: bolder;
+
+}
+/* #addfr-btn {
+    background-color: greenyellow;
+    color: black;
+    font-weight: bolder;
+    border-color: darkgreen;
+    border: 2px solid darkgreen;
+} */
+#play-btn {
+    background-color: greenyellow;
+    color: black;
+    font-weight: bolder;
+    border-color: darkgreen;
+    border: 2px solid darkgreen;
+}
+#open-modal {
+    background-color: greenyellow;
+    color: black;
+    font-weight: bolder;
+    border-color: darkgreen;
+    border: 2px solid darkgreen;
+}
+#userpage-container {
+    position: absolute;
+    left: 17%;
+    top: 20%;
+}
+
+#king {
+    margin-top: 30px;
+    margin-left: 5px;
+    border-radius: 20px;
+    background-color: var(--purple);
+    
+}
+/* #addfriend-form {
+    
+} */
 #login-form {
     background-color: lightgrey;
     box-shadow: gray 2px 2px 5px;
@@ -73,6 +149,16 @@ img {
     padding: 5px;
     border-radius: 5px;
 }
+
+#username-form {
+    background-color: lightgrey;
+    box-shadow: gray 2px 2px 5px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: darkslateblue;
+    border: 4px outset purple;
+    
+}
 #users {
     font-weight: bolder;
     color: var(--purple);
@@ -82,12 +168,46 @@ img {
     font-weight: bolder;
     text-align: center;
     letter-spacing: 1px;
+    color: rgb(10, 108, 116);
+    letter-spacing: 2px;
+    border: 4px solid var(--blueish) ;
+    margin-left: 50px;
+    margin-right: 50px;
+
+
 }
 #lobby-page{
     background-color: var(--brown);
     margin-top: 150px;
     
 }
+
+#game-cont {
+    background-color: var(--blue);
+    margin-top: 50px;
+    margin-bottom: 50px;
+    align-items: center;
+    border: 40px solid var(--blue);
+    
+} 
+
+#rcorners3 {
+    background-color: rgb(73, 180, 73);
+    border-radius: 60px;
+    padding: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    /* width: 200px;
+    height: 150px; */
+}
+#background-gamepage {
+    background-color: maroon;
+    border-radius: 60px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+/* #gbim {
+    
+} */
+
 /* #host-username {
     text-align: center;
 } */
@@ -98,19 +218,13 @@ img {
 } */
 
 #friends-box{
-    background-color: var(--blue);
-    border-radius: 5px;
+    background-color: darkslateblue;
+    border: 4px outset purple;
+    
+
 }
 
-#friend-request-list{
-    border: red 1px solid;
-}
 
-.friends-list{
-    background-color: greenyellow;
-    font-weight: bolder;
-    text-align: center;
-}
 /* .list-group-item:hover{
     background-color: ivory;
 } */
@@ -131,6 +245,21 @@ img {
     height: 50px;
     background-color: var(--red);
 }
+#friend-request-list{
+    border: red 1px solid;
+}
+
+.tile {
+    height: 60px;
+}
+
+[data-Color="white"] {
+    background: white;
+}
+[data-Color="black"] {
+    background: black;
+}
+
 /* .notification {
     background-color: #555;
     color: white;
@@ -180,3 +309,6 @@ color: white;
 @media (min-width: 1200px) {
     
 }
+
+
+

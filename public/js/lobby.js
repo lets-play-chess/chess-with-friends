@@ -37,23 +37,6 @@ invFriendBtn.addEventListener('click', (event) => {
     })
 });
 
-const startGameBtn = document.getElementById('start-btn');
-// TODO: somehow figure out how to get the lobby id
-startGameBtn.addEventListener('click', (event) => {
-    event.preventDefault();
-    socket.emit('starting game')
-    fetch('/sessions').then(res => {
-        if (res.ok) {
-            res.json().then(res => {
-                res.user.id
-        })
-        } else {
-            // TODO: Show that there was an error and that the friend request wasn't sent
-            throw (err)
-        }
-    });
-});
-
 const backFromLobbyBtn = document.getElementById('back-btn');
 // TODO: somehow figure out how to get the lobby id
 backFromLobbyBtn.addEventListener('click', (event) => {
@@ -63,7 +46,6 @@ backFromLobbyBtn.addEventListener('click', (event) => {
 
 const opponent = document.getElementById('users2');
 socket.on('player joining lobby', (id) => {
-    console.log(('THE PLAYER SHOULD HAVE JOINED!!!!'));
     fetch('api/users/'+id).then(userData => {
         userData.json().then(userData => {
         opponent.textContent = userData.UserData.username;
@@ -79,6 +61,7 @@ socket.on('player joining lobby', (id) => {
                         opponentID: id
                     }
                     socket.emit('starting game',socketObj);
+                    document.location.replace('/gameboard');
                 })
             } else {
             // TODO: Show that there was an error and that the friend request wasn't sent
@@ -86,8 +69,4 @@ socket.on('player joining lobby', (id) => {
             }
         });
     });
-});
-
-socket.on('start the game', (socketObj) => {
-
 });
