@@ -50,18 +50,18 @@
         <div class="modal-dialog" role="document">
         <div class="modal-content" id="modal-cont">
             <div class="modal-header">
-            <h5 class="modal-title" id="addFriendModalLabel"> Add a Friend </h5>
+            <h5 class="modal-title" id="addFriendModalLabel"></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
             <div class="modal-body">
-                <form id="login-form">
+                <form id="add-friend-form">
                     
-                    <label for="emaillogin" class="form-label">Enter your friend's email</label>
-                    <input type="text" class="form-control" id="email-login" placeholder = "Email">
+                    <label for="emaillogin" class="form-label">Add a friend:</label>
+                    <input type="text" class="form-control friend-email-input" id="email-login" placeholder = "Email">
                     <button type="submit" class="btn btn-primary btn-block" id="add-friend-btn">Add Friend</button>
-                    <p id="frs">Friend Request Sent!</p>
+                    {{!-- <p id="frs">Friend Request Sent!</p> --}}
                 </form>
             </div>
             <div class="modal-footer">
@@ -76,25 +76,25 @@
     <!-- Modal -->
     <div class="modal fade" id="notifModal" tabindex="-1" role="dialog" aria-labelledby="notifModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content" id="modal-cont">
             <div class="modal-header">
-            <h5 class="modal-title" id="notifModalLabel"> Notifications </h5>
+            <h5 class="modal-title" id="notifModalLabel"> </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
-            <div class="modal-body">
-                <form id="notif-form">
-                    <h3>Friend Request</h3>
-                    <ul class="list-group" id="friend-request-list">
+            <div class="modal-body" id="modal-body">
+                <div id="notif-form">
+                    <h3>Friend Request(s):     <span class="badge badge-pill badge-danger" id="frBadge"></span></h3>
+                    <ul class="list-group " id="friend-request-list">
                         
                     </ul>
-                    <hr>
-                    <h3>Game Invite</h3>
+                    
+                    <h3>Game Invite(s): <span class="badge badge-pill badge-danger" id="giBadge"></span></h3>
                     <ul class="list-group" id="game-invite-list">
                         
                     </ul>
-                </form>
+                </div>
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

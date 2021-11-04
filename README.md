@@ -16,6 +16,7 @@ Our website lets you play with just the people you want, instead of a computer o
 ## Usage
   Visit our web app at:
   [Heroku Deployed Server]() 
+  On our login page
 
 
   [Github Repo](https://github.com/lets-play-chess/chess-with-friends) 
