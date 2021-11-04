@@ -248,6 +248,18 @@ img {
 #friend-request-list{
     border: red 1px solid;
 }
+
+.tile {
+    height: 60px;
+}
+
+[data-Color="white"] {
+    background: white;
+}
+[data-Color="black"] {
+    background: black;
+}
+
 /* .notification {
     background-color: #555;
     color: white;
