@@ -11,6 +11,7 @@ exports = module.exports = function (io) {
         socket.on("send friend request", sendFriendReq)
         socket.on("friend request accepted", friendReqAcc)
         socket.on('send game invite', sendGameInv)
+        socket.on('game invite accepted', gameInvAcc)
 
         function friendReqAcc(socketObj) {
             console.log('this socket is working!!!!!');
@@ -22,7 +23,7 @@ exports = module.exports = function (io) {
             }).then(userData => {
                 const friendsList = userData.friends_list;
                 const friendsListArr = friendsList.split(' ');
-                friendsListArr.push(friendId);
+                friendsListArr.push(friendId + "," + socketObj.friendUsername);
                 console.log(friendsListArr.join(' '));
                 User.update({friends_list: friendsListArr.join(' ')},{
                     where: { id: userId }
@@ -33,7 +34,7 @@ exports = module.exports = function (io) {
             }).then(userData => {
                 const friendsList = userData.friends_list;
                 const friendsListArr = friendsList.split(' ');
-                friendsListArr.push(userId);
+                friendsListArr.push(userId + "," + socketObj.userUsername);
                 console.log(friendsListArr.join(' '));
                 User.update({friends_list: friendsListArr.join(' ')},{
                     where: { id: friendId }
@@ -71,6 +72,13 @@ exports = module.exports = function (io) {
         function sendGameInv(socketObj) {
             const friendID = socketObj.friendID;
             socket.broadcast.to(friendID + "noti").emit("game invite sent", socketObj.id);
+        }
+        function gameInvAcc(socketObj) {
+            const friendID = socketObj.friendID;
+            const userID = socketObj.userId;
+            console.log("THE GAME INVITE WAS ACCEPTED!!!!!!!!");
+            socket.broadcast.to(friendID + 'game').emit('player joining lobby',userID);
+            socket.broadcast.to(userID + 'game').emit('i am joining lobby',friendID);
         }
     })
 }

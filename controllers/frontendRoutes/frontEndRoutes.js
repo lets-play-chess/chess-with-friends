@@ -19,7 +19,6 @@ router.get("/profile",(req,res)=>{
     User.findByPk(req.session.user.id
     ).then(userData=>{
         const hbsUser = userData.get({plain:true});
-        console.log(hbsUser);
         hbsUser.losses = hbsUser.ngames - hbsUser.wins - hbsUser.ties;
         if(hbsUser.losses === 0){
             hbsUser.winloss = 'N/A';
@@ -28,26 +27,16 @@ router.get("/profile",(req,res)=>{
         }
         const strFriends = userData.friends_list;
         const friendsArr = strFriends.split(' ');
-        wrapper(friendsArr,hbsUser,res);
+        hbsUser.friend = [];
+        for (let i = 0; i < friendsArr.length; i++) {
+            if(i!==0){
+                const friendUsername = friendsArr[i].split(',')[1];
+                hbsUser.friend.push(friendUsername);
+            }
+        };
+        res.render('user',hbsUser);
     })
 })
-const wrapper = async (friendsArr, hbsUser,res) => {
-    await friendsArr.forEach( async friendID => {
-        const userdata = 
-        await User.findOne({
-            where: {
-                id: friendID,
-            }
-        })
-        const userData = userdata.get({plain: true});
-        console.log(userData);
-        console.log('-----------------------------------------------');
-        hbsUser.push(userData.username);
-    });
-    console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-    console.log(hbsUser.friend);
-    res.render("user", hbsUser)
-}
 
 // Lobby Page Get Request
 router.get("/lobby", (req,res)=>{

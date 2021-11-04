@@ -111,9 +111,13 @@ function friendReqSent(id){
                 console.log(event.target.getAttribute('data-id'));
                 fetch('/sessions').then(res => {res.json().then(res => {
                     const userId = res.user.id;
+                    const userUsername = res.user.username;
+                    const friendUsername = username;
                     const socketObj = {
                         userId,
+                        userUsername,
                         friendID,
+                        friendUsername
                     }
                     socket.emit('friend request accepted', socketObj);
                     location.reload();
@@ -165,7 +169,7 @@ function gameInvSent(id){
                         friendID,
                     }
                     socket.emit('game request accepted', socketObj);
-                    document.location.replace('/lobby-guest');
+                    document.location.replace('/lobby-guest')
                 })})
             });
         });
