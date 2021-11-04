@@ -10,6 +10,7 @@ exports = module.exports = function (io) {
         socket.on("join notification room", joinNotiRoom)
         socket.on("send friend request", sendFriendReq)
         socket.on("friend request accepted", friendReqAcc)
+        socket.on('send game invite', sendGameInv)
 
         function friendReqAcc(socketObj) {
             console.log('this socket is working!!!!!');
@@ -66,6 +67,10 @@ exports = module.exports = function (io) {
                 const friendID = res.id
                 socket.broadcast.to(friendID + "noti").emit("friend request sent", socketObj.id)
             })
+        }
+        function sendGameInv(socketObj) {
+            const friendID = socketObj.friendID;
+            socket.broadcast.to(friendID + "noti").emit("game invite sent", socketObj.id);
         }
     })
 }
