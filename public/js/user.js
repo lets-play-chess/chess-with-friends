@@ -92,6 +92,8 @@ function friendReqSent(id){
         acceptBtn.setAttribute('data-id',id)
         acceptBtn.setAttribute('class','acc-friend-req-btn');
         declineBtn.textContent = "Decline"
+        declineBtn.setAttribute('decline',id)
+        declineBtn.setAttribute('class','adecline-fr-btn');
         newFriendReq.append(acceptBtn)
         newFriendReq.append(declineBtn)
         friendReqList.append(newFriendReq)

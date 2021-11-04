@@ -13,11 +13,11 @@ User.init({
         primaryKey: true
     },
     username: {
-         type: DataTypes.STRING,
-         unique:true,
-         validate:{
-            isAlphanumeric:true
-         }
+        type: DataTypes.STRING,
+        unique:true,
+        validate:{
+        isAlphanumeric:true
+        }
     },
     password:{
         type:DataTypes.STRING,
