@@ -82,6 +82,7 @@ function friendReqSent(id){
         console.log('================')
         const username = res.UserData.username
         const newFriendReq = document.createElement("li")
+        newFriendReq.setAttribute('class', 'count')
         const friendName = document.createElement("p")
         friendName.textContent = username
         newFriendReq.append(friendName)
@@ -94,6 +95,13 @@ function friendReqSent(id){
         newFriendReq.append(acceptBtn)
         newFriendReq.append(declineBtn)
         friendReqList.append(newFriendReq)
+        var numfriends = 0;
+        var count = document.querySelectorAll('.count')
+        count.forEach(element => numfriends++)
+        
+        const numBadgeEl = document.getElementById("numBadge");
+        numBadgeEl.textContent = numfriends;
+
         const accFriendReqBtn = document.querySelectorAll('.acc-friend-req-btn');
         console.log(accFriendReqBtn);
         accFriendReqBtn.forEach(function(btn) {
