@@ -259,6 +259,122 @@ img {
 [data-Color="black"] {
     background: black;
 }
+[data-Piece="b-Rook"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: black;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+[data-Piece="b-Knight"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: black;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+[data-Piece="b-Bishop"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: black;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;}
+[data-Piece="b-Queen"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: black;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+[data-Piece="b-King"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: black;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+[data-Piece="b-Pawn"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: black;
+    text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+[data-Piece="w-Rook"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+[data-Piece="w-Knight"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+[data-Piece="w-Bishop"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+[data-Piece="w-Queen"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+[data-Piece="w-King"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+[data-Piece="w-Pawn"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+[data-Piece="empty"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+}
+[data-Piece="empty"] > p {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    visibility: hidden;
+}
+[data-Piece="possible"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: yellow;
+    text-shadow: -1px 0 orange, 0 1px orange, 1px 0 orange, 0 -1px orange;
+}
 
 /* .notification {
     background-color: #555;

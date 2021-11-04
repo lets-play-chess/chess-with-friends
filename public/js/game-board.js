@@ -1,7 +1,90 @@
 const socket = io();
 
+const renderGameboard = () => {
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+            const icon = document.createElement('p');
+            const gameTile = document.querySelector(`div[data-AN='${i}${j}']`);
+            const gamePiece = gameTile.getAttribute('data-Piece');
+            const gamePieceArr = gamePiece.split('-');
+            switch(gamePieceArr[1]){
+                default:
+                    switch(gamePieceArr[0]){
+                        case 'empty':
+                            icon.textContent = ' ';
+                        break;
+                        case 'possible':
+                            icon.textContent = '♙';
+                        break;
+                    }
+                break;
+                case 'Pawn':
+                    icon.textContent = '♙';
+                break;
+                case 'King':
+                    icon.textContent = '♔';
+                break;
+                case 'Queen':
+                    icon.textContent = '♕';
+                break;
+                case 'Bishop':
+                    icon.textContent = '♗';
+                break;
+                case 'Knight':
+                    icon.textContent = '♘';
+                break;
+                case 'Rook':
+                    icon.textContent = '♖';
+                break;
+            }
+            gameTile.appendChild(icon);
+        }
+    }
+}
+
+const updateGameboard = () => {
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+            const gameTile = document.querySelector(`div[data-AN='${i}${j}']`);
+            const icon = gameTile.firstChild;
+            const gamePiece = gameTile.getAttribute('data-Piece');
+            const gamePieceArr = gamePiece.split('-');
+            switch(gamePieceArr[1]){
+                default:
+                    switch(gamePieceArr[0]){
+                        case 'empty':
+                            icon.textContent = ' ';
+                        break;
+                        case 'possible':
+                            icon.textContent = '♙';
+                        break;
+                    }
+                break;
+                case 'Pawn':
+                    icon.textContent = '♙';
+                break;
+                case 'King':
+                    icon.textContent = '♔';
+                break;
+                case 'Queen':
+                    icon.textContent = '♕';
+                break;
+                case 'Bishop':
+                    icon.textContent = '♗';
+                break;
+                case 'Knight':
+                    icon.textContent = '♘';
+                break;
+                case 'Rook':
+                    icon.textContent = '♖';
+                break;
+            }
+        }
+    }
+}
+
 const user = {
-    color: ''
+    color: 'w'
 }
 socket.on('the game is starting', (socketObj) => {
     fetch('/sessions').then(res => {
@@ -41,18 +124,25 @@ const gameboard =
 
 renderGameboard();
 const tile = document.getElementsByClassName('tile');
-tile.forEach(tile => {
-    tile.addEventListener('click', (event) => {
+for (let i = 0; i < tile.length; i++) {
+    tile[i].addEventListener('click', (event) => {
         event.stopPropagation();
         event.preventDefault();
-    
-        const AN = event.target.getAttribute('data-AN');
+        let AN;
+        if(event.target.parentElement.getAttribute('data-AN')!==null){
+            AN = event.target.parentElement.getAttribute('data-AN');
+        } else {
+            AN = event.target.getAttribute('data-AN');
+        }
         const AN0 = AN.split('')[0];
         const AN1 = AN.split('')[1];
     
         const curPiece = seeCurrentPiece(AN);
-        const justPiece = curPiece.split(' ');
-    
+        const justPiece = curPiece.split('-');
+        
+        console.log(justPiece[0]);
+        console.log(user.color);
+        console.log(user.color === 'w' && justPiece[0] === ('w' || 'empty') || user.color === 'b' && justPiece[0] === ('b' || 'empty'));
         if (user.color === 'w' && 
             justPiece[0] === ('w' || 'empty') ||
             user.color === 'b' &&
@@ -128,7 +218,7 @@ tile.forEach(tile => {
             }
         }
     });
-});
+}
 
 const checkRookPossibleMoves = (zero,one) => {
     const rookPossibleMoves = [];
@@ -138,9 +228,9 @@ const checkRookPossibleMoves = (zero,one) => {
     // checking possible moves above rook
     const upper = numAN0;
     for (let i = 1; i <= upper; i++) { 
-        const checking = numAN0 - i;
-        const strChecking = checking.toString();
-        strChecking.push(one);
+        let checking = numAN0 - i;
+        let strChecking = checking.toString();
+        strChecking = strChecking.concat(one);
         if (seeCurrentPiece(strChecking) === 'empty') {
             rookPossibleMoves.push(strChecking);
         } else {
@@ -151,10 +241,10 @@ const checkRookPossibleMoves = (zero,one) => {
     // checking possible moves left of rook
     const left = numAN1;
     for (let i = 1; i <= left; i++) {
-        const checking = numAN1 - i;
+        let checking = numAN1 - i;
         checking = checking.toString();
-        const strChecking = zero;
-        strChecking.push(checking);
+        let strChecking = zero;
+        strChecking = strChecking.concat(checking);
         if (seeCurrentPiece(strChecking) === 'empty') {
             rookPossibleMoves.push(strChecking);
         } else {
@@ -165,9 +255,9 @@ const checkRookPossibleMoves = (zero,one) => {
     // checking possible moves below rook
     const below = 8 - (numAN0 + 1);
     for (let i = 1; i <= below; i++) { 
-        const checking = numAN0 + i;
-        const strChecking = checking.toString();
-        strChecking.push(one);
+        let checking = numAN0 + i;
+        let strChecking = checking.toString();
+        strChecking = strChecking.concat(one);
         if (seeCurrentPiece(strChecking) === 'empty') {
             rookPossibleMoves.push(strChecking);
         } else {
@@ -178,10 +268,10 @@ const checkRookPossibleMoves = (zero,one) => {
     // checking possible moves right of rook
     const right = 8 - (numAN1 + 1);
     for (let i = 1; i <= right; i++) { 
-        const checking = numAN1 + i;
+        let checking = numAN1 + i;
         checking = checking.toString();
-        const strChecking = zero;
-        strChecking.push(checking);
+        let strChecking = zero;
+        strChecking = strChecking.concat(checking);
         if (seeCurrentPiece(strChecking) === 'empty') {
             rookPossibleMoves.push(strChecking);
         } else {
@@ -207,8 +297,8 @@ const checkBishopPossibleMoves = (zero,one) => {
     for (let i = 1; i <= rightUpper; i++) {
         const AN0check = numAN0 - i;
         const AN1check = numAN1 + i;
-        const strChecking = AN0check.toString();
-        strChecking.push(AN1check);
+        let strChecking = AN0check.toString();
+        strChecking = strChecking.concat(AN1check);
         if (seeCurrentPiece(strChecking) === 'empty') {
             bishopPossibleMoves.push(strChecking);
         } else {
@@ -227,8 +317,8 @@ const checkBishopPossibleMoves = (zero,one) => {
     for (let i = 1; i <= leftUpper; i++) {
         const AN0check = numAN0 - i;
         const AN1check = numAN1 - i;
-        const strChecking = AN0check.toString();
-        strChecking.push(AN1check);
+        let strChecking = AN0check.toString();
+        strChecking = strChecking.concat(AN1check);
         if (seeCurrentPiece(strChecking) === 'empty') {
             bishopPossibleMoves.push(strChecking);
         } else {
@@ -247,8 +337,8 @@ const checkBishopPossibleMoves = (zero,one) => {
     for (let i = 1; i <= leftLower; i++) {
         const AN0check = numAN0 + i;
         const AN1check = numAN1 - i;
-        const strChecking = AN0check.toString();
-        strChecking.push(AN1check);
+        let strChecking = AN0check.toString();
+        strChecking = strChecking.concat(AN1check);
         if (seeCurrentPiece(strChecking) === 'empty') {
             bishopPossibleMoves.push(strChecking);
         } else {
@@ -267,8 +357,8 @@ const checkBishopPossibleMoves = (zero,one) => {
     for (let i = 1; i <= rightLower; i++) {
         const AN0check = numAN0 + i;
         const AN1check = numAN1 + i;
-        const strChecking = AN0check.toString();
-        strChecking.push(AN1check);
+        let strChecking = AN0check.toString();
+        strChecking = strChecking.concat(AN1check);
         if (seeCurrentPiece(strChecking) === 'empty') {
             bishopPossibleMoves.push(strChecking);
         } else {
@@ -286,20 +376,20 @@ const checkKnightPossibleMoves = (zero,one) => {
     if (num0 !== 0) {
         if (num1 > 1) {
             // left upper move is up one and left two
-            const tile1 = toString(num0 - 1);
-            const tile2 = toString(num1 - 2);
-            tile1.push(tile2);
-            if (seeCurrentPiece(tile1) === 'empty') {
-                knightPossibleMoves.push(tile1);
+            const tile1 = (num0-1).toString();
+            const tile2 = (num1-2).toString();
+            const check = tile1.concat(tile2);
+            if (seeCurrentPiece(check) === 'empty') {
+                knightPossibleMoves.push(check);
             }
         }
         if (num1 < 6) {
             // right upper move is up one and right two
-            const tile1 = toString(num0 - 1);
-            const tile2 = toString(num1 + 2);
-            tile1.push(tile2);
-            if (seeCurrentPiece(tile1) === 'empty') {
-                knightPossibleMoves.push(tile1);
+            const tile1 = (num0-1).toString();
+            const tile2 = (num1+2).toString();
+            const check = tile1.concat(tile2);
+            if (seeCurrentPiece(check) === 'empty') {
+                knightPossibleMoves.push(check);
             }
         }
     }
@@ -308,20 +398,20 @@ const checkKnightPossibleMoves = (zero,one) => {
     if (num1 !== 0) {
         if (num0 > 1) {
             // upper left move is left one and up two
-            const tile1 = toString(num0 - 2);
-            const tile2 = toString(num1 - 1);
-            tile1.push(tile2);
-            if (seeCurrentPiece(tile1) === 'empty') {
-                knightPossibleMoves.push(tile1);
+            const tile1 = (num0-2).toString();
+            const tile2 = (num1-1).toString();
+            const check = tile1.concat(tile2);
+            if (seeCurrentPiece(check) === 'empty') {
+                knightPossibleMoves.push(check);
             }
         }
         if (num0 < 6) {
             // lower left move is left one and down two
-            const tile1 = toString(num0 + 2);
-            const tile2 = toString(num1 - 1);
-            tile1.push(tile2);
-            if (seeCurrentPiece(tile1) === 'empty') {
-                knightPossibleMoves.push(tile1);
+            const tile1 = (num0+2).toString();
+            const tile2 = (num1-1).toString();
+            const check = tile1.concat(tile2);
+            if (seeCurrentPiece(check) === 'empty') {
+                knightPossibleMoves.push(check);
             }
         }
     }
@@ -329,20 +419,20 @@ const checkKnightPossibleMoves = (zero,one) => {
     if (num0 !== 7) {
         if (num1 > 1) {
             // left lower move is down one and left two
-            const tile1 = toString(num0 + 1);
-            const tile2 = toString(num1 - 2);
-            tile1.push(tile2);
-            if (seeCurrentPiece(tile1) === 'empty') {
-                knightPossibleMoves.push(tile1);
+            const tile1 = (num0+1).toString();
+            const tile2 = (num1-2).toString();
+            const check = tile1.concat(tile2);
+            if (seeCurrentPiece(check) === 'empty') {
+                knightPossibleMoves.push(check);
             }
         }
         if (num1 < 6) {
             // right lower move is down one and right two
-            const tile1 = toString(num0 + 1);
-            const tile2 = toString(num1 + 2);
-            tile1.push(tile2);
-            if (seeCurrentPiece(tile1) === 'empty') {
-                knightPossibleMoves.push(tile1);
+            const tile1 = (num0+1).toString();
+            const tile2 = (num1+2).toString();
+            const check = tile1.concat(tile2);
+            if (seeCurrentPiece(check) === 'empty') {
+                knightPossibleMoves.push(check);
             }
         }
     }
@@ -350,20 +440,20 @@ const checkKnightPossibleMoves = (zero,one) => {
     if (num1 !== 7) {
         if (num0 > 1) {
             // upper right move is right one and up two
-            const tile1 = toString(num0 - 2);
-            const tile2 = toString(num1 + 1);
-            tile1.push(tile2);
-            if (seeCurrentPiece(tile1) === 'empty') {
-                knightPossibleMoves.push(tile1);
+            const tile1 = (num0-2).toString();
+            const tile2 = (num1+1).toString();
+            const check = tile1.concat(tile2);
+            if (seeCurrentPiece(check) === 'empty') {
+                knightPossibleMoves.push(check);
             }
         }
         if (num0 < 6) {
             // lower right move is right one and down two
-            const tile1 = toString(num0 + 2);
-            const tile2 = toString(num1 + 1);
-            tile1.push(tile2);
-            if (seeCurrentPiece(tile1) === 'empty') {
-                knightPossibleMoves.push(tile1);
+            const tile1 = (num0+2).toString();
+            const tile2 = (num1+1).toString();
+            const check = tile1.concat(tile2);
+            if (seeCurrentPiece(check) === 'empty') {
+                knightPossibleMoves.push(check);
             }
         }
     }
@@ -377,9 +467,9 @@ const checkKingPossibleMoves = (zero,one) => {
 
     // checking up
     if (num0 !== 0) {
-        const check0 = toString(num0 - 1);
-        const check1 = toString(num1);
-        check0.push(check1);
+        let check0 = (num0-1).toString();
+        let check1 = (num1).toString();
+        check0 = check0.concat(check1);
         if (seeCurrentPiece(check0) === 'empty') {
             kingPossibleMoves.push(check0);
         }
@@ -387,9 +477,9 @@ const checkKingPossibleMoves = (zero,one) => {
 
     // checking up left
     if (num0 !== 0 && num1 !== 0) {
-        const check0 = toString(num0 - 1);
-        const check1 = toString(num1 - 1);
-        check0.push(check1);
+        let check0 = (num0-1).toString();
+        let check1 = (num1-1).toString();
+        check0 = check0.concat(check1);
         if (seeCurrentPiece(check0) === 'empty') {
             kingPossibleMoves.push(check0);
         }
@@ -397,9 +487,9 @@ const checkKingPossibleMoves = (zero,one) => {
 
     // checking left
     if (num1 !== 0) {
-        const check0 = toString(num0);
-        const check1 = toString(num1 - 1);
-        check0.push(check1);
+        let check0 = (num0).toString();
+        let check1 = (num1-1).toString();
+        check0 = check0.concat(check1);
         if (seeCurrentPiece(check0) === 'empty') {
             kingPossibleMoves.push(check0);
         }
@@ -407,9 +497,9 @@ const checkKingPossibleMoves = (zero,one) => {
 
     // checking down left
     if (num0 !== 7 && num1 !== 0) {
-        const check0 = toString(num0 + 1);
-        const check1 = toString(num1 - 1);
-        check0.push(check1);
+        let check0 = (num0+1).toString();
+        let check1 = (num1-1).toString();
+        check0 = check0.concat(check1);
         if (seeCurrentPiece(check0) === 'empty') {
             kingPossibleMoves.push(check0);
         }
@@ -417,9 +507,9 @@ const checkKingPossibleMoves = (zero,one) => {
 
     // checking down
     if (num0 !== 7) {
-        const check0 = toString(num0 + 1);
-        const check1 = toString(num1);
-        check0.push(check1);
+        let check0 = (num0 + 1).toString();
+        let check1 = (num1).toString();
+        check0 = check0.concat(check1);
         if (seeCurrentPiece(check0) === 'empty') {
             kingPossibleMoves.push(check0);
         }
@@ -427,9 +517,9 @@ const checkKingPossibleMoves = (zero,one) => {
 
     // checking down right
     if (num0 !== 7 && num1 !== 7) {
-        const check0 = toString(num0 + 1);
-        const check1 = toString(num1 + 1);
-        check0.push(check1);
+        let check0 = (num0+1).toString();
+        let check1 = (num1+1).toString();
+        check0 = check0.concat(check1);
         if (seeCurrentPiece(check0) === 'empty') {
             kingPossibleMoves.push(check0);
         }
@@ -437,9 +527,9 @@ const checkKingPossibleMoves = (zero,one) => {
 
     // checking right
     if (num1 !== 7) {
-        const check0 = toString(num0);
-        const check1 = toString(num1 + 1);
-        check0.push(check1);
+        let check0 = (num0).toString();
+        let check1 = (num1+1).toString();
+        check0 = check0.concat(check1);
         if (seeCurrentPiece(check0) === 'empty') {
             kingPossibleMoves.push(check0);
         }
@@ -447,9 +537,9 @@ const checkKingPossibleMoves = (zero,one) => {
 
     // checking up right
     if (num0 !== 0 && num1 !== 7) {
-        const check0 = toString(num0 - 1);
-        const check1 = toString(num1 + 1);
-        check0.push(check1);
+        let check0 = (num0-1).toString();
+        let check1 = (num1+1).toString();
+        check0 = check0.concat(check1);
         if (seeCurrentPiece(check0) === 'empty') {
             kingPossibleMoves.push(check0);
         }
@@ -461,41 +551,44 @@ const checkWhitePawnPossibleMoves = (zero,one) => {
     const pawnPossibleMoves = [];
     const num0 = Number(zero);
     const num1 = Number(one);
-
-    const check0 = toString(num0 - 1);
-    const check1 = toString(num1);
-    check0.push(check1);
+    let check0 = num0.toString();
+    let check1 = (num1-1).toString();
+    check0 = check0.concat(check1);
     if (seeCurrentPiece(check0) === 'empty') {
         pawnPossibleMoves.push(check0);
     }
+    return pawnPossibleMoves;
 }
 
 const checkBlackPawnPossibleMoves = (zero,one) => {
     const pawnPossibleMoves = [];
     const num0 = Number(zero);
     const num1 = Number(one);
-
-    const check0 = toString(num0 + 1);
-    const check1 = toString(num1);
-    check0.push(check1);
+    let check0 = num0.toString();
+    let check1 = (num1+1).toString();
+    check0 = check0.concat(check1);
     if (seeCurrentPiece(check0) === 'empty') {
         pawnPossibleMoves.push(check0);
     }
+    return pawnPossibleMoves;
 }
 
 // takes in a number of moves and sets the piece equal to "possibleMove"
 const updatePossibleMoves = (movesArr) => {
     for (let i = 0; i < movesArr.length; i++) {
         const newPossMove = movesArr[i].split('');
-        gameboard[Number(newPossMove[0])][Number(newPossMove[1])].piece = 'possible';
+        const h = newPossMove[0];
+        const g = newPossMove[1];
+        document.querySelector(`div[data-AN='${h}${g}']`).setAttribute('data-Piece','possible');
     }
+    updateGameboard();
 }
 
 const clearPossibleMoves = () => {
     for (let i = 0; i < 8; i++) {
         for (let j = 0; j < 8; j++) {
             if(seeCurrentPiece(`${i}${j}`) === 'possible') {
-                gameboard[i][j].piece = 'empty';
+                document.querySelector(`div[data-AN='${i}${j}']`).setAttribute('data-Piece','empty');
             }
         }
     }
@@ -504,29 +597,21 @@ const clearPossibleMoves = () => {
 // function that accepts moving a piece 'from' a tile 'to' another tile.
 const movePiece = (from,to) => {
     const nfrom = from.split('');
-    const piece = gameboard[Number(nfrom[0])][Number(nfrom[1])].piece;
-    gameboard[Number(nfrom[0])][Number(nfrom[1])].piece = 'empty';
-
+    const piece = document.querySelector(`div[data-AN='${nfrom[0]}${nfrom[1]}']`).getAttribute('data-Piece');
     const nto = to.split('');
-    gameboard[Number(nto[0])][Number(nto[1])].piece = piece;
-
-    socket.emit('my piece moved', {gameboard, userID, opponentID});
-    playerTurn = Math.abs(playerTurn -1);
+    document.querySelector(`div[data-AN='${nfrom[0]}${nfrom[1]}']`).setAttribute('data-Piece','empty');
+    document.querySelector(`div[data-AN='${nto[0]}${nto[1]}']`).setAttribute('data-Piece',piece);
+    clearPossibleMoves();
+    updateGameboard();
 }
 
 // function that accepts a 'tile' that you want to see if there are any pieces on
 const seeCurrentPiece = (tile) => {
     const ntile = tile.split('');
-    return gameboard[ntile[0]][ntile[1]].piece;
-}
-
-const renderGameboard = () => {
-    for (let i = 0; i < 8; i++) {
-        for (let j = 0; j < 8; j++) {
-            const gameTile = document.querySelector(`span[data-AN='${i}${j}']`);
-
-        }
-    }
+    const i = Number(ntile[0]);
+    const j = Number(ntile[1]);
+    const gamePiece = document.querySelector(`div[data-AN='${i}${j}']`).getAttribute('data-Piece');
+    return gamePiece;
 }
 
 // socket that listens for when the opponent moves
