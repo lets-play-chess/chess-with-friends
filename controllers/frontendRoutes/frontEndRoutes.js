@@ -59,6 +59,15 @@ router.get("/lobby", (req,res)=>{
     })
 });
 
+router.get("/lobby-guest", (req,res)=>{
+    User.findByPk(req.session.user.id,{
+    }).then(userData=>{
+        const hbsUser = userData.get({plain:true});
+        console.log(hbsUser);
+        res.render("lobby", hbsUser)
+    })
+});
+
 // Game Board Get Request
 router.get("/gameboard", (req,res)=> {
     res.render("game-board")

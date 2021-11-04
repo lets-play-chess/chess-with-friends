@@ -17,46 +17,6 @@ fetch('/sessions').then(res => {
     }
 });
 
-const gameInvList = document.getElementById('game-invite-list');
-socket.on('game invite sent', (gameInv) => {
-    const newGameInv = document.createElement('li');
-    newGameInv.textContent = gameInv.username;
-    newGameInv.setAttribute('data-lobbyId', gameInv.lobbyId)
-
-    const acceptGameInvBtn = document.createElement('button');
-    // TODO: add a checkmark or something to the 'textConent' of the acceptGameInvBtn
-    acceptGameInvBtn.textContent = 'Accept';
-
-    const declineGameInvBtn = document.createElement('button');
-    // TODO: add an 'X' or something to the 'textConent' of the acceptGameInvBtn
-    declineGameInvBtn.textContent = 'Decline';
-
-    newGameInv.append(acceptGameInvBtn);
-    newGameInv.append(declineGameInvBtn);
-
-    gameInvList.append(newGameInv);
-});
-
-const friendReqList = document.getElementById('friend-request-list');
-// socket.on('friend request sent', (friendReq) => {
-//     const newFriendReq = document.createElement('li');
-//     newFriendReq.textContent = friendReq.username;
-//     newFriendReq.setAttribute('data-userId', friendReq.userId)
-
-//     const acceptFriendReqBtn = document.createElement('button');
-//     // TODO: add a checkmark or something to the 'textConent' of the acceptGameInvBtn
-//     acceptFriendReqBtn.textContent = 'Accept';
-
-//     const declineFriendReqBtn = document.createElement('button');
-//     // TODO: add an 'X' or something to the 'textConent' of the acceptGameInvBtn
-//     declineFriendReqBtn.textContent = 'Decline';
-
-//     newFriendReq.append(acceptFriendReqBtn);
-//     newFriendReq.append(declineFriendReqBtn);
-
-//     friendReqList.append(newFriendReq);
-// });
-
 const friendsList = document.getElementById('friends-list');
 socket.on('friend request accepted', (newFriend) => {
     const newFriendSocket = document.createElement('li');
@@ -149,6 +109,55 @@ function friendReqSent(id){
                     }
                     socket.emit('friend request accepted', socketObj);
                     location.reload();
+                })})
+            });
+        });
+    })
+}
+
+socket.on("game invite sent", gameInvSent)
+function gameInvSent(id){
+    const gameInvList = document.getElementById("game-invite-list")
+    fetch('/api/users/' + id)
+    .then(res => {
+        console.log('================')
+        console.log(res)
+        console.log('================')
+        return res.json()
+
+    }).then(res => {
+        console.log('================')
+        console.log(res)
+        console.log('================')
+        const username = res.UserData.username
+        const newGameInv = document.createElement("li")
+        const friendName = document.createElement("p")
+        friendName.textContent = username
+        newGameInv.append(friendName)
+        const acceptBtn = document.createElement("button")
+        const declineBtn = document.createElement("button")
+        acceptBtn.textContent = "Accept"
+        acceptBtn.setAttribute('data-id',id)
+        acceptBtn.setAttribute('class','acc-game-invite-btn');
+        declineBtn.textContent = "Decline"
+        newGameInv.append(acceptBtn)
+        newGameInv.append(declineBtn)
+        gameInvList.append(newGameInv)
+        const accGameInvBtn = document.querySelectorAll('.acc-game-invite-btn');
+        console.log(accGameInvBtn);
+        accGameInvBtn.forEach(function(btn) {
+            btn.addEventListener("click", (event) => {
+                event.preventDefault();
+                const friendID = event.target.getAttribute('data-id');
+                console.log(event.target.getAttribute('data-id'));
+                fetch('/sessions').then(res => {res.json().then(res => {
+                    const userId = res.user.id;
+                    const socketObj = {
+                        userId,
+                        friendID,
+                    }
+                    socket.emit('game request accepted', socketObj);
+                    document.location.replace('/lobby-guest');
                 })})
             });
         });
