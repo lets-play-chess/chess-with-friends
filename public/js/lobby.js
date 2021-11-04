@@ -1,3 +1,4 @@
+
 const socket = io.connect();
 
 const invFriendBtn = document.getElementById('invite-your-friend-btn');
@@ -43,4 +44,12 @@ backFromLobbyBtn.addEventListener('click', (event) => {
             "Content-Type":"application/json"
         }
     });
+});
+
+const opponent = document.getElementById('users2');
+socket.on('player joining lobby', (id) => {
+    console.log(('THE PLAYER SHOULD HAVE JOINED!!!!'));
+    fetch('api/users/'+id).then(userData => {
+        opponent.textContent = userData.username;
+    })
 });

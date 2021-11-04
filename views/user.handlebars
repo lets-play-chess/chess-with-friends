@@ -36,7 +36,7 @@
             <div class="col-4 rounded" id="friends-box">
                 <ul class="list-group mt-3 mr-2 ml-2 rounded">
                     {{#each friend}} 
-                            <li class="list-group-item mb-3 list-group-item-action" class="friends-list">{{friend_username}}</li>
+                            <li class="list-group-item mb-3 list-group-item-action" class="friends-list">{{this}}</li>
                     {{/each}}
                 </ul>
                 <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#addFriendModal" id="open-modal"> Add Friend </button>

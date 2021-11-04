@@ -73,10 +73,6 @@ router.post("/login", (req, res) => {
                     id: foundUser.id
                 }
                 res.json({foundUser})
-                const gameRoom = foundUser.id + "game"
-                const notiRoom = foundUser.id + "noti"
-                joinGameRoom(gameRoom);
-                joinNotiRoom(notiRoom);
             } else {
                 req.session.destroy()
                 res.status(401).json({ message: "Incorrect email or password" })
