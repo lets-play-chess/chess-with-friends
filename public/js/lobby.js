@@ -1,5 +1,19 @@
-
 const socket = io.connect();
+fetch('/sessions').then(res => {
+    if (res.ok) {
+        res.json().then(res => {
+        console.log(res)
+        const gameRoom = res.user.id + "game"
+        const notiRoom = res.user.id + "noti"
+        socket.emit('join game room', gameRoom)
+        socket.emit('join notification room', notiRoom)
+        console.log(gameRoom,notiRoom)
+    })
+    } else {
+        // TODO: Show that there was an error and that the friend request wasn't sent
+        throw (err)
+    }
+});
 
 const invFriendBtn = document.getElementById('invite-your-friend-btn');
 // TODO: somehow figure out how to get the id of the friend you are inviting
@@ -27,7 +41,17 @@ const startGameBtn = document.getElementById('start-btn');
 // TODO: somehow figure out how to get the lobby id
 startGameBtn.addEventListener('click', (event) => {
     event.preventDefault();
-
+    socket.emit('starting game')
+    fetch('/sessions').then(res => {
+        if (res.ok) {
+            res.json().then(res => {
+                res.user.id
+        })
+        } else {
+            // TODO: Show that there was an error and that the friend request wasn't sent
+            throw (err)
+        }
+    });
 });
 
 const backFromLobbyBtn = document.getElementById('back-btn');
@@ -35,21 +59,35 @@ const backFromLobbyBtn = document.getElementById('back-btn');
 backFromLobbyBtn.addEventListener('click', (event) => {
     event.preventDefault();
 
-    const backFromLobbyObj = { lobbyId };
-    // TODO: add the correct route to start the game in the fetch below
-    fetch('correct route to start the game', {
-        method: "POST?",
-        body:JSON.stringify(backFromLobbyObj),
-        headers:{
-            "Content-Type":"application/json"
-        }
-    });
 });
 
 const opponent = document.getElementById('users2');
 socket.on('player joining lobby', (id) => {
     console.log(('THE PLAYER SHOULD HAVE JOINED!!!!'));
     fetch('api/users/'+id).then(userData => {
-        opponent.textContent = userData.username;
-    })
+        userData.json().then(userData => {
+        opponent.textContent = userData.UserData.username;
+    })})
+    const startGameBtn = document.getElementById('start-btn');
+    startGameBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        fetch('/sessions').then(res => {
+            if (res.ok) {
+                res.json().then(res => {
+                    const socketObj = {
+                        userID: res.user.id,
+                        opponentID: id
+                    }
+                    socket.emit('starting game',socketObj);
+                })
+            } else {
+            // TODO: Show that there was an error and that the friend request wasn't sent
+            throw (err)
+            }
+        });
+    });
+});
+
+socket.on('start the game', (socketObj) => {
+
 });
