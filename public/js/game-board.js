@@ -1,6 +1,25 @@
 const socket = io();
-// Game Logic :)))))
 
+const user = {
+    color: ''
+}
+socket.on('the game is starting', (socketObj) => {
+    fetch('/sessions').then(res => {
+        if (res.ok) {
+            res.json().then(res => {
+                if(res.user.id === socketObj.userID) {
+                    user.color = 'w';
+                }
+                if(res.user.id === socketObj.opponentID) {
+                    user.color = 'b';
+                }
+            })
+        } else {
+            throw (err)
+        }
+    });
+})
+// Game Logic :)))))
 // White starts the game (white = 0, black = 1)
 let playerTurn = 0;
 
@@ -20,88 +39,96 @@ const gameboard =
     [{color:'black',AN:'70',piece:'w Rook'},{color:'white',AN:'71',piece:'w Knight'},{color:'black',AN:'72',piece:'w Bishop'},{color:'white',AN:'73',piece:'w Queen'},{color:'black',AN:'74',piece:'w King'},{color:'white',AN:'75',piece:'w Bishop'},{color:'black',AN:'76',piece:'w Knight'},{color:'white',AN:'77',piece:'w Rook'}],
 ]; 
 
+renderGameboard();
 const tile = document.getElementsByClassName('tile');
-tile.addEventListener('click', (event) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    const AN = event.target.getAttribute('data-AN');
-    const AN0 = AN.split('')[0];
-    const AN1 = AN.split('')[1];
-
-    const curPiece = seeCurrentPiece(AN);
-    const justPiece = curPiece.split(' ');
-
-    if (user.color === 'w' && 
-        justPiece[0] === ('w' || 'empty') ||
-        user.color === 'b' &&
-        justPiece[0] === ('b' || 'empty'));
-    {
-        if (user.color === 'w' && playerTurn === 0 ||
-            user.color === 'b' && playerTurn === 1)
+tile.forEach(tile => {
+    tile.addEventListener('click', (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+    
+        const AN = event.target.getAttribute('data-AN');
+        const AN0 = AN.split('')[0];
+        const AN1 = AN.split('')[1];
+    
+        const curPiece = seeCurrentPiece(AN);
+        const justPiece = curPiece.split(' ');
+    
+        if (user.color === 'w' && 
+            justPiece[0] === ('w' || 'empty') ||
+            user.color === 'b' &&
+            justPiece[0] === ('b' || 'empty'));
         {
-            switch (justPiece[1]) {
-                case '':
-                    switch (justPiece[0]) {
-                        case 'empty':
-                            clearPossibleMoves();
+            if (user.color === 'w' && playerTurn === 0 ||
+                user.color === 'b' && playerTurn === 1)
+            {
+                switch (justPiece[1]) {
+                    case '':
+                        switch (justPiece[0]) {
+                            case 'empty':
+                                clearPossibleMoves();
+                            break;
+            
+                            case 'possible':
+                                clearPossibleMoves();
+                                movePiece(selected,AN);
+                                socket.emit('move submitted',gameboard);
+                            break;
+                        }
+                    break;
+            
+                    case 'Rook':
+                        clearPossibleMoves();
+                        const rookPossMoves = checkRookPossibleMoves(AN0,AN1);
+                        updatePossibleMoves(rookPossMoves);
+                        selected = AN;
+                    break;
+            
+                    case 'Knight':
+                        clearPossibleMoves();
+                        const knightPossMoves = checkKnightPossibleMoves(AN0,AN1);
+                        updatePossibleMoves(knightPossMoves);
+                        selected = AN;
+                    break;
+            
+                    case 'Bishop':
+                        clearPossibleMoves();
+                        const bishopPossMoves = checkBishopPossibleMoves(AN0,AN1);
+                        updatePossibleMoves(bishopPossMoves);
+                        selected = AN;
+                    break;
+                    
+                    case 'Queen':
+                        clearPossibleMoves();
+                        const firstHalfMoves = checkRookPossibleMoves(AN0,AN1);
+                        const secondHalfMoves = checkBishopPossibleMoves(AN0,AN1);
+                        const queenPossMoves = firstHalfMoves.concat(secondHalfMoves);
+                        updatePossibleMoves(queenPossMoves);
+                        selected = AN;
+                    break;
+            
+                    case 'King':
+                        clearPossibleMoves();
+                        const kingPossMoves = checkKingPossibleMoves(AN0,AN1);
+                        updatePossibleMoves(kingPossMoves);
+                        selected = AN;
+                    break;
+            
+                    case 'Pawn':
+                        clearPossibleMoves();
+                        let pawnPossMoves;
+                        if(justPiece[0]==='w'){
+                            pawnPossMoves = checkWhitePawnPossibleMoves(AN0,AN1);
+                        } else {
+                            pawnPossMoves = checkBlackPawnPossibleMoves(AN0,AN1);
+                        }
+                        updatePossibleMoves(pawnPossMoves);
+                        selected = AN;
                         break;
-        
-                        case 'possible':
-                            clearPossibleMoves();
-                            movePiece(selected,AN);
-                            socket.emit('move submitted',gameboard);
-                        break;
-                    }
-                break;
-        
-                case 'Rook':
-                    clearPossibleMoves();
-                    const rookPossMoves = checkRookPossibleMoves(AN0,AN1);
-                    updatePossibleMoves(rookPossMoves);
-                    selected = AN;
-                break;
-        
-                case 'Knight':
-                    clearPossibleMoves();
-                    const knightPossMoves = checkKnightPossibleMoves(AN0,AN1);
-                    updatePossibleMoves(knightPossMoves);
-                    selected = AN;
-                break;
-        
-                case 'Bishop':
-                    clearPossibleMoves();
-                    const bishopPossMoves = checkBishopPossibleMoves(AN0,AN1);
-                    updatePossibleMoves(bishopPossMoves);
-                    selected = AN;
-                break;
-                
-                case 'Queen':
-                    clearPossibleMoves();
-                    const firstHalfMoves = checkRookPossibleMoves(AN0,AN1);
-                    const secondHalfMoves = checkBishopPossibleMoves(AN0,AN1);
-                    const queenPossMoves = firstHalfMoves.concat(secondHalfMoves);
-                    updatePossibleMoves(queenPossMoves);
-                    selected = AN;
-                break;
-        
-                case 'King':
-                    clearPossibleMoves();
-                    const kingPossMoves = checkKingPossibleMoves(AN0,AN1);
-                    updatePossibleMoves(kingPossMoves);
-                    selected = AN;
-                break;
-        
-                case 'Pawn':
-                    clearPossibleMoves();
-                    const pawnPossMoves = checkPawnPossibleMoves(AN0,AN1);
-                    updatePossibleMoves(pawnPossMoves);
-                    selected = AN;
-                break;
+                }
             }
         }
-    }
-
+    
+    });
 });
 
 const checkRookPossibleMoves = (zero,one) => {
@@ -431,8 +458,8 @@ const checkKingPossibleMoves = (zero,one) => {
     return kingPossibleMoves;
 }
 
-const checkPawnPossibleMoves = (zero,one) => {
-    const kingPossibleMoves = [];
+const checkWhitePawnPossibleMoves = (zero,one) => {
+    const pawnPossibleMoves = [];
     const num0 = Number(zero);
     const num1 = Number(one);
 
@@ -440,7 +467,20 @@ const checkPawnPossibleMoves = (zero,one) => {
     const check1 = toString(num1);
     check0.push(check1);
     if (seeCurrentPiece(check0) === 'empty') {
-        kingPossibleMoves.push(check0);
+        pawnPossibleMoves.push(check0);
+    }
+}
+
+const checkBlackPawnPossibleMoves = (zero,one) => {
+    const pawnPossibleMoves = [];
+    const num0 = Number(zero);
+    const num1 = Number(one);
+
+    const check0 = toString(num0 + 1);
+    const check1 = toString(num1);
+    check0.push(check1);
+    if (seeCurrentPiece(check0) === 'empty') {
+        pawnPossibleMoves.push(check0);
     }
 }
 
@@ -479,6 +519,15 @@ const movePiece = (from,to) => {
 const seeCurrentPiece = (tile) => {
     const ntile = tile.split('');
     return gameboard[ntile[0]][ntile[1]].piece;
+}
+
+const renderGameboard = () => {
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+            const gameTile = document.querySelector(`span[data-AN='${i}${j}']`);
+
+        }
+    }
 }
 
 // socket that listens for when the opponent moves
