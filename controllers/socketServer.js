@@ -88,14 +88,13 @@ exports = module.exports = function (io) {
             },400)
         }
         function startGame(socketObj) {
-            const userID = socketObj.userID;
             const opponentID = socketObj.opponentID;
-            socket.broadcast.to(userID + 'game').emit('start the game',socketObj);
             socket.broadcast.to(opponentID + 'game').emit('start the game',socketObj);
         }
         function moveToGame(socketObj) {
             const hostID = socketObj.userID;
             const opponentID = socketObj.opponentID;
+            const stopper = 0;
             const interval = setInterval(() => {
                 socket.broadcast.to(hostID + 'game').emit('the game is starting',socketObj);
                 socket.broadcast.to(opponentID + 'game').emit('the game is starting',socketObj);

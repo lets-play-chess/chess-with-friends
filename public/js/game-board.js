@@ -62,7 +62,7 @@ tile.forEach(tile => {
                 user.color === 'b' && playerTurn === 1)
             {
                 switch (justPiece[1]) {
-                    case '':
+                    default:
                         switch (justPiece[0]) {
                             case 'empty':
                                 clearPossibleMoves();
@@ -127,7 +127,6 @@ tile.forEach(tile => {
                 }
             }
         }
-    
     });
 });
 
@@ -141,7 +140,7 @@ const checkRookPossibleMoves = (zero,one) => {
     for (let i = 1; i <= upper; i++) { 
         const checking = numAN0 - i;
         const strChecking = checking.toString();
-        strChecking.push(AN1);
+        strChecking.push(one);
         if (seeCurrentPiece(strChecking) === 'empty') {
             rookPossibleMoves.push(strChecking);
         } else {
@@ -154,7 +153,7 @@ const checkRookPossibleMoves = (zero,one) => {
     for (let i = 1; i <= left; i++) {
         const checking = numAN1 - i;
         checking = checking.toString();
-        const strChecking = AN0;
+        const strChecking = zero;
         strChecking.push(checking);
         if (seeCurrentPiece(strChecking) === 'empty') {
             rookPossibleMoves.push(strChecking);
@@ -168,7 +167,7 @@ const checkRookPossibleMoves = (zero,one) => {
     for (let i = 1; i <= below; i++) { 
         const checking = numAN0 + i;
         const strChecking = checking.toString();
-        strChecking.push(AN1);
+        strChecking.push(one);
         if (seeCurrentPiece(strChecking) === 'empty') {
             rookPossibleMoves.push(strChecking);
         } else {
@@ -181,7 +180,7 @@ const checkRookPossibleMoves = (zero,one) => {
     for (let i = 1; i <= right; i++) { 
         const checking = numAN1 + i;
         checking = checking.toString();
-        const strChecking = AN0;
+        const strChecking = zero;
         strChecking.push(checking);
         if (seeCurrentPiece(strChecking) === 'empty') {
             rookPossibleMoves.push(strChecking);
@@ -488,7 +487,7 @@ const checkBlackPawnPossibleMoves = (zero,one) => {
 const updatePossibleMoves = (movesArr) => {
     for (let i = 0; i < movesArr.length; i++) {
         const newPossMove = movesArr[i].split('');
-        gameboard[newPossMove[0]][newPossMove[1]].piece = 'possible';
+        gameboard[Number(newPossMove[0])][Number(newPossMove[1])].piece = 'possible';
     }
 }
 
@@ -505,13 +504,13 @@ const clearPossibleMoves = () => {
 // function that accepts moving a piece 'from' a tile 'to' another tile.
 const movePiece = (from,to) => {
     const nfrom = from.split('');
-    const piece = gameboard[nfrom[0]][nfrom[1]].piece;
-    gameboard[nfrom[0]][nfrom[1]].piece = 'empty';
+    const piece = gameboard[Number(nfrom[0])][Number(nfrom[1])].piece;
+    gameboard[Number(nfrom[0])][Number(nfrom[1])].piece = 'empty';
 
     const nto = to.split('');
-    gameboard[nto[0]][nto[1]].piece = piece;
+    gameboard[Number(nto[0])][Number(nto[1])].piece = piece;
 
-    socket.emit('my piece moved', { from, to, });
+    socket.emit('my piece moved', {gameboard, userID, opponentID});
     playerTurn = Math.abs(playerTurn -1);
 }
 
@@ -533,4 +532,5 @@ const renderGameboard = () => {
 // socket that listens for when the opponent moves
 socket.on('opponent moved piece', (gameBoard) => {
     gameboard = gameBoard;
+    playerTurn = Math.abs(playerTurn-1);
 });
