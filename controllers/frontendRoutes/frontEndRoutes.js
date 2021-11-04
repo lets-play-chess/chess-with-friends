@@ -32,13 +32,6 @@ router.get("/profile",(req,res)=>{
     })
 })
 const wrapper = async (friendsArr, hbsUser,res) => {
-    hbsUser.friend = await friendArrManip(friendsArr);
-    console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-    console.log(hbsUser.friend);
-    res.render("user", hbsUser)
-}
-const friendArrManip = async (friendsArr) => {
-    const friends = [];
     await friendsArr.forEach( async friendID => {
         const userdata = 
         await User.findOne({
@@ -49,23 +42,21 @@ const friendArrManip = async (friendsArr) => {
         const userData = userdata.get({plain: true});
         console.log(userData);
         console.log('-----------------------------------------------');
-        friends.push(userData.username);
+        hbsUser.push(userData.username);
     });
-    return friends;
+    console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+    console.log(hbsUser.friend);
+    res.render("user", hbsUser)
 }
 
 // Lobby Page Get Request
-router.get("/lobby/", (req,res)=>{
-    // if(!req.session.user){
-    //     return res.redirect("/")
-    // }
-    // IF logged in, find user and lobby page
+router.get("/lobby", (req,res)=>{
     User.findByPk(req.session.user.id,{
     }).then(userData=>{
         const hbsUser = userData.get({plain:true});
+        console.log(hbsUser);
         res.render("lobby", hbsUser)
     })
-    //res.render("lobby")
 });
 
 // Game Board Get Request
