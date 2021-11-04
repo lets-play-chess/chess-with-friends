@@ -156,6 +156,13 @@ function gameInvSent(id){
         newGameInv.append(acceptBtn)
         newGameInv.append(declineBtn)
         gameInvList.append(newGameInv)
+        
+        var numfriends = 0;
+        var count = document.querySelectorAll('.count')
+        count.forEach(element => numfriends++)
+        
+        const numBadgeEl = document.getElementById("numBadge");
+        numBadgeEl.textContent = numfriends;
         const accGameInvBtn = document.querySelectorAll('.acc-game-invite-btn');
         console.log(accGameInvBtn);
         accGameInvBtn.forEach(function(btn) {
