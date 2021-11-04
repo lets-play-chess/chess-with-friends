@@ -143,6 +143,7 @@ function gameInvSent(id){
         console.log('================')
         const username = res.UserData.username
         const newGameInv = document.createElement("li")
+        newGameInv.setAttribute('class', 'count')
         const friendName = document.createElement("p")
         friendName.textContent = username
         newGameInv.append(friendName)
