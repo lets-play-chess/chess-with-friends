@@ -170,88 +170,156 @@ for (let i = 0; i < tile.length; i++) {
         if ((user.color === 'w' && 
             (justPiece[0] === 'w' || 
             justPiece[0] === 'empty' ||
-            justPiece[0] === 'possible')) ||
+            justPiece[0] === 'possible' ||
+            justPiece[2] === 'atk')) ||
             (user.color === 'b' &&
             (justPiece[0] === 'b' ||
             justPiece[0] === 'empty' ||
-            justPiece[0] === 'possible')))
+            justPiece[0] === 'possible' ||
+            justPiece[2] === 'atk')))
         {
             if (user.color === 'w' && playerTurn === 0 ||
                 user.color === 'b' && playerTurn === 1)
             {
-                switch (justPiece[1]) {
-                    default:
-                        switch (justPiece[0]) {
-                            case 'empty':
-                                clearPossibleMoves();
-                            break;
-            
-                            case 'possible':
-                                clearPossibleMoves();
-                                movePiece(selected,AN);
-                                const gameboard = packGameboard();
-                                console.log(gameboard);
-                                const gameInfoObj = {
-                                    hostID: socketObj.userID,
-                                    opponentID: socketObj.opponentID,
-                                    gameboard,
-                                    user:user.color
-                                }
-                                console.log(gameInfoObj);
-                                socket.emit('move submitted',gameInfoObj);
-                                console.log('i emmitted a move submit :)verygood')
-                            break;
+                let atk = false;
+                console.log(justPiece);
+                switch (justPiece[2]) {
+                    case 'atk':
+                        atk = true;
+                        clearPossibleAtks();
+                        clearPossibleMoves();
+                        movePiece(selected,AN);
+                        const gameboard = packGameboard();
+                        console.log(gameboard);
+                        const gameInfoObj = {
+                            hostID: socketObj.userID,
+                            opponentID: socketObj.opponentID,
+                            gameboard,
+                            user:user.color
                         }
+                        console.log(gameInfoObj);
+                        socket.emit('move submitted',gameInfoObj);
+                        console.log('i emmitted a move submit :)I ATTACKED!!!!!')
                     break;
-            
-                    case 'Rook':
-                        clearPossibleMoves();
-                        const rookPossMoves = checkRookPossibleMoves(AN0,AN1);
-                        updatePossibleMoves(rookPossMoves);
-                        selected = AN;
-                    break;
-            
-                    case 'Knight':
-                        clearPossibleMoves();
-                        const knightPossMoves = checkKnightPossibleMoves(AN0,AN1);
-                        updatePossibleMoves(knightPossMoves);
-                        selected = AN;
-                    break;
-            
-                    case 'Bishop':
-                        clearPossibleMoves();
-                        const bishopPossMoves = checkBishopPossibleMoves(AN0,AN1);
-                        updatePossibleMoves(bishopPossMoves);
-                        selected = AN;
-                    break;
-                    
-                    case 'Queen':
-                        clearPossibleMoves();
-                        const firstHalfMoves = checkRookPossibleMoves(AN0,AN1);
-                        const secondHalfMoves = checkBishopPossibleMoves(AN0,AN1);
-                        const queenPossMoves = firstHalfMoves.concat(secondHalfMoves);
-                        updatePossibleMoves(queenPossMoves);
-                        selected = AN;
-                    break;
-            
-                    case 'King':
-                        clearPossibleMoves();
-                        const kingPossMoves = checkKingPossibleMoves(AN0,AN1);
-                        updatePossibleMoves(kingPossMoves);
-                        selected = AN;
-                    break;
-            
-                    case 'Pawn':
-                        clearPossibleMoves();
-                        let pawnPossMoves;
-                        if(justPiece[0]==='w'){
-                            pawnPossMoves = checkWhitePawnPossibleMoves(AN0,AN1);
-                        } else {
-                            pawnPossMoves = checkBlackPawnPossibleMoves(AN0,AN1);
-                        }
-                        updatePossibleMoves(pawnPossMoves);
-                        selected = AN;
+                }
+                if(!atk){
+                    switch (justPiece[1]) {
+                        default:
+                            switch (justPiece[0]) {
+                                case 'empty':
+                                    clearPossibleMoves();
+                                    clearPossibleAtks();
+                                    updateGameboard();
+                                break;
+                                    
+                                case 'possible':
+                                    clearPossibleAtks();
+                                    clearPossibleMoves();
+                                    movePiece(selected,AN);
+                                    const gameboard = packGameboard();
+                                    console.log(gameboard);
+                                    const gameInfoObj = {
+                                        hostID: socketObj.userID,
+                                        opponentID: socketObj.opponentID,
+                                        gameboard,
+                                        user:user.color
+                                    }
+                                    console.log(gameInfoObj);
+                                    socket.emit('move submitted',gameInfoObj);
+                                    console.log('i emmitted a move submit :)verygood')
+                                break;
+                            }
                         break;
+                                    
+                        case 'Rook':
+                            clearPossibleAtks();
+                            clearPossibleMoves();
+                            const rookmovesObj = checkRookPossibleMoves(AN0,AN1);
+                            const rookPossMoves = rookmovesObj.rookPossibleMoves;
+                            const rookPossAtts = rookmovesObj.rookPossibleAtts;
+                            updatePossibleMoves(rookPossMoves);
+                            updatePossibleAtts(rookPossAtts);
+                            selected = AN;
+                        break;
+                            
+                        case 'Knight':
+                            clearPossibleAtks();
+                            clearPossibleMoves();
+                            const knightmovesObj = checkKnightPossibleMoves(AN0,AN1);
+                            const knightPossMoves = knightmovesObj.knightPossibleMoves;
+                            const knightPossAtts = knightmovesObj.knightPossibleAtts;
+                            updatePossibleMoves(knightPossMoves);
+                            updatePossibleAtts(knightPossAtts);
+                            selected = AN;
+                        break;
+                                
+                        case 'Bishop':
+                            clearPossibleAtks();
+                            clearPossibleMoves();
+                            console.log('bishop');
+                            const bishopmovesObj = checkBishopPossibleMoves(AN0,AN1);
+                            console.log(bishopmovesObj);
+                            const bishopPossMoves = bishopmovesObj.bishopPossibleMoves;
+                            const bishopPossAtts = bishopmovesObj.bishopPossibleAtts;
+                            updatePossibleMoves(bishopPossMoves);
+                            updatePossibleAtts(bishopPossAtts);
+                            selected = AN;
+                        break;
+                                    
+                        case 'Queen':
+                            clearPossibleMoves();
+                            clearPossibleAtks();
+                            const firstHalfMovesObj = checkRookPossibleMoves(AN0,AN1);
+                            const queenPossMovesOne = firstHalfMovesObj.rookPossibleMoves;
+                            const queenPossAttsOne = firstHalfMovesObj.rookPossibleAtts;
+                            const secondHalfMovesObj = checkBishopPossibleMoves(AN0,AN1);
+                            const queenPossMovesTwo = secondHalfMovesObj.bishopPossibleMoves;
+                            const queenPossAttsTwo = secondHalfMovesObj.bishopPossibleAtts;
+                            console.log(queenPossAttsTwo);
+                            let queenPossMoves = queenPossMovesOne;
+                            if(queenPossMovesTwo){
+                                queenPossMoves = queenPossMovesOne.concat(queenPossMovesTwo);
+                            }
+                            let queenPossAtts = queenPossAttsOne;
+                            if(queenPossAttsTwo){
+                                queenPossAtts = queenPossAttsOne.concat(queenPossAttsTwo)
+                            }
+                            updatePossibleMoves(queenPossMoves);
+                            updatePossibleAtts(queenPossAtts);
+                            selected = AN;
+                        break;
+                                        
+                        case 'King':
+                            clearPossibleMoves();
+                            clearPossibleAtks();
+                            const kingmovesObj = checkKingPossibleMoves(AN0,AN1);
+                            const kingPossMoves = kingmovesObj.kingPossibleMoves;
+                            const kingPossAtts = kingmovesObj.kingPossibleAtts;
+                            updatePossibleMoves(kingPossMoves);
+                            updatePossibleAtts(kingPossAtts);
+                            selected = AN;
+                        break;
+                                            
+                        case 'Pawn':
+                            clearPossibleMoves();
+                            clearPossibleAtks();
+                            let pawnPossMovesObj;
+                            let pawnPossMoves;
+                            let pawnPossAtts;
+                            if(justPiece[0]==='w'){
+                                pawnPossMovesObj = checkWhitePawnPossibleMoves(AN0,AN1);
+                                pawnPossMoves = pawnPossMovesObj.pawnPossibleMoves;
+                                pawnPossAtts = pawnPossMovesObj.pawnPossibleAtts;
+                            } else {
+                                pawnPossMovesObj = checkBlackPawnPossibleMoves(AN0,AN1);
+                                pawnPossMoves = pawnPossMovesObj.pawnPossibleMoves;
+                                pawnPossAtts = pawnPossMovesObj.pawnPossibleAtts;
+                            }
+                            updatePossibleMoves(pawnPossMoves);
+                            updatePossibleAtts(pawnPossAtts);
+                            selected = AN;
+                        break;
+                    }
                 }
             }
         }
@@ -260,6 +328,7 @@ for (let i = 0; i < tile.length; i++) {
 
 const checkRookPossibleMoves = (zero,one) => {
     const rookPossibleMoves = [];
+    const rookPossibleAtts = [];
     const numAN0 = Number(zero);
     const numAN1 = Number(one);
 
@@ -272,6 +341,16 @@ const checkRookPossibleMoves = (zero,one) => {
         if (seeCurrentPiece(strChecking) === 'empty') {
             rookPossibleMoves.push(strChecking);
         } else {
+            if(user.color === 'w'){
+                if(seeCurrentPiece(strChecking).split('-')[0] === 'b'){
+                    rookPossibleAtts.push(strChecking);
+                }
+            }
+            if(user.color === 'b'){
+                if(seeCurrentPiece(strChecking).split('-')[0] === 'w'){
+                    rookPossibleAtts.push(strChecking);
+                }
+            }
             break;
         }
     }
@@ -286,6 +365,16 @@ const checkRookPossibleMoves = (zero,one) => {
         if (seeCurrentPiece(strChecking) === 'empty') {
             rookPossibleMoves.push(strChecking);
         } else {
+            if(user.color === 'w'){
+                if(seeCurrentPiece(strChecking).split('-')[0] === 'b'){
+                    rookPossibleAtts.push(strChecking);
+                }
+            }
+            if(user.color === 'b'){
+                if(seeCurrentPiece(strChecking).split('-')[0] === 'w'){
+                    rookPossibleAtts.push(strChecking);
+                }
+            }
             break;
         }
     }
@@ -299,8 +388,18 @@ const checkRookPossibleMoves = (zero,one) => {
         if (seeCurrentPiece(strChecking) === 'empty') {
             rookPossibleMoves.push(strChecking);
         } else {
+            if(user.color === 'w'){
+                if(seeCurrentPiece(strChecking).split('-')[0] === 'b'){
+                    rookPossibleAtts.push(strChecking);
+                }
+            }
+            if(user.color === 'b'){
+                if(seeCurrentPiece(strChecking).split('-')[0] === 'w'){
+                    rookPossibleAtts.push(strChecking);
+                }
+            }
             break;
-        }            
+        }          
     }
 
     // checking possible moves right of rook
@@ -313,14 +412,25 @@ const checkRookPossibleMoves = (zero,one) => {
         if (seeCurrentPiece(strChecking) === 'empty') {
             rookPossibleMoves.push(strChecking);
         } else {
+            if(user.color === 'w'){
+                if(seeCurrentPiece(strChecking).split('-')[0] === 'b'){
+                    rookPossibleAtts.push(strChecking);
+                }
+            }
+            if(user.color === 'b'){
+                if(seeCurrentPiece(strChecking).split('-')[0] === 'w'){
+                    rookPossibleAtts.push(strChecking);
+                }
+            }
             break;
-        }          
+        }
     }
-    return rookPossibleMoves;
+    return { rookPossibleMoves, rookPossibleAtts };
 }
 
 const checkBishopPossibleMoves = (zero,one) => {
     const bishopPossibleMoves = [];
+    const bishopPossibleAtts = [];
     const numAN0 = Number(zero);
     const numAN1 = Number(one);
 
@@ -340,8 +450,18 @@ const checkBishopPossibleMoves = (zero,one) => {
         if (seeCurrentPiece(strChecking) === 'empty') {
             bishopPossibleMoves.push(strChecking);
         } else {
+            if(user.color === 'w'){
+                if(seeCurrentPiece(strChecking).split('-')[0] === 'b'){
+                    bishopPossibleAtts.push(strChecking);
+                }
+            }
+            if(user.color === 'b'){
+                if(seeCurrentPiece(strChecking).split('-')[0] === 'w'){
+                    bishopPossibleAtts.push(strChecking);
+                }
+            }
             break;
-        }            
+        }           
     }
 
     // checking upper left possible moves of bishop
@@ -360,8 +480,18 @@ const checkBishopPossibleMoves = (zero,one) => {
         if (seeCurrentPiece(strChecking) === 'empty') {
             bishopPossibleMoves.push(strChecking);
         } else {
+            if(user.color === 'w'){
+                if(seeCurrentPiece(strChecking).split('-')[0] === 'b'){
+                    bishopPossibleAtts.push(strChecking);
+                }
+            }
+            if(user.color === 'b'){
+                if(seeCurrentPiece(strChecking).split('-')[0] === 'w'){
+                    bishopPossibleAtts.push(strChecking);
+                }
+            }
             break;
-        }            
+        } 
     }
 
     // checking lower left possible moves of bishop
@@ -380,8 +510,18 @@ const checkBishopPossibleMoves = (zero,one) => {
         if (seeCurrentPiece(strChecking) === 'empty') {
             bishopPossibleMoves.push(strChecking);
         } else {
+            if(user.color === 'w'){
+                if(seeCurrentPiece(strChecking).split('-')[0] === 'b'){
+                    bishopPossibleAtts.push(strChecking);
+                }
+            }
+            if(user.color === 'b'){
+                if(seeCurrentPiece(strChecking).split('-')[0] === 'w'){
+                    bishopPossibleAtts.push(strChecking);
+                }
+            }
             break;
-        }            
+        }         
     }
 
     // checking lower right possible moves of bishop
@@ -400,14 +540,25 @@ const checkBishopPossibleMoves = (zero,one) => {
         if (seeCurrentPiece(strChecking) === 'empty') {
             bishopPossibleMoves.push(strChecking);
         } else {
+            if(user.color === 'w'){
+                if(seeCurrentPiece(strChecking).split('-')[0] === 'b'){
+                    bishopPossibleAtts.push(strChecking);
+                }
+            }
+            if(user.color === 'b'){
+                if(seeCurrentPiece(strChecking).split('-')[0] === 'w'){
+                    bishopPossibleAtts.push(strChecking);
+                }
+            }
             break;
-        }            
-    }
-    return bishopPossibleMoves;
+        }
+    }   
+    return { bishopPossibleMoves, bishopPossibleAtts };
 }
 
 const checkKnightPossibleMoves = (zero,one) => {
     const knightPossibleMoves = [];
+    const knightPossibleAtts = [];
     const num0 = Number(zero);
     const num1 = Number(one);
     // checking upper moves for knight
@@ -419,7 +570,18 @@ const checkKnightPossibleMoves = (zero,one) => {
             const check = tile1.concat(tile2);
             if (seeCurrentPiece(check) === 'empty') {
                 knightPossibleMoves.push(check);
-            }
+            } else {
+                if(user.color === 'w'){
+                    if(seeCurrentPiece(check).split('-')[0] === 'b'){
+                        knightPossibleAtts.push(check);
+                    }
+                }
+                if(user.color === 'b'){
+                    if(seeCurrentPiece(check).split('-')[0] === 'w'){
+                        knightPossibleAtts.push(check);
+                    }
+                }
+            }  
         }
         if (num1 < 6) {
             // right upper move is up one and right two
@@ -428,7 +590,18 @@ const checkKnightPossibleMoves = (zero,one) => {
             const check = tile1.concat(tile2);
             if (seeCurrentPiece(check) === 'empty') {
                 knightPossibleMoves.push(check);
-            }
+            } else {
+                if(user.color === 'w'){
+                    if(seeCurrentPiece(check).split('-')[0] === 'b'){
+                        knightPossibleAtts.push(check);
+                    }
+                }
+                if(user.color === 'b'){
+                    if(seeCurrentPiece(check).split('-')[0] === 'w'){
+                        knightPossibleAtts.push(check);
+                    }
+                }
+            }  
         }
     }
 
@@ -441,7 +614,18 @@ const checkKnightPossibleMoves = (zero,one) => {
             const check = tile1.concat(tile2);
             if (seeCurrentPiece(check) === 'empty') {
                 knightPossibleMoves.push(check);
-            }
+            } else {
+                if(user.color === 'w'){
+                    if(seeCurrentPiece(check).split('-')[0] === 'b'){
+                        knightPossibleAtts.push(check);
+                    }
+                }
+                if(user.color === 'b'){
+                    if(seeCurrentPiece(check).split('-')[0] === 'w'){
+                        knightPossibleAtts.push(check);
+                    }
+                }
+            }  
         }
         if (num0 < 6) {
             // lower left move is left one and down two
@@ -450,7 +634,18 @@ const checkKnightPossibleMoves = (zero,one) => {
             const check = tile1.concat(tile2);
             if (seeCurrentPiece(check) === 'empty') {
                 knightPossibleMoves.push(check);
-            }
+            } else {
+                if(user.color === 'w'){
+                    if(seeCurrentPiece(check).split('-')[0] === 'b'){
+                        knightPossibleAtts.push(check);
+                    }
+                }
+                if(user.color === 'b'){
+                    if(seeCurrentPiece(check).split('-')[0] === 'w'){
+                        knightPossibleAtts.push(check);
+                    }
+                }
+            }  
         }
     }
     // checking lower moves for knight
@@ -462,7 +657,18 @@ const checkKnightPossibleMoves = (zero,one) => {
             const check = tile1.concat(tile2);
             if (seeCurrentPiece(check) === 'empty') {
                 knightPossibleMoves.push(check);
-            }
+            } else {
+                if(user.color === 'w'){
+                    if(seeCurrentPiece(check).split('-')[0] === 'b'){
+                        knightPossibleAtts.push(check);
+                    }
+                }
+                if(user.color === 'b'){
+                    if(seeCurrentPiece(check).split('-')[0] === 'w'){
+                        knightPossibleAtts.push(check);
+                    }
+                }
+            }  
         }
         if (num1 < 6) {
             // right lower move is down one and right two
@@ -471,7 +677,18 @@ const checkKnightPossibleMoves = (zero,one) => {
             const check = tile1.concat(tile2);
             if (seeCurrentPiece(check) === 'empty') {
                 knightPossibleMoves.push(check);
-            }
+            } else {
+                if(user.color === 'w'){
+                    if(seeCurrentPiece(check).split('-')[0] === 'b'){
+                        knightPossibleAtts.push(check);
+                    }
+                }
+                if(user.color === 'b'){
+                    if(seeCurrentPiece(check).split('-')[0] === 'w'){
+                        knightPossibleAtts.push(check);
+                    }
+                }
+            }  
         }
     }
     //checking right moves for knight
@@ -483,7 +700,18 @@ const checkKnightPossibleMoves = (zero,one) => {
             const check = tile1.concat(tile2);
             if (seeCurrentPiece(check) === 'empty') {
                 knightPossibleMoves.push(check);
-            }
+            } else {
+                if(user.color === 'w'){
+                    if(seeCurrentPiece(check).split('-')[0] === 'b'){
+                        knightPossibleAtts.push(check);
+                    }
+                }
+                if(user.color === 'b'){
+                    if(seeCurrentPiece(check).split('-')[0] === 'w'){
+                        knightPossibleAtts.push(check);
+                    }
+                }
+            }  
         }
         if (num0 < 6) {
             // lower right move is right one and down two
@@ -492,14 +720,26 @@ const checkKnightPossibleMoves = (zero,one) => {
             const check = tile1.concat(tile2);
             if (seeCurrentPiece(check) === 'empty') {
                 knightPossibleMoves.push(check);
-            }
+            } else {
+                if(user.color === 'w'){
+                    if(seeCurrentPiece(check).split('-')[0] === 'b'){
+                        knightPossibleAtts.push(check);
+                    }
+                }
+                if(user.color === 'b'){
+                    if(seeCurrentPiece(check).split('-')[0] === 'w'){
+                        knightPossibleAtts.push(check);
+                    }
+                }
+            }  
         }
     }
-    return knightPossibleMoves;
+    return { knightPossibleMoves, knightPossibleAtts };
 }
 
 const checkKingPossibleMoves = (zero,one) => {
     const kingPossibleMoves = [];
+    const kingPossibleAtts = [];
     const num0 = Number(zero);
     const num1 = Number(one);
 
@@ -510,7 +750,18 @@ const checkKingPossibleMoves = (zero,one) => {
         check0 = check0.concat(check1);
         if (seeCurrentPiece(check0) === 'empty') {
             kingPossibleMoves.push(check0);
-        }
+        } else {
+            if(user.color === 'w'){
+                if(seeCurrentPiece(check0).split('-')[0] === 'b'){
+                    kingPossibleAtts.push(check0);
+                }
+            }
+            if(user.color === 'b'){
+                if(seeCurrentPiece(check0).split('-')[0] === 'w'){
+                    kingPossibleAtts.push(check0);
+                }
+            }
+        }  
     }
 
     // checking up left
@@ -520,7 +771,18 @@ const checkKingPossibleMoves = (zero,one) => {
         check0 = check0.concat(check1);
         if (seeCurrentPiece(check0) === 'empty') {
             kingPossibleMoves.push(check0);
-        }
+        } else {
+            if(user.color === 'w'){
+                if(seeCurrentPiece(check0).split('-')[0] === 'b'){
+                    kingPossibleAtts.push(check0);
+                }
+            }
+            if(user.color === 'b'){
+                if(seeCurrentPiece(check0).split('-')[0] === 'w'){
+                    kingPossibleAtts.push(check0);
+                }
+            }
+        }  
     }
 
     // checking left
@@ -530,7 +792,18 @@ const checkKingPossibleMoves = (zero,one) => {
         check0 = check0.concat(check1);
         if (seeCurrentPiece(check0) === 'empty') {
             kingPossibleMoves.push(check0);
-        }
+        } else {
+            if(user.color === 'w'){
+                if(seeCurrentPiece(check0).split('-')[0] === 'b'){
+                    kingPossibleAtts.push(check0);
+                }
+            }
+            if(user.color === 'b'){
+                if(seeCurrentPiece(check0).split('-')[0] === 'w'){
+                    kingPossibleAtts.push(check0);
+                }
+            }
+        }  
     }
 
     // checking down left
@@ -540,7 +813,18 @@ const checkKingPossibleMoves = (zero,one) => {
         check0 = check0.concat(check1);
         if (seeCurrentPiece(check0) === 'empty') {
             kingPossibleMoves.push(check0);
-        }
+        } else {
+            if(user.color === 'w'){
+                if(seeCurrentPiece(check0).split('-')[0] === 'b'){
+                    kingPossibleAtts.push(check0);
+                }
+            }
+            if(user.color === 'b'){
+                if(seeCurrentPiece(check0).split('-')[0] === 'w'){
+                    kingPossibleAtts.push(check0);
+                }
+            }
+        }  
     }
 
     // checking down
@@ -550,7 +834,18 @@ const checkKingPossibleMoves = (zero,one) => {
         check0 = check0.concat(check1);
         if (seeCurrentPiece(check0) === 'empty') {
             kingPossibleMoves.push(check0);
-        }
+        } else {
+            if(user.color === 'w'){
+                if(seeCurrentPiece(check0).split('-')[0] === 'b'){
+                    kingPossibleAtts.push(check0);
+                }
+            }
+            if(user.color === 'b'){
+                if(seeCurrentPiece(check0).split('-')[0] === 'w'){
+                    kingPossibleAtts.push(check0);
+                }
+            }
+        }  
     }
 
     // checking down right
@@ -560,7 +855,18 @@ const checkKingPossibleMoves = (zero,one) => {
         check0 = check0.concat(check1);
         if (seeCurrentPiece(check0) === 'empty') {
             kingPossibleMoves.push(check0);
-        }
+        } else {
+            if(user.color === 'w'){
+                if(seeCurrentPiece(check0).split('-')[0] === 'b'){
+                    kingPossibleAtts.push(check0);
+                }
+            }
+            if(user.color === 'b'){
+                if(seeCurrentPiece(check0).split('-')[0] === 'w'){
+                    kingPossibleAtts.push(check0);
+                }
+            }
+        }  
     }
 
     // checking right
@@ -570,7 +876,18 @@ const checkKingPossibleMoves = (zero,one) => {
         check0 = check0.concat(check1);
         if (seeCurrentPiece(check0) === 'empty') {
             kingPossibleMoves.push(check0);
-        }
+        } else {
+            if(user.color === 'w'){
+                if(seeCurrentPiece(check0).split('-')[0] === 'b'){
+                    kingPossibleAtts.push(check0);
+                }
+            }
+            if(user.color === 'b'){
+                if(seeCurrentPiece(check0).split('-')[0] === 'w'){
+                    kingPossibleAtts.push(check0);
+                }
+            }
+        }  
     }
 
     // checking up right
@@ -580,35 +897,88 @@ const checkKingPossibleMoves = (zero,one) => {
         check0 = check0.concat(check1);
         if (seeCurrentPiece(check0) === 'empty') {
             kingPossibleMoves.push(check0);
-        }
+        } else {
+            if(user.color === 'w'){
+                if(seeCurrentPiece(check0).split('-')[0] === 'b'){
+                    kingPossibleAtts.push(check0);
+                }
+            }
+            if(user.color === 'b'){
+                if(seeCurrentPiece(check0).split('-')[0] === 'w'){
+                    kingPossibleAtts.push(check0);
+                }
+            }
+        }  
     }
-    return kingPossibleMoves;
+    return { kingPossibleMoves, kingPossibleAtts };
 }
 
 const checkWhitePawnPossibleMoves = (zero,one) => {
     const pawnPossibleMoves = [];
+    const pawnPossibleAtts = [];
     const num0 = Number(zero);
     const num1 = Number(one);
-    let check0 = num0.toString();
-    let check1 = (num1-1).toString();
-    check0 = check0.concat(check1);
-    if (seeCurrentPiece(check0) === 'empty') {
-        pawnPossibleMoves.push(check0);
+    if(num1>0){
+        let check0 = num0.toString();
+        let check1 = (num1-1).toString();
+        check0 = check0.concat(check1);
+        if (seeCurrentPiece(check0) === 'empty') {
+            pawnPossibleMoves.push(check0);
+        }
+        // check attacking spot above pawn
+        if(num0>0){    
+            let atk10 = (num0 - 1).toString();
+            let atk11 = (num1 - 1).toString();
+            atk10 = atk10.concat(atk11);
+            if (seeCurrentPiece(atk10).split('-')[0] === 'b'){   
+                pawnPossibleAtts.push(atk10);
+            }
+        }
+        // check attacking spot below pawn
+        if(num0<7){    
+            let atk10 = (num0 + 1).toString();
+            let atk11 = (num1 - 1).toString();
+            atk10 = atk10.concat(atk11);
+            if (seeCurrentPiece(atk10).split('-')[0] === 'b'){   
+                pawnPossibleAtts.push(atk10);
+            }
+        }
     }
-    return pawnPossibleMoves;
+    return { pawnPossibleMoves, pawnPossibleAtts };
 }
 
 const checkBlackPawnPossibleMoves = (zero,one) => {
     const pawnPossibleMoves = [];
+    const pawnPossibleAtts = [];
     const num0 = Number(zero);
     const num1 = Number(one);
-    let check0 = num0.toString();
-    let check1 = (num1+1).toString();
-    check0 = check0.concat(check1);
-    if (seeCurrentPiece(check0) === 'empty') {
-        pawnPossibleMoves.push(check0);
+    if(num1<7){
+        let check0 = num0.toString();
+        let check1 = (num1+1).toString();
+        check0 = check0.concat(check1);
+        if (seeCurrentPiece(check0) === 'empty') {
+            pawnPossibleMoves.push(check0);
+        }
+        // check attacking spot above pawn
+        if(num0>0){    
+            let atk10 = (num0 - 1).toString();
+            let atk11 = (num1 + 1).toString();
+            atk10 = atk10.concat(atk11);
+            if (seeCurrentPiece(atk10).split('-')[0] === 'w'){   
+                pawnPossibleAtts.push(atk10);
+            }
+        }
+        // check attacking spot below pawn
+        if(num0<7){    
+            let atk10 = (num0 + 1).toString();
+            let atk11 = (num1 + 1).toString();
+            atk10 = atk10.concat(atk11);
+            if (seeCurrentPiece(atk10).split('-')[0] === 'w'){   
+                pawnPossibleAtts.push(atk10);
+            }
+        }
     }
-    return pawnPossibleMoves;
+    return { pawnPossibleMoves, pawnPossibleAtts };
 }
 
 // takes in a number of moves and sets the piece equal to "possibleMove"
@@ -618,6 +988,18 @@ const updatePossibleMoves = (movesArr) => {
         const h = newPossMove[0];
         const g = newPossMove[1];
         document.querySelector(`div[data-AN='${h}${g}']`).setAttribute('data-Piece','possible');
+    }
+    updateGameboard();
+}
+const updatePossibleAtts = (attsArr) => {
+    console.log(attsArr);
+    for (let i = 0; i < attsArr.length; i++) {
+        const newPossAtt = attsArr[i].split('');
+        const h = newPossAtt[0];
+        const g = newPossAtt[1];
+        const piece = document.querySelector(`div[data-AN='${h}${g}']`).getAttribute('data-Piece');
+        const newAttackPoss = piece + '-atk';
+        document.querySelector(`div[data-AN='${h}${g}']`).setAttribute('data-Piece',newAttackPoss);
     }
     updateGameboard();
 }
@@ -631,7 +1013,19 @@ const clearPossibleMoves = () => {
         }
     }
 }
-
+const clearPossibleAtks = () => {
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+            if(seeCurrentPiece(`${i}${j}`).split('-')[2] === 'atk') {
+                const totPiece = document.querySelector(`div[data-AN='${i}${j}']`).getAttribute('data-Piece');
+                const totPieceArr = totPiece.split('-');
+                const piece = totPieceArr[0] + '-' + totPieceArr[1];
+                console.log(piece);
+                document.querySelector(`div[data-AN='${i}${j}']`).setAttribute('data-Piece',piece);
+            }
+        }
+    }
+}
 // function that accepts moving a piece 'from' a tile 'to' another tile.
 const movePiece = (from,to) => {
     const nfrom = from.split('');

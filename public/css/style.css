@@ -436,6 +436,103 @@ img {
     text-shadow: -1px 0 orange, 0 1px orange, 1px 0 orange, 0 -1px orange;
 }
 
+[data-Piece="b-Rook-atk"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: black;
+    text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
+}
+[data-Piece="b-Knight-atk"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: black;
+    text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
+}
+[data-Piece="b-Bishop-atk"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: black;
+    text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
+}
+[data-Piece="b-Queen-atk"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: black;
+    text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
+}
+[data-Piece="b-King-atk"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: black;
+    text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
+}
+[data-Piece="b-Pawn-atk"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: black;
+    text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
+}
+[data-Piece="w-Rook-atk"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: white;
+    text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
+}
+[data-Piece="w-Knight-atk"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: white;
+    text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
+}
+[data-Piece="w-Bishop-atk"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: white;
+    text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
+}
+[data-Piece="w-Queen-atk"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: white;
+    text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
+}
+[data-Piece="w-King-atk"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: white;
+    text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
+}
+[data-Piece="w-Pawn-atk"] {
+    align-items:center;
+    margin: 0;
+    padding: 0;
+    font-size:300%;
+    color: white;
+    text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
+}
+
 
 /* .notification {
     background-color: #555;
