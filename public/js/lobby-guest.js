@@ -25,6 +25,8 @@ socket.on('i am joining lobby', (id) => {
 });
 
 socket.on('start the game', (socketObj) => {
+    console.log("i am emmiting 'moving to gameboard'");
+    console.log(socketObj);
     socket.emit('moving to gameboard',socketObj)
     document.location.replace('/gameboard');
 });
