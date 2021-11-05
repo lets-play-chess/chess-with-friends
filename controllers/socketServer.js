@@ -14,6 +14,7 @@ exports = module.exports = function (io) {
         socket.on('game invite accepted', gameInvAcc)
         socket.on('starting game', startGame)
         socket.on('moving to gameboard', moveToGame)
+        socket.on('move submitted', moveSubmitted)
 
         function friendReqAcc(socketObj) {
             const userId = socketObj.userId
@@ -24,7 +25,6 @@ exports = module.exports = function (io) {
                 const friendsList = userData.friends_list;
                 const friendsListArr = friendsList.split(' ');
                 friendsListArr.push(friendId + "," + socketObj.friendUsername);
-                console.log(friendsListArr.join(' '));
                 User.update({friends_list: friendsListArr.join(' ')},{
                     where: { id: userId }
                 })
@@ -35,7 +35,6 @@ exports = module.exports = function (io) {
                 const friendsList = userData.friends_list;
                 const friendsListArr = friendsList.split(' ');
                 friendsListArr.push(userId + "," + socketObj.userUsername);
-                console.log(friendsListArr.join(' '));
                 User.update({friends_list: friendsListArr.join(' ')},{
                     where: { id: friendId }
                 })
@@ -46,7 +45,6 @@ exports = module.exports = function (io) {
             socket.broadcast.to(gameRoom).emit("sendMessage", "SERVER : a user just joined");
             if (gameRoom) {
                 socket.join(gameRoom);
-                console.log("joined room" + gameRoom);
                 //users.filter(foundUser => foundUser.id == socket.id)[0].gameRoom = gameRoom;
             }
         }
@@ -56,7 +54,6 @@ exports = module.exports = function (io) {
             socket.broadcast.to(notiRoom).emit("sendMessage", "SERVER : a user just joined");
             if (notiRoom) {
                 socket.join(notiRoom);
-                console.log("joined room" + notiRoom);
                 //users.filter(foundUser => foundUser.id == socket.id)[0].notiRoom = notiRoom;
             }
         }
@@ -76,8 +73,6 @@ exports = module.exports = function (io) {
         function gameInvAcc(socketObj) {
             const friendID = socketObj.friendID;
             const userID = socketObj.userId;
-            console.log(friendID);
-            console.log(userID);
             socket.broadcast.to(friendID + 'game').emit('player joining lobby',userID);
             const stopper = 0;
             const interval = setInterval(() => {
@@ -102,6 +97,18 @@ exports = module.exports = function (io) {
                     clearInterval(interval);
                 }
             },400)
+        }
+        function moveSubmitted(socketObj) {
+            console.log('i did the thing');
+            console.log(socketObj.gameboard);
+            const hostID = socketObj.hostID;
+            const opponentID = socketObj.opponentID;
+            if(socketObj.user === 'w'){
+                socket.broadcast.to(opponentID + 'game').emit('opponent moved',socketObj);
+                console.log(opponentID + 'game');
+            } else {
+                socket.broadcast.to(hostID + 'game').emit('opponent moved',socketObj);
+            }
         }
     })
 }

@@ -1,5 +1,33 @@
 const socket = io();
 
+fetch('/sessions').then(res => {
+    if (res.ok) {
+        res.json().then(res => {
+        console.log(res)
+        const gameRoom = res.user.id + "game"
+        const notiRoom = res.user.id + "noti"
+        socket.emit('join game room', gameRoom)
+        socket.emit('join notification room', notiRoom)
+        console.log(gameRoom,notiRoom)
+    })
+    } else {
+        // TODO: Show that there was an error and that the friend request wasn't sent
+        throw (err)
+    }
+});
+
+const packGameboard = () => {
+    const gameboard = [[],[],[],[],[],[],[],[]]            
+    for (let l = 0; l < 8; l++) {
+        for (let p = 0; p < 8; p++) {
+            gameboard[l][p] = {
+                piece: document.querySelector(`div[data-AN='${l}${p}']`).getAttribute('data-Piece'),
+                An:document.querySelector(`div[data-AN='${l}${p}']`).getAttribute('data-AN'),
+            }
+        }        
+    }
+    return gameboard;
+}
 const renderGameboard = () => {
     for (let i = 0; i < 8; i++) {
         for (let j = 0; j < 8; j++) {
@@ -82,13 +110,27 @@ const updateGameboard = () => {
         }
     }
 }
+const updateOpponentMove = (gameboard) => {
+    for (let l = 0; l < 8; l++) {
+        for (let p = 0; p < 8; p++) {
+            const currPiece = gameboard[l][p].piece;
+            const currAN = gameboard[l][p].An;
+            document.querySelector(`div[data-AN='${l}${p}']`).setAttribute('data-Piece',currPiece);
+            document.querySelector(`div[data-AN='${l}${p}']`).setAttribute('data-AN',currAN);
+        }        
+    }
+    updateGameboard();
+}
 
 const user = {
     color: 'w'
 }
+
 socket.on('the game is starting', (socketObj) => {
+    console.log('we should now be playing the game and the host can move')
     fetch('/sessions').then(res => {
         if (res.ok) {
+            hostID = socketObj.userID;
             res.json().then(res => {
                 if(res.user.id === socketObj.userID) {
                     user.color = 'w';
@@ -101,27 +143,12 @@ socket.on('the game is starting', (socketObj) => {
             throw (err)
         }
     });
-})
 // Game Logic :)))))
 // White starts the game (white = 0, black = 1)
 let playerTurn = 0;
 
 // Declaring global variables
 let selected;
-
-// Hard Coding the gameboard
-const gameboard = 
-[
-    [{color:'white',AN:'00',piece:'b Rook'},{color:'black',AN:'01',piece:'b Knight'},{color:'white',AN:'02',piece:'b Bishop'},{color:'black',AN:'03',piece:'b Queen'},{color:'white',AN:'04',piece:'b King'},{color:'black',AN:'05',piece:'b Bishop'},{color:'white',AN:'06',piece:'b Knight'},{color:'black',AN:'07',piece:'b Rook'}],
-    [{color:'black',AN:'10',piece:'b Pawn'},{color:'white',AN:'11',piece:'b Pawn'},{color:'black',AN:'12',piece:'b Pawn'},{color:'white',AN:'13',piece:'b Pawn'},{color:'black',AN:'14',piece:'b Pawn'},{color:'white',AN:'15',piece:'b Pawn'},{color:'black',AN:'16',piece:'b Pawn'},{color:'white',AN:'17',piece:'b Pawn'}],
-    [{color:'white',AN:'20',piece:'empty'},{color:'black',AN:'21',piece:'empty'},{color:'white',AN:'22',piece:'empty'},{color:'black',AN:'23',piece:'empty'},{color:'white',AN:'24',piece:'empty'},{color:'black',AN:'25',piece:'empty'},{color:'white',AN:'26',piece:'empty'},{color:'black',AN:'27',piece:'empty'}],
-    [{color:'black',AN:'30',piece:'empty'},{color:'white',AN:'31',piece:'empty'},{color:'black',AN:'32',piece:'empty'},{color:'white',AN:'33',piece:'empty'},{color:'black',AN:'34',piece:'empty'},{color:'white',AN:'35',piece:'empty'},{color:'black',AN:'36',piece:'empty'},{color:'white',AN:'37',piece:'empty'}],
-    [{color:'white',AN:'40',piece:'empty'},{color:'black',AN:'41',piece:'empty'},{color:'white',AN:'42',piece:'empty'},{color:'black',AN:'43',piece:'empty'},{color:'white',AN:'44',piece:'empty'},{color:'black',AN:'45',piece:'empty'},{color:'white',AN:'46',piece:'empty'},{color:'black',AN:'47',piece:'empty'}],
-    [{color:'black',AN:'50',piece:'empty'},{color:'white',AN:'51',piece:'empty'},{color:'black',AN:'52',piece:'empty'},{color:'white',AN:'53',piece:'empty'},{color:'black',AN:'54',piece:'empty'},{color:'white',AN:'55',piece:'empty'},{color:'black',AN:'56',piece:'empty'},{color:'white',AN:'57',piece:'empty'}],
-    [{color:'white',AN:'60',piece:'w Pawn'},{color:'black',AN:'61',piece:'w Pawn'},{color:'white',AN:'62',piece:'w Pawn'},{color:'black',AN:'63',piece:'w Pawn'},{color:'white',AN:'64',piece:'w Pawn'},{color:'black',AN:'65',piece:'w Pawn'},{color:'white',AN:'66',piece:'w Pawn'},{color:'black',AN:'67',piece:'w Pawn'}],
-    [{color:'black',AN:'70',piece:'w Rook'},{color:'white',AN:'71',piece:'w Knight'},{color:'black',AN:'72',piece:'w Bishop'},{color:'white',AN:'73',piece:'w Queen'},{color:'black',AN:'74',piece:'w King'},{color:'white',AN:'75',piece:'w Bishop'},{color:'black',AN:'76',piece:'w Knight'},{color:'white',AN:'77',piece:'w Rook'}],
-]; 
-
 renderGameboard();
 const tile = document.getElementsByClassName('tile');
 for (let i = 0; i < tile.length; i++) {
@@ -140,13 +167,14 @@ for (let i = 0; i < tile.length; i++) {
         const curPiece = seeCurrentPiece(AN);
         const justPiece = curPiece.split('-');
         
-        console.log(justPiece[0]);
-        console.log(user.color);
-        console.log(user.color === 'w' && justPiece[0] === ('w' || 'empty') || user.color === 'b' && justPiece[0] === ('b' || 'empty'));
-        if (user.color === 'w' && 
-            justPiece[0] === ('w' || 'empty') ||
-            user.color === 'b' &&
-            justPiece[0] === ('b' || 'empty'));
+        if ((user.color === 'w' && 
+            (justPiece[0] === 'w' || 
+            justPiece[0] === 'empty' ||
+            justPiece[0] === 'possible')) ||
+            (user.color === 'b' &&
+            (justPiece[0] === 'b' ||
+            justPiece[0] === 'empty' ||
+            justPiece[0] === 'possible')))
         {
             if (user.color === 'w' && playerTurn === 0 ||
                 user.color === 'b' && playerTurn === 1)
@@ -161,7 +189,17 @@ for (let i = 0; i < tile.length; i++) {
                             case 'possible':
                                 clearPossibleMoves();
                                 movePiece(selected,AN);
-                                socket.emit('move submitted',gameboard);
+                                const gameboard = packGameboard();
+                                console.log(gameboard);
+                                const gameInfoObj = {
+                                    hostID: socketObj.userID,
+                                    opponentID: socketObj.opponentID,
+                                    gameboard,
+                                    user:user.color
+                                }
+                                console.log(gameInfoObj);
+                                socket.emit('move submitted',gameInfoObj);
+                                console.log('i emmitted a move submit :)verygood')
                             break;
                         }
                     break;
@@ -603,6 +641,7 @@ const movePiece = (from,to) => {
     document.querySelector(`div[data-AN='${nto[0]}${nto[1]}']`).setAttribute('data-Piece',piece);
     clearPossibleMoves();
     updateGameboard();
+    playerTurn = Math.abs(playerTurn - 1);
 }
 
 // function that accepts a 'tile' that you want to see if there are any pieces on
@@ -615,7 +654,9 @@ const seeCurrentPiece = (tile) => {
 }
 
 // socket that listens for when the opponent moves
-socket.on('opponent moved piece', (gameBoard) => {
-    gameboard = gameBoard;
+socket.on('opponent moved', (socketObj) => {
+    console.log('i got that the opponent moved');
+    updateOpponentMove(socketObj.gameboard);
     playerTurn = Math.abs(playerTurn-1);
 });
+})
