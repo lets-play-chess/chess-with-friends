@@ -80,7 +80,7 @@ exports = module.exports = function (io) {
                 if(stopper==0){
                     clearInterval(interval);
                 }
-            },400)
+            },1000)
         }
         function startGame(socketObj) {
             const opponentID = socketObj.opponentID;
@@ -96,7 +96,7 @@ exports = module.exports = function (io) {
                 if(stopper==0){
                     clearInterval(interval);
                 }
-            },400)
+            },1000)
         }
         function moveSubmitted(socketObj) {
             console.log('i did the thing');
